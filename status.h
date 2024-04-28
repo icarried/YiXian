@@ -6,7 +6,7 @@
 #include "head.h"
 #include "effect_task_quene.h"
 #include "account_task_quene.h"
-// #include "deck.h"
+
 class Deck; // 前置声明
 
 // 状态类
@@ -85,6 +85,11 @@ public:
         buff.print_buff();
         std::cout << std::endl;
     }
+
+    /*
+    仅声明：获取Deck中position位置的卡牌指针
+    */
+    BaseCard* GetCard(int position);
 
     // 每个Status带一个Buff对象
     Buff buff;

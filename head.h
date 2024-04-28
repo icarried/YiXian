@@ -12,4 +12,6 @@
 #define CARD_SP_ATTR_SHUANG_BEI_QI_SHI 3 //双倍气势
 #define CARD_SP_ATTR_END_INDEX 4 //牌特殊属性结束索引，通过牌的效果传入Attack进行结算
 
+#include "cal.h"
+
 #endif // HEAD_H

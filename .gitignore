@@ -10,5 +10,6 @@ cache/
 whl/
 test/
 *_test.py
-main.exe
+help.md
+*.exe
 main.o

@@ -5,6 +5,9 @@
 #include <string>
 #include "status.h"
 #include "deck.h"
+#include "./cards/cards.h"
+#include "head.h"
+
 
 #define BATTLE_END_ROUND 30 // 战斗最大回合数, 目前暂不确定
 

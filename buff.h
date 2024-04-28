@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <string>
+#include "cal.h"
 
 #define BUFF_JIA_GONG 0 //加攻
 #define BUFF_JIAN_YI 1 //剑意
@@ -49,13 +50,6 @@
 #define DEBUFF_KUN_FU DEBUFF_START_INDEX+5 //困缚
 #define DEBUFF_END_INDEX DEBUFF_START_INDEX+6 //负面buff结束索引
 // 修改需要修改DEBUFF_END_INDEX，并同时修改buff_name数组
-
-int buff_reduce(int value){
-    if (value > 0) {
-        return value - 1;
-    }
-    return value;
-}
 
 
 // Buff类
