@@ -243,7 +243,7 @@ public:
                 temp_max = 14;
                 break;
         }
-        int defense = my_status->ti_po / 2;
+        int defense = my_status->replace_ti_po->getValue() / 2;
         defense = defense > temp_max ? temp_max : defense;
         DefenseGain(my_status, defense);
         return 0;
@@ -274,7 +274,7 @@ public:
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         TiPoGain(my_status, 2);
-        if (my_status->ti_po >= 15) {
+        if (my_status->replace_ti_po->getValue() >= 15) {
             int defense = 0;
             switch (level) {
                 case 1:

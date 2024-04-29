@@ -106,7 +106,7 @@ public:
                 break;
         }
         LingQiGain(my_status, ling_qi_gain);
-        BuffGain(my_status, BUFF_QI_SHI, my_status->ling_qi);
+        BuffGain(my_status, BUFF_QI_SHI, my_status->replace_ti_po->getValue());
         BuffGain(my_status, BUFF_SHEN_FA, 5);
         return 0;
     }
@@ -240,7 +240,7 @@ public:
                 break;
         }
         HealthGain(my_status, health_gain);
-        int shen_fa_gain = my_status->ti_po / 4;
+        int shen_fa_gain = my_status->replace_ti_po->getValue() / 4;
         if (shen_fa_gain > shen_fa_gain_max) {
             shen_fa_gain = shen_fa_gain_max;
         }
@@ -273,7 +273,7 @@ public:
                 temp_percent = 16;
                 break;
         }
-        int health_gain = int(float(my_status->health_max) * temp_percent / 100);
+        int health_gain = int(float(my_status->health_max->getValue()) * temp_percent / 100);
         HealthGain(my_status, health_gain);
         return 0;
     }

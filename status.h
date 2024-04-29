@@ -6,6 +6,10 @@
 #include "head.h"
 #include "effect_task_quene.h"
 #include "account_task_quene.h"
+#include "./status_effects/buffs.h"
+#include "./status_effects/debuffs.h"
+#include "./status_effects/status_vals.h"
+#include "./status_effects/status_effects.h"
 
 class Deck; // 前置声明
 
@@ -16,13 +20,23 @@ public:
     // 构造函数
     Status(Deck* deck) : deck(deck) {
         // 初始化状态值
-        ti_po = 0;
-        ti_po_max = 0; // 体魄上限, 受修为影响
-        defense = 0;
-        health = 60;
-        health_max = health + ti_po; // 血量上限, 受体魄影响
-        ling_qi = 0;
-        xiu_wei = 0;
+        health_sub_total = new HealthSubTotal(this, 0); // 失去的血量总和
+        ti_po_add_total = new TiPoAddTotal(this, 0); // 体魄增加总和
+        health = new Health(this, 60); // 血量
+        health_max = new HealthMax(this, 60); // 血量上限
+        replace_defense = new Defense(this, 0); // 防御
+        replace_ling_qi = new LingQi(this, 0); // 灵气
+        replace_xiu_wei = new XiuWei(this, 0); // 修为
+        replace_ti_po = new TiPo(this, 0); // 体魄
+        replace_ti_po_max = new TiPoMax(this, 0); // 体魄上限
+        
+        // ti_po = 0;
+        // ti_po_max = 0; // 体魄上限, 受修为影响
+        // defense = 0;
+        // health = 60;
+        // health_max = health + ti_po; // 血量上限, 受体魄影响
+        // ling_qi = 0;
+        // xiu_wei = 0;
 
         // 初始化星位
         for (int i = 0; i < DECK_END_INDEX; i++) {
@@ -40,7 +54,7 @@ public:
         using_card_position = 0;
         using_yun_jian_continuous = 0;
         attack_damage_percent = 0.0f;
-        health_loss_total = 0;
+        // health_sub_total = 0;
 
         task_quene_before_effect = new EffectTaskQueue(this);
         task_quene_after_effect = new EffectTaskQueue(this);
@@ -51,6 +65,19 @@ public:
 
     // 析构函数
     ~Status() {
+
+        // 删除状态值
+        delete health_sub_total;
+        delete ti_po_add_total;
+        delete health;
+        delete health_max;
+        delete replace_defense;
+        delete replace_ling_qi;
+        delete replace_xiu_wei;
+        delete replace_ti_po;
+        delete replace_ti_po_max;
+
+        // 删除任务队列
         delete task_quene_before_effect;
         delete task_quene_after_effect;
         delete task_quene_after_health_loss;
@@ -74,12 +101,12 @@ public:
     打印主要状态
     */
     void ShowStatus() {
-        std::cout << "血量：" << health << "/" << health_max << "，灵气：" << ling_qi;
-        if (defense > 0) {
-            std::cout << "，防：" << defense;
+        std::cout << "血量：" << health->getValue() << "/" << health_max->getValue() << "，灵气：" << replace_ling_qi->getValue();
+        if (replace_defense->getValue() > 0) {
+            std::cout << "，防：" << replace_defense->getValue();
         }
-        if (ti_po > 0) {
-            std::cout << "，体魄：" << ti_po << "/" << ti_po_max;
+        if (replace_ti_po->getValue() > 0) {
+            std::cout << "，体魄：" << replace_ti_po->getValue() << "/" << replace_ti_po_max->getValue();
         }
         std::cout << " ";
         buff.print_buff();
@@ -106,14 +133,22 @@ public:
     AccountTaskQueue* task_quene_after_round; // 回合结束时触发的任务队列，参数为回合数
 
     // 状态值
-    int defense; // 防御
-    int health; // 血量
-    int health_max; // 血量上限
-    int ling_qi; // 灵气
-    int xiu_wei; // 修为
-    int ti_po; // 体魄
-    int ti_po_max; // 体魄上限
-    int ti_po_battle_gain; // 该次战斗中体魄增加值
+    // int defense; // 防御
+    // int health; // 血量
+    // int health_max; // 血量上限
+    StatusVal* health_sub_total; // 该次战斗中失去的血量总和
+    StatusVal* ti_po_add_total; // 该次战斗中体魄增加总和
+    StatusVal* health; // 血量
+    StatusVal* health_max; // 血量上限
+    StatusVal* replace_defense; // 防御
+    StatusVal* replace_ling_qi; // 灵气
+    StatusVal* replace_xiu_wei; // 修为
+    StatusVal* replace_ti_po; // 体魄
+    StatusVal* replace_ti_po_max; // 体魄上限
+    // int ling_qi; // 灵气
+    // int xiu_wei; // 修为
+    // int ti_po; // 体魄
+    // int ti_po_max; // 体魄上限
 
     bool is_xing_wei[DECK_END_INDEX]; // 某各格子的位置是否是星位
     bool is_usable[DECK_END_INDEX]; // 某个格子的牌是否可用（未被消耗）(使用的消耗牌和持续牌将被消耗）
@@ -122,6 +157,6 @@ public:
     int using_card_position; // 将使用卡牌的位置
     int using_yun_jian_continuous; // 连续使用云剑的次数（！未启用）
     float attack_damage_percent; // 临时记录伤害百分比
-    int health_loss_total; // 失去的血量总和
+    // int health_sub_total; // 失去的血量总和
 };
 #endif // !STATUS_H

@@ -213,7 +213,7 @@ public:
                 temp_max = 7;
                 break;
         }
-        int temp_attack = my_status->ti_po / 6;
+        int temp_attack = my_status->replace_ti_po->getValue() / 6;
         temp_attack = temp_attack > temp_max ? temp_max : temp_attack;
         Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);
         Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);

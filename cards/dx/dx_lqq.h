@@ -239,7 +239,7 @@ public:
     }
     int HealthCostModify(Status* my_status, Status* enemy_status) {
         int temp_health_cost = health_cost;
-        temp_health_cost -= my_status->ti_po / 2;
+        temp_health_cost -= my_status->replace_ti_po->getValue() / 2;
         if (temp_health_cost < 0) {
             temp_health_cost = 0;
         }

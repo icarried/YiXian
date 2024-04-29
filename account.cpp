@@ -10,26 +10,28 @@
 
 // 结算失去血量
 int HealthLoss(Status* losser, int loss_value){
-    if (loss_value > 0) {
-        losser->health -= loss_value;
-        losser->health_loss_total += loss_value;
-        std::cout << "失去" << loss_value << "点血，剩余" << losser->health << "/" << losser->health_max << "点血";
-        losser->task_quene_after_health_loss->executeTaskQueue(loss_value);
-    }
+    // if (loss_value > 0) {
+    //     losser->health -= loss_value;
+    //     losser->health_loss_total += loss_value;
+    //     std::cout << "失去" << loss_value << "点血，剩余" << losser->health << "/" << losser->health_max << "点血";
+    //     losser->task_quene_after_health_loss->executeTaskQueue(loss_value);
+    // }
+    losser->health->sub(loss_value);
     return loss_value;
 }
 
 
 // 结算失去血量上限
 int HealthMaxLoss(Status* losser, int loss_value){
-    if (loss_value > 0) {
-        losser->health_max -= loss_value;
-        std::cout << "，失去" << loss_value << "点血量上限，剩余" << losser->health_max << "点血量上限";
-        if (losser->health > losser->health_max) {
-            std::cout << "，血量上限减少导致血量减少";
-            HealthLoss(losser, losser->health - losser->health_max);
-        }
-    }
+    // if (loss_value > 0) {
+    //     losser->health_max -= loss_value;
+    //     std::cout << "，失去" << loss_value << "点血量上限，剩余" << losser->health_max << "点血量上限";
+    //     if (losser->health > losser->health_max) {
+    //         std::cout << "，血量上限减少导致血量减少";
+    //         HealthLoss(losser, losser->health - losser->health_max);
+    //     }
+    // }
+    losser->health_max->sub(loss_value);
     return 0;
 }
 
@@ -76,8 +78,9 @@ int NonSourseDamage(Status* defender, int damage_value){
 
 // 结算失去防御
 int DefenseLoss(Status* losser, int loss_value){
-    losser->defense -= loss_value;
-    std::cout << "防减少" << loss_value << "点，剩余" << losser->defense << "点防";
+    // losser->defense -= loss_value;
+    // std::cout << "防减少" << loss_value << "点，剩余" << losser->defense << "点防";
+    losser->replace_defense->sub(loss_value);
     return 0;
 }
 
@@ -94,9 +97,9 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
     }
     // 如果有碎防的特殊属性，则每一点伤害能抵消一点防
     else if (card_sp_attr[CARD_SP_ATTR_SUI_FANG]) {
-        if (2 * damage > defender->defense) {
-            damage -= defender->defense / 2;
-            defense_loss = defender->defense;
+        if (2 * damage > defender->replace_defense->getValue()) {
+            damage -= defender->replace_defense->getValue() / 2;
+            defense_loss = defender->replace_defense->getValue();
         }
         else {
             defense_loss = 2 * damage;
@@ -106,10 +109,10 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
     else {
         // 无特殊防御变更状态的正常情况
         // 如果对方有防，结算防，damage和defense同时减少，令其中一方为0
-        if (defender->defense > 0) {
-            if (damage > defender->defense) {
-                damage -= defender->defense;
-                defense_loss = defender->defense;
+        if (defender->replace_defense->getValue() > 0) {
+            if (damage > defender->replace_defense->getValue()) {
+                damage -= defender->replace_defense->getValue();
+                defense_loss = defender->replace_defense->getValue();
             }
             else {
                 defense_loss = damage;
@@ -228,11 +231,12 @@ int Attack(Status* attacker, Status* defender, int attack_value){
 
 // 结算获得血量
 int HealthGain(Status* gainer, int gain_value){
-    gainer->health += gain_value;
-    if (gainer->health > gainer->health_max) {
-        gainer->health = gainer->health_max;
-    }
-    std::cout << "，恢复" << gain_value << "点血，剩余" << gainer->health << "/" << gainer->health_max << "点血";
+    // gainer->health += gain_value;
+    // if (gainer->health > gainer->health_max) {
+    //     gainer->health = gainer->health_max;
+    // }
+    // std::cout << "，恢复" << gain_value << "点血，剩余" << gainer->health << "/" << gainer->health_max << "点血";
+    gainer->health->add(gain_value);
 
     return 0;
 }
@@ -241,8 +245,11 @@ int HealthGain(Status* gainer, int gain_value){
 // 结算吸血
 int HealthSuck(Status* gainer, Status* loser, int suck_value){
     int suck = suck_value;
-    if (suck > loser->health) {
-        suck = loser->health;
+    // if (suck > loser->health) {
+    //     suck = loser->health;
+    // }
+    if (suck > loser->health->getValue()) {
+        suck = loser->health->getValue();
     }
     std::cout << "，吸取" << suck << "点血，敌方";
     HealthLoss(loser, suck);
@@ -252,46 +259,42 @@ int HealthSuck(Status* gainer, Status* loser, int suck_value){
 
 // 结算获得血量上限
 int HealthMaxGain(Status* gainer, int gain_value){
-    gainer->health_max += gain_value;
-    std::cout << "，增加" << gain_value << "点血量上限，剩余" << gainer->health_max << "点血量上限";
+    // gainer->health_max += gain_value;
+    // std::cout << "，增加" << gain_value << "点血量上限，剩余" << gainer->health_max << "点血量上限";
+    gainer->health_max->add(gain_value);
     return 0;
 }
 
 // 结算获得防御
 int DefenseGain(Status* gainer, int gain_value){
-    gainer->defense += gain_value;
-    std::cout << "，增加" << gain_value << "点防，剩余" << gainer->defense << "点防";
+    // gainer->defense += gain_value;
+    // std::cout << "，增加" << gain_value << "点防，剩余" << gainer->defense << "点防";
+    gainer->replace_defense->add(gain_value);
     return 0;
 }
 
 // 结算获得灵气
 int LingQiGain(Status* gainer, int gain_value){
-    // 灵凤获得双倍
-    gainer->ling_qi += gain_value;
-    std::cout << "，获得" << gain_value << "点灵气，剩余" << gainer->ling_qi << "点灵气";
+    gainer->replace_ling_qi->add(gain_value);
     return 0;
 }
 
 // 结算失去灵气，最小为0
 int LingQiLoss(Status* losser, int loss_value){
-    losser->ling_qi -= loss_value;
-    if (losser->ling_qi < 0) {
-        losser->ling_qi = 0;
-    }
-    std::cout << "消耗" << loss_value << "点灵气";
+    losser->replace_ling_qi->sub(loss_value);
     return 0;
 }
 
 // 消耗所有灵气，并返回消耗的灵气值
 int LingQiCostAll(Status* coster){
-    int cost_value = coster->ling_qi;
+    int cost_value = coster->replace_ling_qi->getValue();
     LingQiLoss(coster, cost_value);
     return cost_value;
 }
 
 // 消耗最多n点灵气，并返回消耗的灵气值（耗X灵气）
 int LingQiCostMax(Status* coster, int max_cost_value){
-    int cost_value = coster->ling_qi;
+    int cost_value = coster->replace_ling_qi->getValue();
     if (cost_value > max_cost_value) {
         cost_value = max_cost_value;
     }
@@ -374,26 +377,9 @@ int ReexecuteAlreadyGain(Status* gainer){
     return 0;
 }
 
-// 体魄获取，体魄的结算比较特殊，体魄可以超过土坯上限，体魄能提供等额血量上限
-// 当体魄超过体魄上限时，超出部分将额外恢复血量
+
 int TiPoGain(Status* gainer, int gain_value){
-    // 结算获得体魄
-    int ti_po_exceed = 0;
-    if (gainer->ti_po < gainer->ti_po_max) {
-        if (gain_value + gainer->ti_po > gainer->ti_po_max) {
-            ti_po_exceed = gain_value + gainer->ti_po - gainer->ti_po_max;
-        }
-    }
-    else {
-        ti_po_exceed = gain_value;
-    }
-    gainer->ti_po += gain_value;
-    gainer->ti_po_battle_gain += gain_value;
-    std::cout << "，获得" << gain_value << "点体魄，当前" << gainer->ti_po << "/" << gainer->ti_po_max << "点体魄";
-    HealthMaxGain(gainer, gain_value);
-    if (ti_po_exceed > 0) {
-        HealthGain(gainer, ti_po_exceed);
-    }
+    gainer->replace_ti_po->add(gain_value);
     return 0;
 }
 

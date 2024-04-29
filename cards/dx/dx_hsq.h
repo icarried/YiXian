@@ -176,16 +176,16 @@ public:
         int temp_attack = 0;
         switch (level) {
             case 1:
-                temp_attack = my_status->ti_po_battle_gain / 4;
+                temp_attack = my_status->ti_po_add_total->getValue() / 4;
                 break;
             case 2:
-                temp_attack = my_status->ti_po_battle_gain / 3;
+                temp_attack = my_status->ti_po_add_total->getValue() / 3;
                 break;
             case 3:
-                temp_attack = my_status->ti_po_battle_gain / 2;
+                temp_attack = my_status->ti_po_add_total->getValue() / 2;
                 break;
         }
-        int ex_attack_times = my_status->ti_po / 25;
+        int ex_attack_times = my_status->replace_ti_po->getValue() / 25;
         Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);
         for (int i = 0; i < ex_attack_times; i++) {
             Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);
@@ -218,10 +218,10 @@ public:
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         TiPoGain(my_status, level + 2);
-        if (my_status->ti_po >= 50) {
+        if (my_status->replace_ti_po->getValue() >= 50) {
             BuffGain(my_status, BUFF_JIA_GONG, 1);
         }
-        if (my_status->ti_po >= 65) {
+        if (my_status->replace_ti_po->getValue() >= 65) {
             BuffGain(my_status, BUFF_SHEN_FA, level + 3);
         }
         return 0;
@@ -254,7 +254,7 @@ public:
             [my_status](BaseCard* card){
                 my_status->task_quene_after_effect->addTask(
                     [my_status](BaseCard* card){
-                        int ex_attack = 1 + my_status->health_loss_total / 4;
+                        int ex_attack = 1 + int(float(my_status->health_sub_total->getValue()) / 4);
                         Attack(my_status, my_status, ex_attack);
                     },
                     [](BaseCard* card){ return true; },

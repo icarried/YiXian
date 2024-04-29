@@ -44,18 +44,18 @@ public:
     // statuss[0]为我方，statuss[1]为敌方
     // 返回值为正数，胜利方为我方，负数为敌方，0为平局，绝对值为血量差
     int BattleEnd() {
-        if (statuss[0]->health > statuss[1]->health) {
+        if (statuss[0]->health->getValue() > statuss[1]->health->getValue()) {
             std::cout << "我方胜利" << std::endl;
         }
-        else if (statuss[0]->health < statuss[1]->health) {
+        else if (statuss[0]->health->getValue() < statuss[1]->health->getValue()) {
             std::cout << "敌方胜利" << std::endl;
         }
         else {
             std::cout << "平局" << std::endl;
         }
-        std::cout << "我方剩余血量：" << statuss[0]->health << std::endl;
-        std::cout << "敌方剩余血量：" << statuss[1]->health << std::endl;
-        return statuss[0]->health - statuss[1]->health;
+        std::cout << "我方剩余血量：" << statuss[0]->health->getValue() << std::endl;
+        std::cout << "敌方剩余血量：" << statuss[1]->health->getValue() << std::endl;
+        return statuss[0]->health->getValue() - statuss[1]->health->getValue();
     }
 
     // 战斗开始
@@ -78,15 +78,15 @@ public:
                     NonSourseDamage(statuss[side], statuss[side]->buff.buff[DEBUFF_NEI_SHANG]);
                     std::cout << side_string[side]  << "受到内伤造成" << statuss[side]->buff.buff[DEBUFF_NEI_SHANG] << "点伤害" << std::endl;
                 }
-                if (statuss[0]->health <= 0 || statuss[1]->health <= 0) {
+                if (statuss[0]->health->getValue() <= 0 || statuss[1]->health->getValue() <= 0) {
                     // 有一方血量为0则结束战斗
                     return BattleEnd();
                 }
-                if (statuss[side]->defense > 0) {
+                if (statuss[side]->replace_defense->getValue() > 0) {
                     // 有防御则减少一半防御
-                    int target_defense = statuss[side]->defense / 2;
-                    DefenseLoss(statuss[side], statuss[side]->defense - target_defense);
-                    std::cout << side_string[side] << "防减半，剩余" << statuss[side]->defense << "点防" << std::endl;
+                    int target_defense = statuss[side]->replace_defense->getValue() / 2;
+                    DefenseLoss(statuss[side], statuss[side]->replace_defense->getValue() - target_defense);
+                    std::cout << side_string[side] << "防减半，剩余" << statuss[side]->replace_defense->getValue() << "点防" << std::endl;
                 }
 
                 // 2. 行动相关，一回合可能包含多次行动
@@ -122,9 +122,9 @@ public:
                     else {
                         card_ling_qi_cost = decks[side]->cards[statuss[side]->using_card_position]->ling_qi_cost;
                     }
-                    if (statuss[side]->ling_qi < card_ling_qi_cost) {
+                    if (statuss[side]->replace_ling_qi->getValue() < card_ling_qi_cost) {
                         // 灵气不足，则恢复一点灵气，不使用牌
-                        statuss[side]->ling_qi++;
+                        statuss[side]->replace_ling_qi->add(1);
                         std::cout << side_string[side] << "灵气不足，恢复一点灵气" << std::endl;
                     }
                     else {
@@ -164,7 +164,7 @@ public:
                         statuss[side]->NextCardPosition();
                     }
                     std::cout << std::endl;
-                    if (statuss[0]->health <= 0 || statuss[1]->health <= 0) {
+                    if (statuss[0]->health->getValue() <= 0 || statuss[1]->health->getValue() <= 0) {
                         // 有一方血量为0则结束战斗
                         return BattleEnd();
                     }

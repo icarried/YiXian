@@ -5,6 +5,7 @@
 #include "head.h"
 class BaseCard;
 
+// 手牌数量
 #define HAND_CARD_END_INDEX 30
 
 struct CardCountList {
