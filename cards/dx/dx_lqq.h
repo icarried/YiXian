@@ -146,7 +146,7 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
-        LingQiGain(my_status, 1);
+        my_status->ling_qi->add(1);
         BuffGain(my_status, BUFF_QI_SHI, 2);
         return 0;
     }
@@ -174,7 +174,7 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
-        LingQiGain(my_status, 1);
+        my_status->ling_qi->add(1);
         DebuffGain(enemy_status, DEBUFF_WAI_SHANG, 1);
         return 0;
     }
@@ -191,8 +191,8 @@ public:
         card_tag[TI_PO_CARD] = true;
     }
     int Effect(Status* my_status, Status* enemy_status) {
-        LingQiGain(my_status, 1);
-        TiPoGain(my_status, 2);
+        my_status->ling_qi->add(1);
+        my_status->ti_po->add(2);
         int health_gain = 0;
         switch (level) {
             case 1:
@@ -205,7 +205,7 @@ public:
                 health_gain = 7;
                 break;
         }
-        HealthGain(my_status, health_gain);
+        my_status->health->add(health_gain);
         return 0;
     }
 };
@@ -239,7 +239,7 @@ public:
     }
     int HealthCostModify(Status* my_status, Status* enemy_status) {
         int temp_health_cost = health_cost;
-        temp_health_cost -= my_status->replace_ti_po->getValue() / 2;
+        temp_health_cost -= my_status->ti_po->getValue() / 2;
         if (temp_health_cost < 0) {
             temp_health_cost = 0;
         }
@@ -270,7 +270,7 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
-        TiPoGain(my_status, 1);
+        my_status->ti_po->add(1);
         return 0;
     }
 };
@@ -302,7 +302,7 @@ public:
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->task_quene_before_effect->addTask(
             [my_status](BaseCard* card){
-                HealthGain(my_status, card->health_cost);
+                my_status->health->add(card->health_cost);
             },
             [](BaseCard* card){ return card->card_tag[BENG_QUAN_CARD] ? true : false; },
             [](BaseCard* card){ return true; },
@@ -349,10 +349,10 @@ public:
                 defense = 4;
                 break;
         }
-        DefenseGain(my_status, defense);
+        my_status->defense->add(defense);
         my_status->task_quene_before_effect->addTask(
             [my_status, defense](BaseCard* card){
-                DefenseGain(my_status, defense);
+                my_status->defense->add(defense);
             },
             [](BaseCard* card){ return card->card_tag[BENG_QUAN_CARD] ? true : false; },
             [](BaseCard* card){ return true; },

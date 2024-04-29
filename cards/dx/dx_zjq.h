@@ -15,7 +15,7 @@ public:
         is_attacking = false;
     }
     int Effect(Status* my_status, Status* enemy_status) {
-        LingQiGain(my_status, 1);
+        my_status->ling_qi->add(1);
         int defence_gain = 0;
         int pi_xie_gain = 0;
         switch (level) {
@@ -32,7 +32,7 @@ public:
                 pi_xie_gain = 4;
                 break;
         }
-        DefenseGain(my_status, defence_gain);
+        my_status->defense->add(defence_gain);
         BuffGain(my_status, BUFF_BI_XIE, pi_xie_gain);
         return 0;
     }
@@ -48,7 +48,7 @@ public:
         is_attacking = false;
     }
     int Effect(Status* my_status, Status* enemy_status) {
-        LingQiGain(my_status, 2);
+        my_status->ling_qi->add(2);
         int health_gain = 0;
         switch (level) {
             case 1:
@@ -61,7 +61,7 @@ public:
                 health_gain = 10;
                 break;
         }
-        HealthGain(my_status, health_gain);
+        my_status->health->add(health_gain);
         return 0;
     }
 };
@@ -142,10 +142,10 @@ public:
                 qi_shi_gain = 4;
                 break;
         }
-        DefenseGain(my_status, defence);
+        my_status->defense->add(defence);
         BuffGain(my_status, BUFF_QI_SHI, qi_shi_gain);
         if (LingQiCostMax(my_status, 1)) {
-            HealthGain(my_status, 5);
+            my_status->health->add(5);
         }
         return 0;
     }
@@ -203,7 +203,7 @@ public:
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         Attack(my_status, enemy_status, attack, card_sp_attr);
-        LingQiGain(my_status, 2);
+        my_status->ling_qi->add(2);
         DebuffGain(my_status, DEBUFF_PO_ZHAN, 3);
         return 0;
     }
@@ -243,9 +243,9 @@ public:
                 temp_max = 14;
                 break;
         }
-        int defense = my_status->replace_ti_po->getValue() / 2;
+        int defense = my_status->ti_po->getValue() / 2;
         defense = defense > temp_max ? temp_max : defense;
-        DefenseGain(my_status, defense);
+        my_status->defense->add(defense);
         return 0;
     }
 };
@@ -273,8 +273,8 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
-        TiPoGain(my_status, 2);
-        if (my_status->replace_ti_po->getValue() >= 15) {
+        my_status->ti_po->add(2);
+        if (my_status->ti_po->getValue() >= 15) {
             int defense = 0;
             switch (level) {
                 case 1:
@@ -287,7 +287,7 @@ public:
                     defense = 8;
                     break;
             }
-            DefenseGain(my_status, defense);
+            my_status->defense->add(defense);
         }
         return 0;
     }

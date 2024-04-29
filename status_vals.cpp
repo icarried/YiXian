@@ -147,10 +147,10 @@ TiPo::TiPo(Status* linking_status, int val) : StatusVal(linking_status, val) {}
 void TiPo::add(int val) {
     if (val > 0) {
         int health_val = 0;
-        if (linked_status->replace_ti_po->getValue() > linked_status->replace_ti_po_max->getValue()) {
+        if (linked_status->ti_po->getValue() > linked_status->ti_po_max->getValue()) {
             health_val = val;
-        } else if (linked_status->replace_ti_po->getValue() + val > linked_status->replace_ti_po_max->getValue()) {
-            health_val = linked_status->replace_ti_po->getValue() + val - linked_status->replace_ti_po_max->getValue();
+        } else if (linked_status->ti_po->getValue() + val > linked_status->ti_po_max->getValue()) {
+            health_val = linked_status->ti_po->getValue() + val - linked_status->ti_po_max->getValue();
         }
         this->value += val;
         std::cout << "，增加" << val << "点体魄，剩余" << this->value << "点体魄";

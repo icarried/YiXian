@@ -91,7 +91,7 @@ public:
                 break;
         }
         my_status->buff.buff[QIRUOXUANHE_TIMES] += temp_status;
-        LingQiGain(my_status, ling_qi_gain);
+        my_status->ling_qi->add(ling_qi_gain);
         BuffGain(my_status, BUFF_QI_SHI, 1);
         my_status->task_quene_before_effect->addTask(
             [my_status](BaseCard* card){
@@ -213,7 +213,7 @@ public:
                 temp_max = 7;
                 break;
         }
-        int temp_attack = my_status->replace_ti_po->getValue() / 6;
+        int temp_attack = my_status->ti_po->getValue() / 6;
         temp_attack = temp_attack > temp_max ? temp_max : temp_attack;
         Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);
         Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);
@@ -232,7 +232,7 @@ public:
         card_tag[TI_PO_CARD] = true;
     }
     int Effect(Status* my_status, Status* enemy_status) {
-        TiPoGain(my_status, 3);
+        my_status->ti_po->add(3);
         int defence_gain = 0;
         int kun_fu_gain = 0;
         switch (level) {
@@ -251,7 +251,7 @@ public:
         }
         DebuffGain(my_status, DEBUFF_KUN_FU, kun_fu_gain);
         defence_gain += DebuffTotal(my_status);
-        DefenseGain(my_status, defence_gain);
+        my_status->defense->add(defence_gain);
         return 0;
     }
 };
@@ -267,7 +267,7 @@ public:
         card_tag[TI_PO_CARD] = true;
     }
     int Effect(Status* my_status, Status* enemy_status) {
-        TiPoGain(my_status, 1);
+        my_status->ti_po->add(1);
         int health_gain = 0;
         int temp_status = 0;
         switch (level) {
@@ -285,11 +285,11 @@ public:
                 break;
         }
         my_status->buff.buff[DUANGU_TIMES] += temp_status;
-        HealthGain(my_status, health_gain);
+        my_status->health->add(health_gain);
         my_status->task_quene_before_effect->addTask(
             [my_status](BaseCard* card){
                 my_status->buff.buff[DUANGU_TIMES]--;
-                TiPoGain(my_status, 1);
+                my_status->ti_po->add(1);
                 card->card_sp_attr[CARD_SP_ATTR_DUO_GONG] += 3;
                 my_status->task_quene_after_effect->addTask(
                     [my_status](BaseCard* card){
@@ -345,7 +345,7 @@ public:
         }
         my_status->task_quene_before_effect->addTask(
             [my_status, temp_status](BaseCard* card){
-                DefenseGain(my_status, temp_status);
+                my_status->defense->add(temp_status);
                 card->card_sp_attr[CARD_SP_ATTR_DUO_GONG] += temp_status;
                 my_status->task_quene_after_effect->addTask(
                     [my_status, temp_status](BaseCard* card){
@@ -424,7 +424,7 @@ public:
                 ling_qi_gain = 3;
                 break;
         }
-        LingQiGain(my_status, ling_qi_gain);
+        my_status->ling_qi->add(ling_qi_gain);
         BuffGain(my_status, BUFF_SHEN_FA, 4);
         my_status->task_quene_before_effect->addTask(
             [my_status](BaseCard* card){

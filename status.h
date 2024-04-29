@@ -24,11 +24,11 @@ public:
         ti_po_add_total = new TiPoAddTotal(this, 0); // 体魄增加总和
         health = new Health(this, 60); // 血量
         health_max = new HealthMax(this, 60); // 血量上限
-        replace_defense = new Defense(this, 0); // 防御
-        replace_ling_qi = new LingQi(this, 0); // 灵气
-        replace_xiu_wei = new XiuWei(this, 0); // 修为
-        replace_ti_po = new TiPo(this, 0); // 体魄
-        replace_ti_po_max = new TiPoMax(this, 0); // 体魄上限
+        defense = new Defense(this, 0); // 防御
+        ling_qi = new LingQi(this, 0); // 灵气
+        xiu_wei = new XiuWei(this, 0); // 修为
+        ti_po = new TiPo(this, 0); // 体魄
+        ti_po_max = new TiPoMax(this, 0); // 体魄上限
         
         // ti_po = 0;
         // ti_po_max = 0; // 体魄上限, 受修为影响
@@ -71,11 +71,11 @@ public:
         delete ti_po_add_total;
         delete health;
         delete health_max;
-        delete replace_defense;
-        delete replace_ling_qi;
-        delete replace_xiu_wei;
-        delete replace_ti_po;
-        delete replace_ti_po_max;
+        delete defense;
+        delete ling_qi;
+        delete xiu_wei;
+        delete ti_po;
+        delete ti_po_max;
 
         // 删除任务队列
         delete task_quene_before_effect;
@@ -101,12 +101,12 @@ public:
     打印主要状态
     */
     void ShowStatus() {
-        std::cout << "血量：" << health->getValue() << "/" << health_max->getValue() << "，灵气：" << replace_ling_qi->getValue();
-        if (replace_defense->getValue() > 0) {
-            std::cout << "，防：" << replace_defense->getValue();
+        std::cout << "血量：" << health->getValue() << "/" << health_max->getValue() << "，灵气：" << ling_qi->getValue();
+        if (defense->getValue() > 0) {
+            std::cout << "，防：" << defense->getValue();
         }
-        if (replace_ti_po->getValue() > 0) {
-            std::cout << "，体魄：" << replace_ti_po->getValue() << "/" << replace_ti_po_max->getValue();
+        if (ti_po->getValue() > 0) {
+            std::cout << "，体魄：" << ti_po->getValue() << "/" << ti_po_max->getValue();
         }
         std::cout << " ";
         buff.print_buff();
@@ -140,11 +140,11 @@ public:
     StatusVal* ti_po_add_total; // 该次战斗中体魄增加总和
     StatusVal* health; // 血量
     StatusVal* health_max; // 血量上限
-    StatusVal* replace_defense; // 防御
-    StatusVal* replace_ling_qi; // 灵气
-    StatusVal* replace_xiu_wei; // 修为
-    StatusVal* replace_ti_po; // 体魄
-    StatusVal* replace_ti_po_max; // 体魄上限
+    StatusVal* defense; // 防御
+    StatusVal* ling_qi; // 灵气
+    StatusVal* xiu_wei; // 修为
+    StatusVal* ti_po; // 体魄
+    StatusVal* ti_po_max; // 体魄上限
     // int ling_qi; // 灵气
     // int xiu_wei; // 修为
     // int ti_po; // 体魄

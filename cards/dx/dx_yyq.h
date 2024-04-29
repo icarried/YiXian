@@ -77,7 +77,7 @@ public:
                 damage = temp_qi_shi * 5;
                 break;
         }
-        DefenseGain(my_status, defence);
+        my_status->defense->add(defence);
         Damage(my_status, enemy_status, damage, card_sp_attr);
         return 0;
     }
@@ -105,8 +105,8 @@ public:
                 ling_qi_gain = 3;
                 break;
         }
-        LingQiGain(my_status, ling_qi_gain);
-        BuffGain(my_status, BUFF_QI_SHI, my_status->replace_ti_po->getValue());
+        my_status->ling_qi->add(ling_qi_gain);
+        BuffGain(my_status, BUFF_QI_SHI, my_status->ti_po->getValue());
         BuffGain(my_status, BUFF_SHEN_FA, 5);
         return 0;
     }
@@ -184,11 +184,11 @@ public:
                 shen_fa_gain = 4;
                 break;
         }
-        LingQiGain(my_status, ling_qi_gain);
+        my_status->ling_qi->add(ling_qi_gain);
         BuffGain(my_status, BUFF_SHEN_FA, shen_fa_gain);
         my_status->task_quene_after_health_loss->addTask(
             [my_status](int health_loss){
-                LingQiGain(my_status, 1);
+                my_status->ling_qi->add(1);
                 BuffGain(my_status, BUFF_SHEN_FA, 1);
                 my_status->flag.flag[FLAG_LINGXUANMIZONGBU] = true;
             },
@@ -239,8 +239,8 @@ public:
                 shen_fa_gain_max = 16;
                 break;
         }
-        HealthGain(my_status, health_gain);
-        int shen_fa_gain = my_status->replace_ti_po->getValue() / 4;
+        my_status->health->add(health_gain);
+        int shen_fa_gain = my_status->ti_po->getValue() / 4;
         if (shen_fa_gain > shen_fa_gain_max) {
             shen_fa_gain = shen_fa_gain_max;
         }
@@ -260,7 +260,7 @@ public:
         card_tag[TI_PO_CARD] = true;
     }
     int Effect(Status* my_status, Status* enemy_status) {
-        TiPoGain(my_status, 3);
+        my_status->ti_po->add(3);
         float temp_percent = 0;
         switch (level) {
             case 1:
@@ -274,7 +274,7 @@ public:
                 break;
         }
         int health_gain = int(float(my_status->health_max->getValue()) * temp_percent / 100);
-        HealthGain(my_status, health_gain);
+        my_status->health->add(health_gain);
         return 0;
     }
 };

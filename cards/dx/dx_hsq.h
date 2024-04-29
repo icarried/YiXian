@@ -42,7 +42,7 @@ public:
                 shen_fa_gain = 6;
                 break;
         }
-        HealthGain(my_status, health_gain);
+        my_status->health->add(health_gain);
         BuffGain(my_status, BUFF_SHEN_FA, shen_fa_gain + my_status->buff.buff[BUFF_QI_SHI] * 2);
         return 0;
     }
@@ -75,8 +75,8 @@ public:
         int debuff_total = DebuffTotal(my_status);
         int temp_ling_qi = debuff_total / 2;
         int temp_health = debuff_total / 2;
-        LingQiGain(my_status, temp_ling_qi);
-        HealthGain(my_status, temp_health);
+        my_status->ling_qi->add(temp_ling_qi);
+        my_status->health->add(temp_health);
         return 0;
     }
 };
@@ -111,7 +111,7 @@ public:
                 qi_shi_gain = 5;
                 break;
         }
-        DefenseGain(my_status, defence);
+        my_status->defense->add(defence);
         BuffGain(my_status, BUFF_QI_SHI_MAX, qi_shi_max_gain);
         BuffGain(my_status, BUFF_QI_SHI, qi_shi_gain);
         return 0;
@@ -185,7 +185,7 @@ public:
                 temp_attack = my_status->ti_po_add_total->getValue() / 2;
                 break;
         }
-        int ex_attack_times = my_status->replace_ti_po->getValue() / 25;
+        int ex_attack_times = my_status->ti_po->getValue() / 25;
         Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);
         for (int i = 0; i < ex_attack_times; i++) {
             Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);
@@ -217,11 +217,11 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
-        TiPoGain(my_status, level + 2);
-        if (my_status->replace_ti_po->getValue() >= 50) {
+        my_status->ti_po->add(level + 2);
+        if (my_status->ti_po->getValue() >= 50) {
             BuffGain(my_status, BUFF_JIA_GONG, 1);
         }
-        if (my_status->replace_ti_po->getValue() >= 65) {
+        if (my_status->ti_po->getValue() >= 65) {
             BuffGain(my_status, BUFF_SHEN_FA, level + 3);
         }
         return 0;

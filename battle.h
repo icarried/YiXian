@@ -82,11 +82,11 @@ public:
                     // 有一方血量为0则结束战斗
                     return BattleEnd();
                 }
-                if (statuss[side]->replace_defense->getValue() > 0) {
+                if (statuss[side]->defense->getValue() > 0) {
                     // 有防御则减少一半防御
-                    int target_defense = statuss[side]->replace_defense->getValue() / 2;
-                    DefenseLoss(statuss[side], statuss[side]->replace_defense->getValue() - target_defense);
-                    std::cout << side_string[side] << "防减半，剩余" << statuss[side]->replace_defense->getValue() << "点防" << std::endl;
+                    int target_defense = statuss[side]->defense->getValue() / 2;
+                    statuss[side]->defense->sub(statuss[side]->defense->getValue() - target_defense);
+                    std::cout << side_string[side] << "防减半，剩余" << statuss[side]->defense->getValue() << "点防" << std::endl;
                 }
 
                 // 2. 行动相关，一回合可能包含多次行动
@@ -122,15 +122,15 @@ public:
                     else {
                         card_ling_qi_cost = decks[side]->cards[statuss[side]->using_card_position]->ling_qi_cost;
                     }
-                    if (statuss[side]->replace_ling_qi->getValue() < card_ling_qi_cost) {
+                    if (statuss[side]->ling_qi->getValue() < card_ling_qi_cost) {
                         // 灵气不足，则恢复一点灵气，不使用牌
-                        statuss[side]->replace_ling_qi->add(1);
+                        statuss[side]->ling_qi->add(1);
                         std::cout << side_string[side] << "灵气不足，恢复一点灵气" << std::endl;
                     }
                     else {
                         // 正常消耗灵气使用牌
                         if (card_ling_qi_cost) {
-                            LingQiLoss(statuss[side], card_ling_qi_cost);
+                            statuss[side]->ling_qi->sub(card_ling_qi_cost);
                             std::cout<< "，";
                         }
                         // 如果耗费血量
@@ -143,7 +143,7 @@ public:
                                 card_health_cost = decks[side]->cards[statuss[side]->using_card_position]->health_cost;
                             }
 
-                            HealthLoss(statuss[side], card_health_cost);
+                            statuss[side]->health->sub(card_health_cost);
                             std::cout << "消耗" << card_health_cost << "点血量，";
                         }
                         // 执行牌效果Effect开始
