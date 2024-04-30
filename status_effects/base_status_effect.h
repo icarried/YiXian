@@ -17,13 +17,14 @@ protected:
 
 public:
     BaseStatusEffect(Status* linking_status, int val) : linked_status(linking_status), value(val) {}
+    virtual ~BaseStatusEffect() = default;
 
-    // .getValue()获取数值
+    // 获取数值
     int getValue() const {
         return value;
     }
 
-    // .setValue()设置数值, 用于初始化
+    // 设置数值, 用于初始化
     void setValue(int val) {
         value = val;
     }

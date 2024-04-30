@@ -81,24 +81,30 @@ public:
         is_before_task_queue_effect = false;
     }
     
-    ~BaseCard(){
-        
-    }
+    virtual ~BaseCard() = default;
 
     //虚函数，执行牌的效果，并返回执行状态值
     virtual int Effect(Status* my_status, Status* enemy_status){
+        (void)my_status;
+        (void)enemy_status;
         return 0;
     }
     //修改后的执行牌的灵气消耗，通过is_ling_qi_cost_modifiable启用
     virtual int LingQiCostModify(Status* my_status, Status* enemy_status){
+        (void)my_status;
+        (void)enemy_status;
         return ling_qi_cost;
     }
     //修改后的执行牌的血量消耗，通过is_health_cost_modifiable启用
     virtual int HealthCostModify(Status* my_status, Status* enemy_status){
+        (void)my_status;
+        (void)enemy_status;
         return health_cost;
     }
     // 前置于任务队列效果，必须is_before_task_queue_effect为true
     virtual int BeforeTaskQueueEffect(Status* my_status, Status* enemy_status){
+        (void)my_status;
+        (void)enemy_status;
         return 0;
     }
     //本牌受效果影响获得指定的牌标签

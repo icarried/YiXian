@@ -29,14 +29,6 @@ public:
         xiu_wei = new XiuWei(this, 0); // 修为
         ti_po = new TiPo(this, 0); // 体魄
         ti_po_max = new TiPoMax(this, 0); // 体魄上限
-        
-        // ti_po = 0;
-        // ti_po_max = 0; // 体魄上限, 受修为影响
-        // defense = 0;
-        // health = 60;
-        // health_max = health + ti_po; // 血量上限, 受体魄影响
-        // ling_qi = 0;
-        // xiu_wei = 0;
 
         // 初始化星位
         for (int i = 0; i < DECK_END_INDEX; i++) {
@@ -54,7 +46,6 @@ public:
         using_card_position = 0;
         using_yun_jian_continuous = 0;
         attack_damage_percent = 0.0f;
-        // health_sub_total = 0;
 
         task_quene_before_effect = new EffectTaskQueue(this);
         task_quene_after_effect = new EffectTaskQueue(this);
@@ -133,9 +124,6 @@ public:
     AccountTaskQueue* task_quene_after_round; // 回合结束时触发的任务队列，参数为回合数
 
     // 状态值
-    // int defense; // 防御
-    // int health; // 血量
-    // int health_max; // 血量上限
     StatusVal* health_sub_total; // 该次战斗中失去的血量总和
     StatusVal* ti_po_add_total; // 该次战斗中体魄增加总和
     StatusVal* health; // 血量
@@ -145,10 +133,6 @@ public:
     StatusVal* xiu_wei; // 修为
     StatusVal* ti_po; // 体魄
     StatusVal* ti_po_max; // 体魄上限
-    // int ling_qi; // 灵气
-    // int xiu_wei; // 修为
-    // int ti_po; // 体魄
-    // int ti_po_max; // 体魄上限
 
     bool is_xing_wei[DECK_END_INDEX]; // 某各格子的位置是否是星位
     bool is_usable[DECK_END_INDEX]; // 某个格子的牌是否可用（未被消耗）(使用的消耗牌和持续牌将被消耗）
@@ -157,6 +141,5 @@ public:
     int using_card_position; // 将使用卡牌的位置
     int using_yun_jian_continuous; // 连续使用云剑的次数（！未启用）
     float attack_damage_percent; // 临时记录伤害百分比
-    // int health_sub_total; // 失去的血量总和
 };
 #endif // !STATUS_H

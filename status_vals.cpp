@@ -138,7 +138,6 @@ void TiPoMax::sub(int val) {
     }
 }
 
-// 体魄的修改是全局影响！！！
 // 体魄的构造函数及方法, 增加体魄将同时增加等量生命值上限，战斗内体魄可以超过体魄上限，超过体魄上限的部分将额外回复等量生命值
 TiPo::TiPo(Status* linking_status, int val) : StatusVal(linking_status, val) {}
 

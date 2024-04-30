@@ -10,6 +10,7 @@ cache/
 whl/
 test/
 *_test.py
+build/
 help.md
 *.exe
-main.o
+*.o
