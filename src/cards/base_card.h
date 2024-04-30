@@ -2,6 +2,7 @@
 #define BASE_CARD_H
 
 #include <string>
+#include "../status.h"
 #include "../account.h"
 #include "../head.h"
 

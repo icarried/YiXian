@@ -6,7 +6,7 @@
 #include <ctime>
 #include <string>
 
-#include "status.h"
+class Status;
 
 int EffectHealthLoss(Status* losser, int loss_value);
 int NonSourseDamage(Status* defender, int damage_value);
