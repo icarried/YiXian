@@ -5,12 +5,9 @@
 __pycache__/
 modules/__pycache__/
 log/*
-cache/
-.cache/
-whl/
-test/
-*_test.py
 build/
 help.md
 *.exe
+src/*.exe
 *.o
+src/*.o

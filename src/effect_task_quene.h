@@ -2,6 +2,7 @@
 #define EFFECT_TASK_QUENE_H
 
 #include "head.h"
+#include <algorithm>
 #include <vector>
 #include <functional>
 

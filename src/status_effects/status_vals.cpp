@@ -1,6 +1,5 @@
-// #include "status_vals.h"
-#include "./status.h"
-#include "./status_effects/status_vals.h"
+#include "status_vals.h"
+#include "../status.h"
 // 临时放于根目录编译
 
 // 失去生命值总和的构造函数
