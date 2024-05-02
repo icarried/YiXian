@@ -7,15 +7,27 @@ Deck::Deck() {
         cards[i] = new Card_qt_qtq_pttonggongji(1, i);
     }
     
+    // delete cards[0];
+    // // 第一张牌改为崩拳·戳
+    // cards[0] = new Card_dx_lqq_bengquan_chuo(1, 0);
+    
+    // delete cards[2];
+    // cards[2] = new Card_dx_yyq_bengquan_lianbeng(1, 2);
+    
+    // delete cards[3];
+    // cards[3] = new Card_dx_yyq_bengquan_lianbeng(1, 3);
+
     delete cards[0];
-    // 第一张牌改为崩拳·戳
-    cards[0] = new Card_dx_lqq_bengquan_chuo(1, 0);
-    
+    cards[0] = new Card_dx_hsq_xiuluohou(1, 0);
+
+    delete cards[1];
+    cards[1] = new Card_dx_lqq_luochapu(1, 1);
+
     delete cards[2];
-    cards[2] = new Card_dx_yyq_bengquan_lianbeng(1, 2);
-    
+    cards[2] = new Card_dx_lqq_luochapu(1, 2);
+
     delete cards[3];
-    cards[3] = new Card_dx_yyq_bengquan_lianbeng(1, 3);
+    cards[3] = new Card_dx_hsq_xuanxinzhanpo(1, 3);
     
     // 初始化手牌为普通攻击牌
     for (int i = 0; i < HAND_CARD_END_INDEX; i++) {

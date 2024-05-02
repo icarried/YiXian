@@ -47,6 +47,7 @@ public:
         for (int i = 0; i < BUFF_END_INDEX; i++) {
             replace_buffs[i] = buff_create(i, this, 0);
         }
+        replace_buffs[BUFF_QI_SHI_MAX]->setValue(6); // 气势上限默认为6
         for (int i = 0; i < DEBUFF_END_INDEX; i++) {
             replace_debuffs[i] = debuff_create(i, this, 0);
         }
@@ -56,6 +57,7 @@ public:
         using_card_position = 0;
         using_yun_jian_continuous = 0;
         attack_damage_percent = 0.0f;
+
 
         task_quene_before_effect = new EffectTaskQueue(this);
         task_quene_after_effect = new EffectTaskQueue(this);

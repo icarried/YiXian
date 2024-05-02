@@ -37,6 +37,9 @@ void BuffQiShi::add(int val) {
             std::cout << "，超出部分转为" << exceed_value << "点防";
         }
     }
+    else {
+        replace_Buff::add(val);
+    }
 }
 
 BuffQiShiMax::BuffQiShiMax(Status* linking_status, int val) : replace_Buff(linking_status, val) {

@@ -145,8 +145,26 @@ public:
                 enemy_status->replace_debuffs[debuff_type]->add(2);
             }
         }
-        // !!！未完成
+        // 将debuff的值暂时转移到新的数组，并累加到临时气势上，气势上限临时调整
+        int temp_qi_shi = 0;
+        int temp_qi_shi_max = 9999;
+        int saved_qi_shi_max = my_status->replace_buffs[BUFF_QI_SHI_MAX]->getValue(); // 保存原来的气势上限
+        my_status->replace_buffs[BUFF_QI_SHI_MAX]->setValue(temp_qi_shi_max);
+        // 保存原来的气势上限
+        int saved_debuffs[DEBUFF_END_INDEX];
+        for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
+            saved_debuffs[debuff_type] = my_status->replace_debuffs[debuff_type]->getValue();
+            temp_qi_shi += saved_debuffs[debuff_type];
+            my_status->replace_debuffs[debuff_type]->setValue(0);
+        }
+        my_status->replace_buffs[BUFF_QI_SHI]->add(temp_qi_shi);
         Attack(my_status, enemy_status, attack, card_sp_attr);
+        // 将debuff的值从新的数组转回到原来的数组
+        for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
+            my_status->replace_debuffs[debuff_type]->setValue(saved_debuffs[debuff_type]);
+        }
+        my_status->replace_buffs[BUFF_QI_SHI]->sub(temp_qi_shi);
+        my_status->replace_buffs[BUFF_QI_SHI_MAX]->setValue(saved_qi_shi_max);
         return 0;
     }
 };
