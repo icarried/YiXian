@@ -43,7 +43,7 @@ public:
                 break;
         }
         my_status->health->add(health_gain);
-        BuffGain(my_status, BUFF_SHEN_FA, shen_fa_gain + my_status->buff.buff[BUFF_QI_SHI] * 2);
+        my_status->replace_buffs[BUFF_SHEN_FA]->add(shen_fa_gain + my_status->replace_buffs[BUFF_QI_SHI]->getValue() * 2);
         return 0;
     }
 };
@@ -70,8 +70,8 @@ public:
                 temp_debuff = 8;
                 break;
         }
-        DebuffGain(my_status, DEBUFF_NEI_SHANG, temp_debuff);
-        DebuffGain(enemy_status, DEBUFF_NEI_SHANG, temp_debuff);
+        my_status->replace_debuffs[DEBUFF_NEI_SHANG]->add(temp_debuff);
+        enemy_status->replace_debuffs[DEBUFF_NEI_SHANG]->add(temp_debuff);
         int debuff_total = DebuffTotal(my_status);
         int temp_ling_qi = debuff_total / 2;
         int temp_health = debuff_total / 2;
@@ -112,8 +112,8 @@ public:
                 break;
         }
         my_status->defense->add(defence);
-        BuffGain(my_status, BUFF_QI_SHI_MAX, qi_shi_max_gain);
-        BuffGain(my_status, BUFF_QI_SHI, qi_shi_gain);
+        my_status->replace_buffs[BUFF_QI_SHI_MAX]->add(qi_shi_max_gain);
+        my_status->replace_buffs[BUFF_QI_SHI]->add(qi_shi_gain);
         return 0;
     }
 };
@@ -140,9 +140,9 @@ public:
         }
     }
     int Effect(Status* my_status, Status* enemy_status) {
-        for (int debuff_type = DEBUFF_START_INDEX; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
-            if (my_status->buff.buff[debuff_type] > 0) {
-                DebuffGain(enemy_status, debuff_type, 2);
+        for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
+            if (my_status->replace_debuffs[debuff_type]->getValue() > 0) {
+                enemy_status->replace_debuffs[debuff_type]->add(2);
             }
         }
         // !!！未完成
@@ -219,10 +219,10 @@ public:
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->ti_po->add(level + 2);
         if (my_status->ti_po->getValue() >= 50) {
-            BuffGain(my_status, BUFF_JIA_GONG, 1);
+            my_status->replace_buffs[BUFF_JIA_GONG]->add(1);
         }
         if (my_status->ti_po->getValue() >= 65) {
-            BuffGain(my_status, BUFF_SHEN_FA, level + 3);
+            my_status->replace_buffs[BUFF_SHEN_FA]->add(level + 3);
         }
         return 0;
     }
@@ -303,10 +303,10 @@ public:
                 temp_status = 9;
                 break;
         }
-        BuffGain(my_status, BUFF_SHEN_FA, temp_status);
+        my_status->replace_buffs[BUFF_SHEN_FA]->add(temp_status);
         my_status->task_quene_before_effect->addTask(
             [my_status, temp_status](BaseCard* card){
-                BuffGain(my_status, BUFF_SHEN_FA, temp_status);
+                my_status->replace_buffs[BUFF_SHEN_FA]->add(temp_status);
             },
             [](BaseCard* card){ return card->card_tag[BENG_QUAN_CARD] ? true : false; },
             [](BaseCard* card){ return true; },

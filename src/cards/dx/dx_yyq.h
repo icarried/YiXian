@@ -61,9 +61,9 @@ public:
                 shen_fa_gain = 7;
                 break;
         }
-        BuffGain(my_status, BUFF_SHEN_FA, shen_fa_gain);
-        int temp_qi_shi = my_status->buff.buff[BUFF_QI_SHI];
-        BuffReduce(my_status, BUFF_QI_SHI, temp_qi_shi);
+        my_status->replace_buffs[BUFF_SHEN_FA]->add(shen_fa_gain);
+        int temp_qi_shi = my_status->replace_buffs[BUFF_QI_SHI]->getValue();
+        my_status->replace_buffs[BUFF_QI_SHI]->sub(temp_qi_shi);
         int defence = temp_qi_shi * 4;
         int damage = 0;
         switch (level) {
@@ -106,8 +106,8 @@ public:
                 break;
         }
         my_status->ling_qi->add(ling_qi_gain);
-        BuffGain(my_status, BUFF_QI_SHI, my_status->ti_po->getValue());
-        BuffGain(my_status, BUFF_SHEN_FA, 5);
+        my_status->replace_buffs[BUFF_QI_SHI]->add(my_status->ling_qi->getValue());
+        my_status->replace_buffs[BUFF_SHEN_FA]->add(5);
         return 0;
     }
 };
@@ -151,8 +151,9 @@ public:
                 shen_fa_gain = 18;
                 break;
         }
-        DebuffGain(my_status, DEBUFF_JIAN_GONG, jian_gong_gain);
-        BuffGain(my_status, BUFF_SHEN_FA, shen_fa_gain);
+        my_status->replace_debuffs[DEBUFF_JIAN_GONG]->add(jian_gong_gain);
+        my_status->replace_debuffs[DEBUFF_JIAN_GONG]->add(jian_gong_gain);
+        my_status->replace_buffs[BUFF_SHEN_FA]->add(shen_fa_gain);
         return 0;
     }
 };
@@ -185,11 +186,11 @@ public:
                 break;
         }
         my_status->ling_qi->add(ling_qi_gain);
-        BuffGain(my_status, BUFF_SHEN_FA, shen_fa_gain);
+        my_status->replace_buffs[BUFF_SHEN_FA]->add(shen_fa_gain);
         my_status->task_quene_after_health_loss->addTask(
             [my_status](int health_loss){
                 my_status->ling_qi->add(1);
-                BuffGain(my_status, BUFF_SHEN_FA, 1);
+                my_status->replace_buffs[BUFF_SHEN_FA]->add(1);
                 my_status->flag.flag[FLAG_LINGXUANMIZONGBU] = true;
             },
             [my_status](int health_loss){ return !my_status->flag.flag[FLAG_LINGXUANMIZONGBU]; },
@@ -244,7 +245,7 @@ public:
         if (shen_fa_gain > shen_fa_gain_max) {
             shen_fa_gain = shen_fa_gain_max;
         }
-        BuffGain(my_status, BUFF_SHEN_FA, shen_fa_gain);
+        my_status->replace_buffs[BUFF_SHEN_FA]->add(shen_fa_gain);
         return 0;
     }
 };
@@ -393,10 +394,10 @@ public:
                 qi_shi_gain = 4;
                 break;
         }
-        BuffGain(my_status, BUFF_QI_SHI, qi_shi_gain);
+        my_status->replace_buffs[BUFF_QI_SHI]->add(qi_shi_gain);
         my_status->task_quene_before_effect->addTask(
             [my_status](BaseCard* card){
-                    BuffGain(my_status, BUFF_QI_SHI, 1);
+                my_status->replace_buffs[BUFF_QI_SHI]->add(1);
             },
             [](BaseCard* card){
                 if (card->is_health_cost) {

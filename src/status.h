@@ -1,7 +1,7 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include "buff.h"
+// #include "buff.h"
 #include "flag.h"
 #include "head.h"
 #include "effect_task_quene.h"
@@ -41,8 +41,18 @@ public:
         for (int i = 0; i < DECK_END_INDEX; i++) {
             is_usable[i] = true;
         }
+        // 初始化replace_buffs和replace_debuff
+        num_buffs = 0;
+        num_debuffs = 0;
+        for (int i = 0; i < BUFF_END_INDEX; i++) {
+            replace_buffs[i] = buff_create(i, this, 0);
+        }
+        for (int i = 0; i < DEBUFF_END_INDEX; i++) {
+            replace_debuffs[i] = debuff_create(i, this, 0);
+        }
         
         // 使用卡牌的状态记录
+        is_card_attacked = false;
         using_card_position = 0;
         using_yun_jian_continuous = 0;
         attack_damage_percent = 0.0f;
@@ -51,6 +61,16 @@ public:
         task_quene_after_effect = new EffectTaskQueue(this);
         task_quene_after_health_loss = new AccountTaskQueue(this);
         task_quene_after_round = new AccountTaskQueue(this);
+
+        // 校验(目前校验无作用，因为buff和debuff数量是固定的)
+        if (num_buffs != BUFF_END_INDEX) {
+            std::cout << "error:--buff数量校验失败--" << std::endl;
+            exit(1);
+        }
+        if (num_debuffs != DEBUFF_END_INDEX) {
+            std::cout << "error:--debuff数量校验失败--" << std::endl;
+            exit(1);
+        }
     
     }
 
@@ -67,6 +87,14 @@ public:
         delete xiu_wei;
         delete ti_po;
         delete ti_po_max;
+
+        // 删除buff和debuff
+        for (int i = 0; i < BUFF_END_INDEX; i++) {
+            delete replace_buffs[i];
+        }
+        for (int i = 0; i < DEBUFF_END_INDEX; i++) {
+            delete replace_debuffs[i];
+        }
 
         // 删除任务队列
         delete task_quene_before_effect;
@@ -100,17 +128,39 @@ public:
             std::cout << "，体魄：" << ti_po->getValue() << "/" << ti_po_max->getValue();
         }
         std::cout << " ";
-        buff.print_buff();
+        ShowBuff();
+        std::cout << " ";
+        ShowDebuff();
         std::cout << std::endl;
     }
+
+    void ShowBuff() {
+        for (int i = 0; i < BUFF_END_INDEX; i++) {
+            if (this->replace_buffs[i]->getValue() != 0) {
+                std::cout << this->replace_buffs[i]->name << ": " << this->replace_buffs[i]->getValue() << " ";
+            }
+        }
+    }
+
+    void ShowDebuff() {
+        for (int i = 0; i < DEBUFF_END_INDEX; i++) {
+            if (this->replace_debuffs[i]->getValue() != 0) {
+                std::cout << this->replace_debuffs[i]->name << ": " << this->replace_debuffs[i]->getValue() << " ";
+            }
+        }
+    }
+
+    // 结算BUFF变更
+    void attack_change();
+    void a_card_change();
+    void a_damage_change(bool attacking, bool hurting);
+    void a_side_round_change();
 
     /*
     仅声明：获取Deck中position位置的卡牌指针
     */
     BaseCard* GetCard(int position);
 
-    // 每个Status带一个Buff对象
-    Buff buff;
     // 每个Status带一个Flag对象
     Flag flag;
     // 每个Status带一个Deck对象指针
@@ -136,8 +186,15 @@ public:
 
     bool is_xing_wei[DECK_END_INDEX]; // 某各格子的位置是否是星位
     bool is_usable[DECK_END_INDEX]; // 某个格子的牌是否可用（未被消耗）(使用的消耗牌和持续牌将被消耗）
+
+    // Buff和Debuff
+    int num_buffs; // buff数量，每注册一个buff，num_buffs+1，用于校验
+    int num_debuffs; // debuff数量，每注册一个debuff，num_debuffs+1，用于校验
+    replace_Buff* replace_buffs[BUFF_END_INDEX]; // buff
+    replace_Debuff* replace_debuffs[DEBUFF_END_INDEX]; // debuff
     
     // 使用卡牌的状态记录
+    bool is_card_attacked;
     int using_card_position; // 将使用卡牌的位置
     int using_yun_jian_continuous; // 连续使用云剑的次数（！未启用）
     float attack_damage_percent; // 临时记录伤害百分比

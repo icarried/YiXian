@@ -33,7 +33,7 @@ public:
                 break;
         }
         my_status->defense->add(defence_gain);
-        BuffGain(my_status, BUFF_BI_XIE, pi_xie_gain);
+        my_status->replace_buffs[BUFF_BI_XIE]->add(pi_xie_gain);
         return 0;
     }
 };
@@ -143,7 +143,7 @@ public:
                 break;
         }
         my_status->defense->add(defence);
-        BuffGain(my_status, BUFF_QI_SHI, qi_shi_gain);
+        my_status->replace_buffs[BUFF_QI_SHI]->add(qi_shi_gain);
         if (LingQiCostMax(my_status, 1)) {
             my_status->health->add(5);
         }
@@ -175,7 +175,7 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
-        DebuffGain(my_status, DEBUFF_XU_RUO, 3);
+        my_status->replace_debuffs[DEBUFF_XU_RUO]->add(3);
         return 0;
     }
 };
@@ -204,7 +204,7 @@ public:
         Attack(my_status, enemy_status, attack, card_sp_attr);
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->ling_qi->add(2);
-        DebuffGain(my_status, DEBUFF_PO_ZHAN, 3);
+        my_status->replace_debuffs[DEBUFF_PO_ZHAN]->add(3);
         return 0;
     }
 };
@@ -332,7 +332,7 @@ public:
         }
         my_status->task_quene_before_effect->addTask(
             [my_status, qi_shi_gain](BaseCard* card){
-                BuffGain(my_status, BUFF_QI_SHI, qi_shi_gain);
+                my_status->replace_buffs[BUFF_QI_SHI]->add(qi_shi_gain);
             },
             [](BaseCard* card){ return card->card_tag[BENG_QUAN_CARD] ? true : false; },
             [](BaseCard* card){ return true; },
@@ -381,7 +381,7 @@ public:
         }
         enemy_status->task_quene_before_effect->addTask(
             [enemy_status, temp_status](BaseCard* card){
-                DebuffGain(enemy_status, DEBUFF_WAI_SHANG, temp_status);
+                enemy_status->replace_debuffs[DEBUFF_WAI_SHANG]->add(temp_status);
             },
             [](BaseCard* card){ return card->card_tag[BENG_QUAN_CARD] ? true : false; },
             [](BaseCard* card){ return true; },
