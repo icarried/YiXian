@@ -16,7 +16,7 @@
 class Battle {
 public:
     // 构造函数
-    Battle() {
+    Battle(int battle_round) : battle_round(battle_round) {
         my_deck = new Deck();
         enemy_deck = new Deck();
         decks[0] = my_deck;
@@ -40,21 +40,56 @@ public:
         delete enemy_deck;
     }
 
+    /*
+    命元伤害计算
+    参数：胜利方status，失败方status
+    最终生命差：胜利方生命-失败方生命
+    轮次数：this->battle_round
+    最终生命差<=20时，命元伤害=轮次数+最终生命差/5（向上取整）
+    最终生命差>20时，命元伤害=轮次数+4+（最终生命差-20）/10（向上取整，且最大不超过2+轮次数的一半）
+    */
+    int MingYuanDamage(Status *win_status, Status *lose_status) {
+        int health_diff = win_status->health->getValue() - lose_status->health->getValue();
+        int ming_yuan_damage = 0;
+        if (health_diff <= 20) {
+            ming_yuan_damage = this->battle_round + (health_diff + 4) / 5;
+        }
+        else {
+            ming_yuan_damage = this->battle_round + 4 + (health_diff - 20 + 9) / 10;
+            ming_yuan_damage = ming_yuan_damage > (this->battle_round + 4 + this->battle_round / 2 + 2) ? (this->battle_round + 4 + this->battle_round / 2 + 2) : ming_yuan_damage;
+        }
+        return ming_yuan_damage;
+    }
+
     // 战斗结束数值结算
     // statuss[0]为我方，statuss[1]为敌方
     // 返回值为正数，胜利方为我方，负数为敌方，0为平局，绝对值为血量差
     int BattleEnd() {
+        Status *win_status;
+        Status *lose_status;
+        bool is_draw = false; // 是否平局
         if (statuss[0]->health->getValue() > statuss[1]->health->getValue()) {
             std::cout << "我方胜利" << std::endl;
+            win_status = statuss[0];
+            lose_status = statuss[1];
         }
         else if (statuss[0]->health->getValue() < statuss[1]->health->getValue()) {
             std::cout << "敌方胜利" << std::endl;
+            win_status = statuss[1];
+            lose_status = statuss[0];
         }
         else {
             std::cout << "平局" << std::endl;
+            is_draw = true;
         }
         std::cout << "我方剩余血量：" << statuss[0]->health->getValue() << std::endl;
         std::cout << "敌方剩余血量：" << statuss[1]->health->getValue() << std::endl;
+        // 结算命元伤害
+        int ming_yuan_damage = 0;
+        if (!is_draw) {
+            ming_yuan_damage = MingYuanDamage(win_status, lose_status);
+            std::cout << "命元伤害：" << ming_yuan_damage << std::endl;
+        }
         return statuss[0]->health->getValue() - statuss[1]->health->getValue();
     }
 
@@ -65,8 +100,8 @@ public:
     int BattleStart() {
         int side;
         int other_side;
-        for (int round = 0; round < BATTLE_END_ROUND; round++) {
-            std::cout << "--------第" << round + 1 << "回合--------" << std::endl;
+        for (this->round = 1; this->round < BATTLE_END_ROUND; this->round++) {
+            std::cout << "--------第" << this->round << "回合--------" << std::endl;
             for (side = 0; side < 2; side++) {
                 other_side = (side + 1) % 2;
                 std::cout << side_string[side] << "回合" << std::endl;
@@ -172,7 +207,7 @@ public:
                     // 回合结束，回合结束buff结算
                     statuss[side]->a_side_round_change();
                     statuss[side]->flag.a_side_round_change();
-                    statuss[side]->task_quene_after_round->executeTaskQueue(round);
+                    statuss[side]->task_quene_after_round->executeTaskQueue(this->round);
                     
                     // 如果有无法再次行动buff，则跳出
                     if (statuss[side]->flag.flag[FLAG_WU_FA_ZAI_CI_XING_DONG]) {
@@ -217,7 +252,9 @@ public:
     Deck *decks[2];
 
     const std::string side_string[2] = {"我方", "敌方"};
-
+    int round = 0; // 回合数, 从1开始
+    // 本次战斗的轮次数（不是回合数）
+    int battle_round;
 };
 
 
