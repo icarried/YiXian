@@ -1,7 +1,7 @@
 #ifndef CARDS_H
 #define CARDS_H
 
-// ------卡牌效果更新时间：2024.4.4----------
+// ------卡牌效果更新时间：2024.5.3----------
 #include "base_card.h"
 // #include "./yl/yl_init.h"
 // #include "./wx/wx_init.h"

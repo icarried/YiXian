@@ -129,10 +129,10 @@ public:
         is_attacking = true;
         switch (level) {
             case 1:
-                attack = 10;
+                attack = 8;
                 break;
             case 2:
-                attack = 15;
+                attack = 14;
                 break;
             case 3:
                 attack = 20;
@@ -240,7 +240,7 @@ public:
             my_status->replace_buffs[BUFF_JIA_GONG]->add(1);
         }
         if (my_status->ti_po->getValue() >= 65) {
-            my_status->replace_buffs[BUFF_SHEN_FA]->add(level + 3);
+            my_status->replace_buffs[BUFF_SHEN_FA]->add(level + 4);
         }
         return 0;
     }

@@ -158,13 +158,13 @@ public:
         is_attacking = true;
         switch (level) {
             case 1:
-                attack = 20;
+                attack = 18;
                 break;
             case 2:
-                attack = 24;
+                attack = 22;
                 break;
             case 3:
-                attack = 28;
+                attack = 26;
                 break;
         }
         is_ling_qi_cost_modifiable = true;
