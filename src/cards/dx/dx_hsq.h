@@ -43,7 +43,7 @@ public:
                 break;
         }
         my_status->health->add(health_gain);
-        my_status->replace_buffs[BUFF_SHEN_FA]->add(shen_fa_gain + my_status->replace_buffs[BUFF_QI_SHI]->getValue() * 2);
+        my_status->buffs[BUFF_SHEN_FA]->add(shen_fa_gain + my_status->buffs[BUFF_QI_SHI]->getValue() * 2);
         return 0;
     }
 };
@@ -70,8 +70,8 @@ public:
                 temp_debuff = 8;
                 break;
         }
-        my_status->replace_debuffs[DEBUFF_NEI_SHANG]->add(temp_debuff);
-        enemy_status->replace_debuffs[DEBUFF_NEI_SHANG]->add(temp_debuff);
+        my_status->debuffs[DEBUFF_NEI_SHANG]->add(temp_debuff);
+        enemy_status->debuffs[DEBUFF_NEI_SHANG]->add(temp_debuff);
         int debuff_total = DebuffTotal(my_status);
         int temp_ling_qi = debuff_total / 2;
         int temp_health = debuff_total / 2;
@@ -112,8 +112,8 @@ public:
                 break;
         }
         my_status->defense->add(defence);
-        my_status->replace_buffs[BUFF_QI_SHI_MAX]->add(qi_shi_max_gain);
-        my_status->replace_buffs[BUFF_QI_SHI]->add(qi_shi_gain);
+        my_status->buffs[BUFF_QI_SHI_MAX]->add(qi_shi_max_gain);
+        my_status->buffs[BUFF_QI_SHI]->add(qi_shi_gain);
         return 0;
     }
 };
@@ -141,30 +141,30 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
-            if (my_status->replace_debuffs[debuff_type]->getValue() > 0) {
-                enemy_status->replace_debuffs[debuff_type]->add(2);
+            if (my_status->debuffs[debuff_type]->getValue() > 0) {
+                enemy_status->debuffs[debuff_type]->add(2);
             }
         }
         // 将debuff的值暂时转移到新的数组，并累加到临时气势上，气势上限临时调整
         int temp_qi_shi = 0;
         int temp_qi_shi_max = 9999;
-        int saved_qi_shi_max = my_status->replace_buffs[BUFF_QI_SHI_MAX]->getValue(); // 保存原来的气势上限
-        my_status->replace_buffs[BUFF_QI_SHI_MAX]->setValue(temp_qi_shi_max);
+        int saved_qi_shi_max = my_status->buffs[BUFF_QI_SHI_MAX]->getValue(); // 保存原来的气势上限
+        my_status->buffs[BUFF_QI_SHI_MAX]->setValue(temp_qi_shi_max);
         // 保存原来的气势上限
         int saved_debuffs[DEBUFF_END_INDEX];
         for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
-            saved_debuffs[debuff_type] = my_status->replace_debuffs[debuff_type]->getValue();
+            saved_debuffs[debuff_type] = my_status->debuffs[debuff_type]->getValue();
             temp_qi_shi += saved_debuffs[debuff_type];
-            my_status->replace_debuffs[debuff_type]->setValue(0);
+            my_status->debuffs[debuff_type]->setValue(0);
         }
-        my_status->replace_buffs[BUFF_QI_SHI]->add(temp_qi_shi);
+        my_status->buffs[BUFF_QI_SHI]->add(temp_qi_shi);
         Attack(my_status, enemy_status, attack, card_sp_attr);
         // 将debuff的值从新的数组转回到原来的数组
         for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
-            my_status->replace_debuffs[debuff_type]->setValue(saved_debuffs[debuff_type]);
+            my_status->debuffs[debuff_type]->setValue(saved_debuffs[debuff_type]);
         }
-        my_status->replace_buffs[BUFF_QI_SHI]->sub(temp_qi_shi);
-        my_status->replace_buffs[BUFF_QI_SHI_MAX]->setValue(saved_qi_shi_max);
+        my_status->buffs[BUFF_QI_SHI]->sub(temp_qi_shi);
+        my_status->buffs[BUFF_QI_SHI_MAX]->setValue(saved_qi_shi_max);
         return 0;
     }
 };
@@ -237,10 +237,10 @@ public:
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->ti_po->add(level + 2);
         if (my_status->ti_po->getValue() >= 50) {
-            my_status->replace_buffs[BUFF_JIA_GONG]->add(1);
+            my_status->buffs[BUFF_JIA_GONG]->add(1);
         }
         if (my_status->ti_po->getValue() >= 65) {
-            my_status->replace_buffs[BUFF_SHEN_FA]->add(level + 4);
+            my_status->buffs[BUFF_SHEN_FA]->add(level + 4);
         }
         return 0;
     }
@@ -321,10 +321,10 @@ public:
                 temp_status = 9;
                 break;
         }
-        my_status->replace_buffs[BUFF_SHEN_FA]->add(temp_status);
+        my_status->buffs[BUFF_SHEN_FA]->add(temp_status);
         my_status->task_quene_before_effect->addTask(
             [my_status, temp_status](BaseCard* card){
-                my_status->replace_buffs[BUFF_SHEN_FA]->add(temp_status);
+                my_status->buffs[BUFF_SHEN_FA]->add(temp_status);
             },
             [](BaseCard* card){ return card->card_tag[BENG_QUAN_CARD] ? true : false; },
             [](BaseCard* card){ return true; },

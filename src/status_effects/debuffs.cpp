@@ -1,37 +1,37 @@
 #include "debuffs.h"
 #include "../status.h"
 
-DebuffPoZhan::DebuffPoZhan(Status* linking_status, int val) : replace_Debuff(linking_status, val) {
+DebuffPoZhan::DebuffPoZhan(Status* linking_status, int val) : Debuff(linking_status, val) {
     name = "破绽";
     id = DEBUFF_PO_ZHAN;
 }
 
-DebuffWaiShang::DebuffWaiShang(Status* linking_status, int val) : replace_Debuff(linking_status, val) {
+DebuffWaiShang::DebuffWaiShang(Status* linking_status, int val) : Debuff(linking_status, val) {
     name = "外伤";
     id = DEBUFF_WAI_SHANG;
 }
 
-DebuffJianGong::DebuffJianGong(Status* linking_status, int val) : replace_Debuff(linking_status, val) {
+DebuffJianGong::DebuffJianGong(Status* linking_status, int val) : Debuff(linking_status, val) {
     name = "减攻";
     id = DEBUFF_JIAN_GONG;
 }
 
-DebuffXuRuo::DebuffXuRuo(Status* linking_status, int val) : replace_Debuff(linking_status, val) {
+DebuffXuRuo::DebuffXuRuo(Status* linking_status, int val) : Debuff(linking_status, val) {
     name = "虚弱";
     id = DEBUFF_XU_RUO;
 }
 
-DebuffNeiShang::DebuffNeiShang(Status* linking_status, int val) : replace_Debuff(linking_status, val) {
+DebuffNeiShang::DebuffNeiShang(Status* linking_status, int val) : Debuff(linking_status, val) {
     name = "内伤";
     id = DEBUFF_NEI_SHANG;
 }
 
-DebuffKunFu::DebuffKunFu(Status* linking_status, int val) : replace_Debuff(linking_status, val) {
+DebuffKunFu::DebuffKunFu(Status* linking_status, int val) : Debuff(linking_status, val) {
     name = "困缚";
     id = DEBUFF_KUN_FU;
 }
 
-replace_Debuff* debuff_create(int id, Status* linking_status, int val) {
+Debuff* debuff_create(int id, Status* linking_status, int val) {
     switch (id) {
     case DEBUFF_PO_ZHAN:
         return new DebuffPoZhan(linking_status, val);

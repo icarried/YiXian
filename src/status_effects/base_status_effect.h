@@ -60,9 +60,9 @@ public:
 };
 
 // buff，不能小于0
-class replace_Buff : public BaseStatusEffect {
+class Buff : public BaseStatusEffect {
 public:
-    replace_Buff(Status* linking_status, int val);
+    Buff(Status* linking_status, int val);
     void add(int val) override;
     void sub(int val) override;
     std::string name;
@@ -70,9 +70,9 @@ public:
 };
 
 // debuff，不能小于0，可以被辟邪抵消，可被解除
-class replace_Debuff : public BaseStatusEffect {
+class Debuff : public BaseStatusEffect {
 public:
-    replace_Debuff(Status* linking_status, int val);
+    Debuff(Status* linking_status, int val);
     void add(int val) override;
     void sub(int val) override;
     std::string name;

@@ -73,10 +73,10 @@ public:
                 statuss[side]->ShowStatus();
                 // 双方轮流行动
                 // 1. 检查回合buff
-                if (statuss[side]->replace_debuffs[DEBUFF_NEI_SHANG]->getValue() > 0) {
+                if (statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue() > 0) {
                     // 内伤
-                    NonSourseDamage(statuss[side], statuss[side]->replace_debuffs[DEBUFF_NEI_SHANG]->getValue());
-                    std::cout << side_string[side]  << "受到内伤造成" << statuss[side]->replace_debuffs[DEBUFF_NEI_SHANG]->getValue() << "点伤害" << std::endl;
+                    NonSourseDamage(statuss[side], statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue());
+                    std::cout << side_string[side]  << "受到内伤造成" << statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue() << "点伤害" << std::endl;
                 }
                 if (statuss[0]->health->getValue() <= 0 || statuss[1]->health->getValue() <= 0) {
                     // 有一方血量为0则结束战斗
@@ -90,10 +90,10 @@ public:
                 }
 
                 // 2. 行动相关，一回合可能包含多次行动
-                if (statuss[side]->replace_buffs[WU_FA_XING_DONG]->getValue() > 0) {
+                if (statuss[side]->buffs[WU_FA_XING_DONG]->getValue() > 0) {
                     // 无法行动，优先于使用牌
                     std::cout << side_string[side] << "无法行动" << std::endl;
-                    statuss[side]->replace_buffs[WU_FA_XING_DONG]->sub(1);
+                    statuss[side]->buffs[WU_FA_XING_DONG]->sub(1);
                     continue;
                 }
                 bool reexecute = false;
@@ -105,10 +105,10 @@ public:
                     if (reexecute) {
                         std::cout << side_string[side] << "再次行动" << std::endl;
                     }
-                    if (statuss[side]->replace_buffs[SKIP_CARD]->getValue() > 0){
+                    if (statuss[side]->buffs[SKIP_CARD]->getValue() > 0){
                         // 跳过下N张牌
-                        while (statuss[side]->replace_buffs[SKIP_CARD]->getValue() > 0){
-                            statuss[side]->replace_buffs[SKIP_CARD]->sub(1);
+                        while (statuss[side]->buffs[SKIP_CARD]->getValue() > 0){
+                            statuss[side]->buffs[SKIP_CARD]->sub(1);
                             statuss[side]->NextCardPosition();
                             std::cout << side_string[side] << "跳过一张牌" << std::endl;
                         }
@@ -181,15 +181,15 @@ public:
                         break;
                     }
                     // 如果有debuff困缚，困缚减一层，并跳出
-                    else if (statuss[side]->replace_debuffs[DEBUFF_KUN_FU]->getValue() > 0) {
+                    else if (statuss[side]->debuffs[DEBUFF_KUN_FU]->getValue() > 0) {
                         ReexecuteLoss(statuss[side]);
                         std::cout << side_string[side] << "因困缚无法再次行动" << std::endl;
                         break;
                     }
                     
                     // 若未再次行动，且没有再次行动flag，身法>=10则将10点身法转化为一次再次行动flag
-                    if (!reexecute && !statuss[side]->flag.flag[FLAG_ZAI_CI_XING_DONG] && statuss[side]->replace_buffs[BUFF_SHEN_FA]->getValue() >= 10) {
-                        statuss[side]->replace_buffs[BUFF_SHEN_FA]->sub(10);
+                    if (!reexecute && !statuss[side]->flag.flag[FLAG_ZAI_CI_XING_DONG] && statuss[side]->buffs[BUFF_SHEN_FA]->getValue() >= 10) {
+                        statuss[side]->buffs[BUFF_SHEN_FA]->sub(10);
                         ReexecuteGain(statuss[side]);
                         std::cout << side_string[side] << "身法转化为再次行动" << std::endl;
                     }

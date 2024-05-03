@@ -41,15 +41,15 @@ public:
         for (int i = 0; i < DECK_END_INDEX; i++) {
             is_usable[i] = true;
         }
-        // 初始化replace_buffs和replace_debuff
+        // 初始化buffs和debuff
         num_buffs = 0;
         num_debuffs = 0;
         for (int i = 0; i < BUFF_END_INDEX; i++) {
-            replace_buffs[i] = buff_create(i, this, 0);
+            buffs[i] = buff_create(i, this, 0);
         }
-        replace_buffs[BUFF_QI_SHI_MAX]->setValue(6); // 气势上限默认为6
+        buffs[BUFF_QI_SHI_MAX]->setValue(6); // 气势上限默认为6
         for (int i = 0; i < DEBUFF_END_INDEX; i++) {
-            replace_debuffs[i] = debuff_create(i, this, 0);
+            debuffs[i] = debuff_create(i, this, 0);
         }
         
         // 使用卡牌的状态记录
@@ -92,10 +92,10 @@ public:
 
         // 删除buff和debuff
         for (int i = 0; i < BUFF_END_INDEX; i++) {
-            delete replace_buffs[i];
+            delete buffs[i];
         }
         for (int i = 0; i < DEBUFF_END_INDEX; i++) {
-            delete replace_debuffs[i];
+            delete debuffs[i];
         }
 
         // 删除任务队列
@@ -138,16 +138,16 @@ public:
 
     void ShowBuff() {
         for (int i = 0; i < BUFF_END_INDEX; i++) {
-            if (this->replace_buffs[i]->getValue() != 0) {
-                std::cout << this->replace_buffs[i]->name << ": " << this->replace_buffs[i]->getValue() << " ";
+            if (this->buffs[i]->getValue() != 0) {
+                std::cout << this->buffs[i]->name << ": " << this->buffs[i]->getValue() << " ";
             }
         }
     }
 
     void ShowDebuff() {
         for (int i = 0; i < DEBUFF_END_INDEX; i++) {
-            if (this->replace_debuffs[i]->getValue() != 0) {
-                std::cout << this->replace_debuffs[i]->name << ": " << this->replace_debuffs[i]->getValue() << " ";
+            if (this->debuffs[i]->getValue() != 0) {
+                std::cout << this->debuffs[i]->name << ": " << this->debuffs[i]->getValue() << " ";
             }
         }
     }
@@ -192,8 +192,8 @@ public:
     // Buff和Debuff
     int num_buffs; // buff数量，每注册一个buff，num_buffs+1，用于校验
     int num_debuffs; // debuff数量，每注册一个debuff，num_debuffs+1，用于校验
-    replace_Buff* replace_buffs[BUFF_END_INDEX]; // buff
-    replace_Debuff* replace_debuffs[DEBUFF_END_INDEX]; // debuff
+    Buff* buffs[BUFF_END_INDEX]; // buff
+    Debuff* debuffs[DEBUFF_END_INDEX]; // debuff
     
     // 使用卡牌的状态记录
     bool is_card_attacked;

@@ -89,7 +89,7 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
-        my_status->replace_debuffs[DEBUFF_NEI_SHANG]->add(1);
+        my_status->debuffs[DEBUFF_NEI_SHANG]->add(1);
         return 0;
     }
 };
@@ -116,9 +116,9 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         if (LingQiCostMax(my_status, 1)) {
-            my_status->replace_buffs[BUFF_QI_SHI]->add(2);
+            my_status->buffs[BUFF_QI_SHI]->add(2);
         }
-        int temp_attack = my_status->replace_buffs[BUFF_QI_SHI]->getValue();
+        int temp_attack = my_status->buffs[BUFF_QI_SHI]->getValue();
         Attack(my_status, enemy_status, attack + temp_attack, card_sp_attr);
         return 0;
     }
@@ -147,7 +147,7 @@ public:
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->ling_qi->add(1);
-        my_status->replace_buffs[BUFF_QI_SHI]->add(2);
+        my_status->buffs[BUFF_QI_SHI]->add(2);
         return 0;
     }
 };
@@ -175,7 +175,7 @@ public:
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->ling_qi->add(1);
-        my_status->replace_debuffs[DEBUFF_WAI_SHANG]->add(1);
+        my_status->debuffs[DEBUFF_WAI_SHANG]->add(1);
         return 0;
     }
 };

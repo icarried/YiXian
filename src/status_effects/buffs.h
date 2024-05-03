@@ -23,87 +23,87 @@
 
 #define BUFF_END_INDEX 16 //buff结束索引
 
-class BuffJiaGong : public replace_Buff {
+class BuffJiaGong : public Buff {
 public:
     BuffJiaGong(Status* linking_status, int val);
 };
 
-class BuffJianYi : public replace_Buff {
+class BuffJianYi : public Buff {
 public:
     BuffJianYi(Status* linking_status, int val);
 };
 
-class BuffFengRui : public replace_Buff {
+class BuffFengRui : public Buff {
 public:
     BuffFengRui(Status* linking_status, int val);
 };
 
-class BuffXingLi : public replace_Buff {
+class BuffXingLi : public Buff {
 public:
     BuffXingLi(Status* linking_status, int val);
 };
 
-class BuffQiShi : public replace_Buff {
+class BuffQiShi : public Buff {
 public:
     BuffQiShi(Status* linking_status, int val);
     void add(int val) override;
 };
 
-class BuffQiShiMax : public replace_Buff {
+class BuffQiShiMax : public Buff {
 public:
     BuffQiShiMax(Status* linking_status, int val);
 };
 
-class BuffQianDun : public replace_Buff {
+class BuffQianDun : public Buff {
 public:
     BuffQianDun(Status* linking_status, int val);
 };
 
-class BuffTieGu : public replace_Buff {
+class BuffTieGu : public Buff {
 public:
     BuffTieGu(Status* linking_status, int val);
 };
 
-class BuffBiXie : public replace_Buff {
+class BuffBiXie : public Buff {
 public:
     BuffBiXie(Status* linking_status, int val);
 };
 
-class BuffShenFa : public replace_Buff {
+class BuffShenFa : public Buff {
 public:
     BuffShenFa(Status* linking_status, int val);
 };
 
-class BuffHuTi : public replace_Buff {
+class BuffHuTi : public Buff {
 public:
     BuffHuTi(Status* linking_status, int val);
 };
 
-class BuffGongJiWuShiFangYu : public replace_Buff {
+class BuffGongJiWuShiFangYu : public Buff {
 public:
     BuffGongJiWuShiFangYu(Status* linking_status, int val);
 };
 
-class BuffSkipCard : public replace_Buff {
+class BuffSkipCard : public Buff {
 public:
     BuffSkipCard(Status* linking_status, int val);
 };
 
-class BuffWuFaXingDong : public replace_Buff {
+class BuffWuFaXingDong : public Buff {
 public:
     BuffWuFaXingDong(Status* linking_status, int val);
 };
 
-class BuffDuanGuTimes : public replace_Buff {
+class BuffDuanGuTimes : public Buff {
 public:
     BuffDuanGuTimes(Status* linking_status, int val);
 };
 
-class BuffQiRuoXuanHeTimes : public replace_Buff {
+class BuffQiRuoXuanHeTimes : public Buff {
 public:
     BuffQiRuoXuanHeTimes(Status* linking_status, int val);
 };
 
-replace_Buff* buff_create(int id, Status* linking_status, int val);
+Buff* buff_create(int id, Status* linking_status, int val);
 
 #endif // !BUFFS_H

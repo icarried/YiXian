@@ -30,7 +30,7 @@ public:
     }
     int Effect(Status* my_status, Status* enemy_status) {
         int temp_status = LingQiCostMax(my_status, 2);
-        my_status->replace_buffs[BUFF_QI_SHI]->add(temp_status);
+        my_status->buffs[BUFF_QI_SHI]->add(temp_status);
         Attack(my_status, enemy_status, attack + 3 * temp_status, card_sp_attr);
         return 0;
     }
@@ -58,8 +58,8 @@ public:
                 temp_status = 5;
                 break;
         }
-        my_status->replace_buffs[BUFF_QI_SHI]->add(temp_status);
-        my_status->replace_buffs[BUFF_SHEN_FA]->add(6);
+        my_status->buffs[BUFF_QI_SHI]->add(temp_status);
+        my_status->buffs[BUFF_SHEN_FA]->add(6);
         return 0;
     }
 };
@@ -90,15 +90,15 @@ public:
                 temp_status = 4;
                 break;
         }
-        my_status->replace_buffs[QIRUOXUANHE_TIMES]->add(temp_status);
+        my_status->buffs[QIRUOXUANHE_TIMES]->add(temp_status);
         my_status->ling_qi->add(ling_qi_gain);
-        my_status->replace_buffs[BUFF_QI_SHI]->add(1);
+        my_status->buffs[BUFF_QI_SHI]->add(1);
         my_status->task_quene_before_effect->addTask(
             [my_status](BaseCard* card){
-                my_status->replace_buffs[BUFF_QI_SHI]->add(1);
+                my_status->buffs[BUFF_QI_SHI]->add(1);
             },
-            [my_status](BaseCard* card){ return my_status->replace_buffs[QIRUOXUANHE_TIMES]->getValue() > 0 && card->is_attacking ? true : false; },
-            [my_status](BaseCard* card){ return my_status->replace_buffs[QIRUOXUANHE_TIMES]->getValue() == 0 ? true : false; }
+            [my_status](BaseCard* card){ return my_status->buffs[QIRUOXUANHE_TIMES]->getValue() > 0 && card->is_attacking ? true : false; },
+            [my_status](BaseCard* card){ return my_status->buffs[QIRUOXUANHE_TIMES]->getValue() == 0 ? true : false; }
         );
         return 0;
     }
@@ -137,10 +137,10 @@ public:
                 temp_status = 2;
                 break;
         }
-        my_status->replace_debuffs[DEBUFF_NEI_SHANG]->add(temp_status);
-        my_status->replace_debuffs[DEBUFF_WAI_SHANG]->add(temp_status);
-        enemy_status->replace_debuffs[DEBUFF_NEI_SHANG]->add(temp_status);
-        enemy_status->replace_debuffs[DEBUFF_WAI_SHANG]->add(temp_status);
+        my_status->debuffs[DEBUFF_NEI_SHANG]->add(temp_status);
+        my_status->debuffs[DEBUFF_WAI_SHANG]->add(temp_status);
+        enemy_status->debuffs[DEBUFF_NEI_SHANG]->add(temp_status);
+        enemy_status->debuffs[DEBUFF_WAI_SHANG]->add(temp_status);
         Attack(my_status, enemy_status, attack, card_sp_attr);
         Attack(my_status, enemy_status, attack, card_sp_attr);
         return 0;
@@ -249,7 +249,7 @@ public:
                 kun_fu_gain = 4;
                 break;
         }
-        my_status->replace_debuffs[DEBUFF_KUN_FU]->add(kun_fu_gain);
+        my_status->debuffs[DEBUFF_KUN_FU]->add(kun_fu_gain);
         defence_gain += DebuffTotal(my_status);
         my_status->defense->add(defence_gain);
         return 0;
@@ -284,11 +284,11 @@ public:
                 temp_status = 4;
                 break;
         }
-        my_status->replace_buffs[DUANGU_TIMES]->add(temp_status);
+        my_status->buffs[DUANGU_TIMES]->add(temp_status);
         my_status->health->add(health_gain);
         my_status->task_quene_before_effect->addTask(
             [my_status](BaseCard* card){
-                my_status->replace_buffs[DUANGU_TIMES]->sub(1);
+                my_status->buffs[DUANGU_TIMES]->sub(1);
                 my_status->ti_po->add(1);
                 card->card_sp_attr[CARD_SP_ATTR_DUO_GONG] += 3;
                 my_status->task_quene_after_effect->addTask(
@@ -299,8 +299,8 @@ public:
                     [](BaseCard* card){ return true; }
                 );
             },
-            [my_status](BaseCard* card){ return my_status->replace_buffs[DUANGU_TIMES]->getValue() > 0 && card->is_attacking ? true : false; },
-            [my_status](BaseCard* card){ return my_status->replace_buffs[DUANGU_TIMES]->getValue() == 0 ? true : false; }
+            [my_status](BaseCard* card){ return my_status->buffs[DUANGU_TIMES]->getValue() > 0 && card->is_attacking ? true : false; },
+            [my_status](BaseCard* card){ return my_status->buffs[DUANGU_TIMES]->getValue() == 0 ? true : false; }
         );
         return 0;
     }
@@ -425,7 +425,7 @@ public:
                 break;
         }
         my_status->ling_qi->add(ling_qi_gain);
-        my_status->replace_buffs[BUFF_SHEN_FA]->add(4);
+        my_status->buffs[BUFF_SHEN_FA]->add(4);
         my_status->task_quene_before_effect->addTask(
             [my_status](BaseCard* card){
                 card->card_tag[BENG_QUAN_CARD] = 1;

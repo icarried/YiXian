@@ -11,9 +11,9 @@ int EffectHealthLoss(Status* losser, int loss_value){
     // 结算失去血量
     if (loss_value > 0) {
         // 有护体则免伤，并减少一层护体
-        if (losser->replace_buffs[BUFF_HU_TI]->getValue()) {
+        if (losser->buffs[BUFF_HU_TI]->getValue()) {
             loss_value = 0;
-            losser->replace_buffs[BUFF_HU_TI]->sub(1);
+            losser->buffs[BUFF_HU_TI]->sub(1);
             std::cout << "，护体生效";
         }
         if (loss_value > 0) {
@@ -31,9 +31,9 @@ int NonSourseDamage(Status* defender, int damage_value){
     // 结算伤害
     int damage = damage_value;
     // 有护体则免伤，并减少一层护体
-    if (defender->replace_buffs[BUFF_HU_TI]->getValue()) {
+    if (defender->buffs[BUFF_HU_TI]->getValue()) {
         damage = 0;
-        defender->replace_buffs[BUFF_HU_TI]->sub(1);
+        defender->buffs[BUFF_HU_TI]->sub(1);
         std::cout << "，护体生效";
     }
     if (damage > 0) {
@@ -52,7 +52,7 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
     int defense_loss = 0; // 对方损失的防
     bool is_hurting = false;
     // 如果有无视防御的特殊属性，则结算无视防御
-    if (card_sp_attr[CARD_SP_ATTR_WU_SHI_FANG_YU] || attacker->replace_buffs[BUFF_GONG_JI_WU_SHI_FANG_YU]->getValue() > 0) {
+    if (card_sp_attr[CARD_SP_ATTR_WU_SHI_FANG_YU] || attacker->buffs[BUFF_GONG_JI_WU_SHI_FANG_YU]->getValue() > 0) {
         // do nothing
     }
     // 如果有碎防的特殊属性，则每一点伤害能抵消一点防
@@ -91,14 +91,14 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
         // 伤害能使对方扣减生命值时，结算护体，结算护体后若仍然有伤害，则结算锋锐
         
         // 有护体则免伤，并减少一层护体
-        if (defender->replace_buffs[BUFF_HU_TI]->getValue() > 0) {
+        if (defender->buffs[BUFF_HU_TI]->getValue() > 0) {
             damage = 0;
-            defender->replace_buffs[BUFF_HU_TI]->sub(1);
+            defender->buffs[BUFF_HU_TI]->sub(1);
             std::cout << "，护体生效";
         }
         // 锋锐结算
-        if (damage > 0 && is_attacking && attacker->replace_buffs[BUFF_FENG_RUI]->getValue() > 0) {
-            damage += int(float(attacker->replace_buffs[BUFF_FENG_RUI]->getValue()) * attacker->attack_damage_percent);
+        if (damage > 0 && is_attacking && attacker->buffs[BUFF_FENG_RUI]->getValue() > 0) {
+            damage += int(float(attacker->buffs[BUFF_FENG_RUI]->getValue()) * attacker->attack_damage_percent);
         }
         if (damage > 0) {
             std::cout << "，对敌方造成{" << damage << "}点伤害";
@@ -127,12 +127,12 @@ int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_att
     std::cout << "，攻{" << attack_value << "}";
     // *计算攻击力的结算加减*
     int damage_value = attack_value;
-    damage_value += attacker->replace_buffs[BUFF_JIA_GONG]->getValue() 
-    + attacker->replace_buffs[BUFF_JIAN_YI]->getValue() - attacker->replace_debuffs[DEBUFF_JIAN_GONG]->getValue()
-    + defender->replace_debuffs[DEBUFF_WAI_SHANG]->getValue();
+    damage_value += attacker->buffs[BUFF_JIA_GONG]->getValue() 
+    + attacker->buffs[BUFF_JIAN_YI]->getValue() - attacker->debuffs[DEBUFF_JIAN_GONG]->getValue()
+    + defender->debuffs[DEBUFF_WAI_SHANG]->getValue();
     // 判断星位
     if (attacker->is_xing_wei[attacker->using_card_position]) {
-        damage_value += attacker->replace_buffs[BUFF_XING_LI]->getValue();
+        damage_value += attacker->buffs[BUFF_XING_LI]->getValue();
     }
     // 最小为1
     if (damage_value < 1) {
@@ -143,16 +143,16 @@ int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_att
     // 气势结算
     // 是否有双倍气势的特殊属性
     if (card_sp_attr[CARD_SP_ATTR_SHUANG_BEI_QI_SHI]) {
-        damage_percent += float(attacker->replace_buffs[BUFF_QI_SHI]->getValue()) * 0.1 * 2;
+        damage_percent += float(attacker->buffs[BUFF_QI_SHI]->getValue()) * 0.1 * 2;
     }
     else {
-        damage_percent += float(attacker->replace_buffs[BUFF_QI_SHI]->getValue()) * 0.1;
+        damage_percent += float(attacker->buffs[BUFF_QI_SHI]->getValue()) * 0.1;
     }
     // 破绽和虚弱的结算
-    if (defender->replace_debuffs[DEBUFF_PO_ZHAN]->getValue()) {
+    if (defender->debuffs[DEBUFF_PO_ZHAN]->getValue()) {
         damage_percent += 0.4;
     }
-    if (attacker->replace_debuffs[DEBUFF_XU_RUO]->getValue()) {
+    if (attacker->debuffs[DEBUFF_XU_RUO]->getValue()) {
         damage_percent -= 0.4;
     }
     damage_value = int(float(damage_value) * damage_percent);
@@ -161,14 +161,14 @@ int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_att
         damage_value = 1;
     }
     // *额外结算*
-    if (defender->replace_buffs[BUFF_QIAN_DUN]->getValue()) {
+    if (defender->buffs[BUFF_QIAN_DUN]->getValue()) {
         // 潜遁
         damage_value = int(float(damage_value) * 0.6);
         damage_percent = damage_percent * 0.6;
     }
     // 临时记录伤害百分比，用于结算锋锐
     attacker->attack_damage_percent = damage_percent;
-    if (defender->replace_buffs[BUFF_TIE_GU]->getValue()) {
+    if (defender->buffs[BUFF_TIE_GU]->getValue()) {
         // 铁骨
         damage_value = damage_value - 5;
     }
@@ -249,7 +249,7 @@ int RandomNumber(int min, int max) {
 int DebuffTotal(Status* status){
     int total = 0;
     for (int i = 0; i < DEBUFF_END_INDEX; i++) {
-        total += status->replace_debuffs[i]->getValue();
+        total += status->debuffs[i]->getValue();
     }
     return total;
 }
@@ -266,7 +266,7 @@ int* DebuffSort(Status* sorter){
     int right = DEBUFF_END_INDEX - 1;
     int temp;
     while (left < right) {
-        while (left < right && sorter->replace_debuffs[debuff_type[right]]->getValue() <= sorter->replace_debuffs[debuff_type[left]]->getValue()) {
+        while (left < right && sorter->debuffs[debuff_type[right]]->getValue() <= sorter->debuffs[debuff_type[left]]->getValue()) {
             right--;
         }
         if (left < right) {
@@ -275,7 +275,7 @@ int* DebuffSort(Status* sorter){
             debuff_type[right] = temp;
             left++;
         }
-        while (left < right && sorter->replace_debuffs[debuff_type[right]]->getValue() >= sorter->replace_debuffs[debuff_type[left]]->getValue()) {
+        while (left < right && sorter->debuffs[debuff_type[right]]->getValue() >= sorter->debuffs[debuff_type[left]]->getValue()) {
             left++;
         }
         if (left < right) {
@@ -298,7 +298,7 @@ int DebuffRandomReduce(Status* reducer, int reduce_value, bool is_transfer_to_en
     int* debuff_type = DebuffSort(reducer);
     int debuff_count = 0;
     for (int i = 0; i < DEBUFF_END_INDEX; i++) {
-        if (reducer->replace_debuffs[debuff_type[i]]->getValue() > 0) {
+        if (reducer->debuffs[debuff_type[i]]->getValue() > 0) {
             debuff_count++;
         }
         else {
@@ -313,16 +313,16 @@ int DebuffRandomReduce(Status* reducer, int reduce_value, bool is_transfer_to_en
     int random_index;
     while (reduce_count < reduce_value) {
         random_index = RandomNumber(0, debuff_count - 1);
-        if (reducer->replace_debuffs[debuff_type[random_index]]->getValue() > 0) {
-            reducer->replace_debuffs[debuff_type[random_index]]->sub(1);
+        if (reducer->debuffs[debuff_type[random_index]]->getValue() > 0) {
+            reducer->debuffs[debuff_type[random_index]]->sub(1);
             if (is_transfer_to_enemy) {
-                enemy->replace_debuffs[debuff_type[random_index]]->add(1);
+                enemy->debuffs[debuff_type[random_index]]->add(1);
                 std::cout << "，转移" << debuff_type[random_index] << "1层";
             }
             std::cout << "，减少" << debuff_type[random_index] << "1层";
             reduce_count++;
             // 如果减少到0，则减少debuff_count，并将该debuff_type与最后一个debuff_type交换
-            if (reducer->replace_debuffs[debuff_type[random_index]]->getValue() == 0) {
+            if (reducer->debuffs[debuff_type[random_index]]->getValue() == 0) {
                 debuff_count--;
                 int temp = debuff_type[random_index];
                 debuff_type[random_index] = debuff_type[debuff_count];
