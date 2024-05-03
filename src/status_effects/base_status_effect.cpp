@@ -27,7 +27,15 @@ void BaseStatusEffect::add_or_sub(int val) {
     }
 }
 
-StatusVal::StatusVal(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {}
+StatusVal::StatusVal(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
+    add_task_quene = new AccountTaskQueue(linking_status);
+    sub_task_quene = new AccountTaskQueue(linking_status);
+}
+
+StatusVal::~StatusVal() {
+    delete add_task_quene;
+    delete sub_task_quene;
+}
 
 Buff::Buff(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
     linking_status->num_buffs++;

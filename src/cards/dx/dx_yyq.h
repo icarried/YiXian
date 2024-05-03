@@ -187,7 +187,7 @@ public:
         }
         my_status->ling_qi->add(ling_qi_gain);
         my_status->buffs[BUFF_SHEN_FA]->add(shen_fa_gain);
-        my_status->task_quene_after_health_loss->addTask(
+        my_status->health->sub_task_quene->addTask(
             [my_status](int health_loss){
                 my_status->ling_qi->add(1);
                 my_status->buffs[BUFF_SHEN_FA]->add(1);

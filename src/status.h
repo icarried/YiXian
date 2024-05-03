@@ -61,7 +61,6 @@ public:
 
         task_quene_before_effect = new EffectTaskQueue(this);
         task_quene_after_effect = new EffectTaskQueue(this);
-        task_quene_after_health_loss = new AccountTaskQueue(this);
         task_quene_after_round = new AccountTaskQueue(this);
 
         // 校验(目前校验无作用，因为buff和debuff数量是固定的)
@@ -101,7 +100,6 @@ public:
         // 删除任务队列
         delete task_quene_before_effect;
         delete task_quene_after_effect;
-        delete task_quene_after_health_loss;
         delete task_quene_after_round;
     }
 
@@ -172,7 +170,6 @@ public:
     // 任务队列
     EffectTaskQueue* task_quene_before_effect; // 卡牌效果执行前的任务队列，参数为使用的牌
     EffectTaskQueue* task_quene_after_effect; // 卡牌效果执行后的任务队列，参数为使用的牌，给下一张牌的执行后任务队列的任务必须通过卡牌效果执行前的任务队列放入
-    AccountTaskQueue* task_quene_after_health_loss; // 生命值减少时触发的任务队列，参数为减少的生命值
     AccountTaskQueue* task_quene_after_round; // 回合结束时触发的任务队列，参数为回合数
 
     // 状态值

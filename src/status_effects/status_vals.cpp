@@ -15,6 +15,7 @@ void HealthMax::add(int val) {
     if (val > 0) {
         this->value += val;
         std::cout << "，增加" << val << "点血量上限，剩余" << this->value << "点血量上限";
+        this->add_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -26,6 +27,7 @@ void HealthMax::sub(int val) {
             std::cout << "，血量上限减少导致血量减少";
             linked_status->health->sub(linked_status->health->getValue() - this->value);
         }
+        this->sub_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -40,6 +42,7 @@ void Health::add(int val) {
             this->value = linked_status->health_max->getValue();
         }
         std::cout << "，恢复" << val << "点血，剩余" << this->value << "/" << linked_status->health_max->getValue() << "点血";
+        this->add_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -49,7 +52,7 @@ void Health::sub(int val) {
         linked_status->health_sub_total->add(val);
         this->value -= val;
         std::cout << "失去" << val << "点血，剩余" << this->value << "/" << linked_status->health_max->getValue() << "点血";
-        linked_status->task_quene_after_health_loss->executeTaskQueue(val);
+        this->sub_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -60,6 +63,7 @@ void Defense::add(int val) {
     if (val > 0) {
         this->value += val;
         std::cout << "，增加" << val << "点防御，剩余" << this->value << "点防御";
+        this->add_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -71,6 +75,7 @@ void Defense::sub(int val) {
             this->value = 0;
         }
         std::cout << "，失去" << val << "点防御，剩余" << this->value << "点防御";
+        this->sub_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -81,6 +86,7 @@ void LingQi::add(int val) {
     if (val > 0) {
         this->value += val;
         std::cout << "，增加" << val << "点灵气，剩余" << this->value << "点灵气";
+        this->add_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -92,6 +98,7 @@ void LingQi::sub(int val) {
             this->value = 0;
         }
         std::cout << "，失去" << val << "点灵气，剩余" << this->value << "点灵气";
+        this->sub_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -102,6 +109,7 @@ void XiuWei::add(int val) {
     if (val > 0) {
         this->value += val;
         std::cout << "，增加" << val << "点修为，剩余" << this->value << "点修为";
+        this->add_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -113,6 +121,7 @@ void XiuWei::sub(int val) {
             this->value = 0;
         }
         std::cout << "，失去" << val << "点修为，剩余" << this->value << "点修为";
+        this->sub_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -123,6 +132,7 @@ void TiPoMax::add(int val) {
     if (val > 0) {
         this->value += val;
         std::cout << "，增加" << val << "点体魄上限，剩余" << this->value << "点体魄上限";
+        this->add_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -134,6 +144,7 @@ void TiPoMax::sub(int val) {
             this->value = 0;
         }
         std::cout << "，失去" << val << "点体魄上限，剩余" << this->value << "点体魄上限";
+        this->sub_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -155,6 +166,7 @@ void TiPo::add(int val) {
         linked_status->ti_po_add_total->add(val);
         linked_status->health_max->add(val);
         linked_status->health->add(health_val);
+        this->add_task_quene->executeTaskQueue(val);
     }
 }
 
@@ -167,6 +179,7 @@ void TiPo::sub(int val) {
         }
         std::cout << "，失去" << val << "点体魄，剩余" << this->value << "点体魄";
         linked_status->health_max->sub(val);
+        this->sub_task_quene->executeTaskQueue(val);
     }
 }
 
