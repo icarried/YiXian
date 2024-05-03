@@ -63,7 +63,7 @@ public:
 
     // 战斗结束数值结算
     // statuss[0]为我方，statuss[1]为敌方
-    // 返回值为正数，胜利方为我方，负数为敌方，0为平局，绝对值为血量差
+    // 返回值为正数，胜利方为我方，负数为敌方，0为平局，绝对值为命元伤害
     int BattleEnd() {
         Status *win_status;
         Status *lose_status;
@@ -90,7 +90,11 @@ public:
             ming_yuan_damage = MingYuanDamage(win_status, lose_status);
             std::cout << "命元伤害：" << ming_yuan_damage << std::endl;
         }
-        return statuss[0]->health->getValue() - statuss[1]->health->getValue();
+        // 负数为敌方胜利，正数为我方胜利，0为平局
+        if (statuss[0]->health->getValue() < statuss[1]->health->getValue()) {
+            ming_yuan_damage = -ming_yuan_damage;
+        }
+        return ming_yuan_damage;
     }
 
     // 战斗开始
