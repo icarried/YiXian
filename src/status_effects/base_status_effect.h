@@ -8,6 +8,7 @@
 #include "../cal.h"
 
 class Status;
+class AccountTaskQueue;
 
 /*
 # 对于伤害结算影响的buff有：
@@ -36,20 +37,20 @@ protected:
 public:
     Status* linked_status;
     BaseStatusEffect(Status* linking_status, int val);
-    virtual ~BaseStatusEffect() = default;
+    virtual ~BaseStatusEffect();
     int getValue() const; // 获取数值
     void setValue(int val); // 设置数值, 用于初始化
     virtual void add(int val); // value增加
     virtual void sub(int val); // value减少
     void add_or_sub(int val); // value增加或减少
+    AccountTaskQueue* add_task_quene; // 增加时触发的任务队列
+    AccountTaskQueue* sub_task_quene; // 减少时触发的任务队列
 };
 
 // 状态值
 class StatusVal : public BaseStatusEffect {
 public:
     StatusVal(Status* linking_status, int val);
-    AccountTaskQueue* add_task_quene; // 增加时触发的任务队列
-    AccountTaskQueue* sub_task_quene; // 减少时触发的任务队列
 };
 
 // buff，不能小于0

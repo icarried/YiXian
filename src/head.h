@@ -6,6 +6,7 @@
 
 
 // 牌特殊属性是指对牌的结算有影响的属性
+// card_sp_attr数组的索引
 #define CARD_SP_ATTR_SUI_FANG 0 //碎防
 #define CARD_SP_ATTR_WU_SHI_FANG_YU 1 //无视防
 #define CARD_SP_ATTR_DUO_GONG 2 //多攻

@@ -6,6 +6,7 @@
 #include "../account.h"
 #include "../head.h"
 
+// card_tag数组索引
 #define PU_TONG_GONG_JI_CARD 0 //普通攻击牌
 #define XIAO_HAO_CARD 1 //消耗牌
 #define CHI_XU_CARD 2 //持续牌

@@ -1,7 +1,15 @@
 #include "base_status_effect.h"
 #include "../status.h"
 
-BaseStatusEffect::BaseStatusEffect(Status* linking_status, int val) : linked_status(linking_status), value(val) {}
+BaseStatusEffect::BaseStatusEffect(Status* linking_status, int val) : linked_status(linking_status), value(val) {
+    add_task_quene = new AccountTaskQueue(linking_status);
+    sub_task_quene = new AccountTaskQueue(linking_status);
+}
+
+BaseStatusEffect::~BaseStatusEffect() {
+    delete add_task_quene;
+    delete sub_task_quene;
+}
 
 int BaseStatusEffect::getValue() const {
     return value;
@@ -27,15 +35,7 @@ void BaseStatusEffect::add_or_sub(int val) {
     }
 }
 
-StatusVal::StatusVal(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
-    add_task_quene = new AccountTaskQueue(linking_status);
-    sub_task_quene = new AccountTaskQueue(linking_status);
-}
-
-StatusVal::~StatusVal() {
-    delete add_task_quene;
-    delete sub_task_quene;
-}
+StatusVal::StatusVal(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {}
 
 Buff::Buff(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
     linking_status->num_buffs++;
@@ -44,6 +44,7 @@ Buff::Buff(Status* linking_status, int val) : BaseStatusEffect(linking_status, v
 void Buff::add(int val) {
     BaseStatusEffect::add(val);
     std::cout << "，获得" << val << "层" << name;
+    this->add_task_quene->executeTaskQueue(val);
 }
 
 void Buff::sub(int val) {
@@ -56,6 +57,7 @@ void Buff::sub(int val) {
     }
     BaseStatusEffect::sub(sub_value);
     std::cout << "，减少" << sub_value << "层" << name;
+    this->sub_task_quene->executeTaskQueue(sub_value);
 }
 
 Debuff::Debuff(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
@@ -76,6 +78,7 @@ void Debuff::add(int val) {
     }
     BaseStatusEffect::add(val);
     std::cout << "，获得" << val << "层" << name;
+    this->add_task_quene->executeTaskQueue(val);
 }
 
 void Debuff::sub(int val) {
@@ -88,4 +91,5 @@ void Debuff::sub(int val) {
     }
     BaseStatusEffect::sub(sub_value);
     std::cout << "，减少" << sub_value << "层" << name;
+    this->sub_task_quene->executeTaskQueue(sub_value);
 }

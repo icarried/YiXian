@@ -7,28 +7,6 @@ Deck::Deck() {
         cards[i] = new Card_qt_qtq_pttonggongji(1, i);
     }
     
-    // delete cards[0];
-    // // 第一张牌改为崩拳·戳
-    // cards[0] = new Card_dx_lqq_bengquan_chuo(1, 0);
-    
-    // delete cards[2];
-    // cards[2] = new Card_dx_yyq_bengquan_lianbeng(1, 2);
-    
-    // delete cards[3];
-    // cards[3] = new Card_dx_yyq_bengquan_lianbeng(1, 3);
-
-    delete cards[0];
-    cards[0] = new Card_dx_hsq_xiuluohou(1, 0);
-
-    delete cards[1];
-    cards[1] = new Card_dx_lqq_luochapu(1, 1);
-
-    delete cards[2];
-    cards[2] = new Card_dx_lqq_luochapu(1, 2);
-
-    delete cards[3];
-    cards[3] = new Card_dx_hsq_xuanxinzhanpo(1, 3);
-    
     // 初始化手牌为普通攻击牌
     for (int i = 0; i < HAND_CARD_END_INDEX; i++) {
         hand_cards[i] = new Card_qt_qtq_pttonggongji(1, i);
@@ -141,6 +119,20 @@ void Deck::PutAllDeckToHand() {
             }
         }
     }
+}
+
+// 把一张牌新的牌放入手牌
+// 返回值为新牌的位置, 如果没有空位则返回-1, 并删除新牌
+int Deck::AddCardtoHand(BaseCard* card) {
+    for (int i = 0; i < HAND_CARD_END_INDEX; i++) {
+        if (hand_cards[i]->card_tag[PU_TONG_GONG_JI_CARD]) {
+            delete hand_cards[i];
+            hand_cards[i] = card;
+            return i;
+        }
+    }
+    delete card;
+    return -1;
 }
 
 // 获取卡组中position位置的卡牌指针

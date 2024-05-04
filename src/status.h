@@ -61,7 +61,9 @@ public:
 
         task_quene_before_effect = new EffectTaskQueue(this);
         task_quene_after_effect = new EffectTaskQueue(this);
+        task_quene_before_round = new AccountTaskQueue(this);
         task_quene_after_round = new AccountTaskQueue(this);
+        task_quene_at_battle_start = new AccountTaskQueue(this);
 
         // 校验(目前校验无作用，因为buff和debuff数量是固定的)
         if (num_buffs != BUFF_END_INDEX) {
@@ -100,7 +102,9 @@ public:
         // 删除任务队列
         delete task_quene_before_effect;
         delete task_quene_after_effect;
+        delete task_quene_before_round;
         delete task_quene_after_round;
+        delete task_quene_at_battle_start;
     }
 
     /*
@@ -170,7 +174,9 @@ public:
     // 任务队列
     EffectTaskQueue* task_quene_before_effect; // 卡牌效果执行前的任务队列，参数为使用的牌
     EffectTaskQueue* task_quene_after_effect; // 卡牌效果执行后的任务队列，参数为使用的牌，给下一张牌的执行后任务队列的任务必须通过卡牌效果执行前的任务队列放入
+    AccountTaskQueue* task_quene_before_round; // 回合开始时触发的任务队列，参数为回合数
     AccountTaskQueue* task_quene_after_round; // 回合结束时触发的任务队列，参数为回合数
+    AccountTaskQueue* task_quene_at_battle_start; // 战斗开始时触发的任务队列，参数为战斗轮数
 
     // 状态值
     StatusVal* health_sub_total; // 该次战斗中失去的血量总和

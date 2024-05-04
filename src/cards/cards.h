@@ -7,6 +7,7 @@
 // #include "./wx/wx_init.h"
 // #include "./qx/qx_init.h"
 #include "./dx/dx_init.h"
+#include "./zsxm/zsxm_init.h"
 // 更多卡牌完成后，将其包含进来
 
 // 继承BaseCard类，实现不同牌的效果

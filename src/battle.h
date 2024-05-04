@@ -16,15 +16,11 @@
 class Battle {
 public:
     // 构造函数
-    Battle(int battle_round) : battle_round(battle_round) {
-        my_deck = new Deck();
-        enemy_deck = new Deck();
+    Battle(Deck *my_deck, Deck *enemy_deck, Status *my_status, Status *enemy_status, int battle_round) : my_deck(my_deck), enemy_deck(enemy_deck), my_status(my_status), enemy_status(enemy_status), battle_round(battle_round) {
         decks[0] = my_deck;
         decks[1] = enemy_deck;
 
         // 初始化状态，传入对应deck指针（方便检索卡组的效果）
-        my_status = new Status(my_deck);
-        enemy_status = new Status(enemy_deck);
         statuss[0] = my_status;
         statuss[1] = enemy_status;
         // 初始化随机数种子
@@ -33,12 +29,7 @@ public:
     }
     
     // 析构函数
-    ~Battle() {
-        delete my_status;
-        delete enemy_status;
-        delete my_deck;
-        delete enemy_deck;
-    }
+    ~Battle() {}
 
     /*
     命元伤害计算
@@ -104,6 +95,8 @@ public:
     int BattleStart() {
         int side;
         int other_side;
+        statuss[0]->task_quene_at_battle_start->executeTaskQueue(this->battle_round);
+        statuss[1]->task_quene_at_battle_start->executeTaskQueue(this->battle_round);
         for (this->round = 1; this->round < BATTLE_END_ROUND; this->round++) {
             std::cout << "--------第" << this->round << "回合--------" << std::endl;
             for (side = 0; side < 2; side++) {
@@ -111,7 +104,8 @@ public:
                 std::cout << side_string[side] << "回合" << std::endl;
                 statuss[side]->ShowStatus();
                 // 双方轮流行动
-                // 1. 检查回合buff
+                // 1. 检查回合任务队列和buff
+                statuss[side]->task_quene_before_round->executeTaskQueue(this->round);
                 if (statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue() > 0) {
                     // 内伤
                     NonSourseDamage(statuss[side], statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue());

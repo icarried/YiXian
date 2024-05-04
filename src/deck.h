@@ -26,6 +26,7 @@ public:
     void SwapCard(int position1, bool is_deck1, int position2, bool is_deck2);
     void PutAllDeckToHand();
     void ShowDeck();
+    int AddCardtoHand(BaseCard* card);
     BaseCard* GetCard(int position);
 
     BaseCard *cards[DECK_END_INDEX];

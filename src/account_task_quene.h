@@ -9,7 +9,11 @@ class Status; // 前置声明
 
 // 定义任务的备注
 
-// 结算任务队列
+/**
+ * 结算效果任务队列
+ * 围绕状态的一系列结算，包括状态值、buff、debuff等
+ * 参数为状态指针
+*/
 class AccountTaskQueue {
 public:
     AccountTaskQueue(Status *status) : status(status) {

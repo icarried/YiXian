@@ -13,7 +13,12 @@ class BaseCard; // 前置声明
 #define REMARK_NONE 0 // 无备注
 #define REMARK_BENG_QUAN 1 // 崩拳
 
-// 卡牌效果任务队列
+/**
+ * 卡牌效果任务队列
+ * 围绕卡牌效果的任务队列，用于处理卡牌效果的执行和移除，例如持续效果
+ * 也包括卡牌效果执行前后的额外效果
+ * 参数为使用的卡牌指针
+*/
 class EffectTaskQueue {
 public:
     EffectTaskQueue(Status *status) : status(status) {
