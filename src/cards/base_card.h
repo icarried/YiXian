@@ -83,6 +83,31 @@ public:
         health_cost = 0;
         is_before_task_queue_effect = false;
     }
+
+    virtual BaseCard* Clone() const {
+        return new BaseCard(*this);
+    }
+
+    //拷贝构造函数
+    BaseCard(const BaseCard& other) {
+        card_name = other.card_name;
+        level = other.level;
+        position = other.position;
+        is_attacking = other.is_attacking;
+        attack = other.attack;
+        ling_qi_cost = other.ling_qi_cost;
+        for (int i = 0; i < CARD_TAG_END_INDEX; i++) {
+            card_tag[i] = other.card_tag[i];
+        }
+        for (int i = 0; i < CARD_SP_ATTR_END_INDEX; i++) {
+            card_sp_attr[i] = other.card_sp_attr[i];
+        }
+        is_ling_qi_cost_modifiable = other.is_ling_qi_cost_modifiable;
+        is_health_cost_modifiable = other.is_health_cost_modifiable;
+        is_health_cost = other.is_health_cost;
+        health_cost = other.health_cost;
+        is_before_task_queue_effect = other.is_before_task_queue_effect;
+    }
     
     virtual ~BaseCard() = default;
 

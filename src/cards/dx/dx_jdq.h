@@ -28,6 +28,10 @@ public:
         health_cost = 2;
         ling_qi_cost = 2;
     }
+    Card_dx_jdq_shirupozhu* Clone() const {
+        return new Card_dx_jdq_shirupozhu(*this);
+    }
+    Card_dx_jdq_shirupozhu(const Card_dx_jdq_shirupozhu& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int temp_status = LingQiCostMax(my_status, 2);
         my_status->buffs[BUFF_QI_SHI]->add(temp_status);
@@ -45,6 +49,10 @@ public:
         card_name = "踏破九霄";
         is_attacking = false;
     }
+    Card_dx_jdq_tapojiuxiao* Clone() const {
+        return new Card_dx_jdq_tapojiuxiao(*this);
+    }
+    Card_dx_jdq_tapojiuxiao(const Card_dx_jdq_tapojiuxiao& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int temp_status = 0;
         switch (level) {
@@ -73,6 +81,10 @@ public:
         card_name = "气若悬河";
         is_attacking = false;
     }
+    Card_dx_jdq_qiruoxuanhe* Clone() const {
+        return new Card_dx_jdq_qiruoxuanhe(*this);
+    }
+    Card_dx_jdq_qiruoxuanhe(const Card_dx_jdq_qiruoxuanhe& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int ling_qi_gain = 0;
         int temp_status = 0;
@@ -124,6 +136,10 @@ public:
                 break;
         }
     }
+    Card_dx_jdq_shuangguipaimeng* Clone() const {
+        return new Card_dx_jdq_shuangguipaimeng(*this);
+    }
+    Card_dx_jdq_shuangguipaimeng(const Card_dx_jdq_shuangguipaimeng& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int temp_status = 0;
         switch (level) {
@@ -169,6 +185,10 @@ public:
         }
         is_ling_qi_cost_modifiable = true;
     }
+    Card_dx_jdq_ehupushi* Clone() const {
+        return new Card_dx_jdq_ehupushi(*this);
+    }
+    Card_dx_jdq_ehupushi(const Card_dx_jdq_ehupushi& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         return 0;
@@ -200,6 +220,10 @@ public:
                 break;
         }
     }
+    Card_dx_jdq_yingfengzhang* Clone() const {
+        return new Card_dx_jdq_yingfengzhang(*this);
+    }
+    Card_dx_jdq_yingfengzhang(const Card_dx_jdq_yingfengzhang& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int temp_max = 0;
         switch (level) {
@@ -231,6 +255,10 @@ public:
         is_attacking = false;
         card_tag[TI_PO_CARD] = true;
     }
+    Card_dx_jdq_hezhongqianxing* Clone() const {
+        return new Card_dx_jdq_hezhongqianxing(*this);
+    }
+    Card_dx_jdq_hezhongqianxing(const Card_dx_jdq_hezhongqianxing& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         my_status->ti_po->add(3);
         int defence_gain = 0;
@@ -266,6 +294,10 @@ public:
         is_attacking = false;
         card_tag[TI_PO_CARD] = true;
     }
+    Card_dx_jdq_duangu* Clone() const {
+        return new Card_dx_jdq_duangu(*this);
+    }
+    Card_dx_jdq_duangu(const Card_dx_jdq_duangu& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         my_status->ti_po->add(1);
         int health_gain = 0;
@@ -329,6 +361,10 @@ public:
         health_cost = 5;
         card_tag[BENG_QUAN_CARD] = true;
     }
+    Card_dx_jdq_bengquan_xianglong* Clone() const {
+        return new Card_dx_jdq_bengquan_xianglong(*this);
+    }
+    Card_dx_jdq_bengquan_xianglong(const Card_dx_jdq_bengquan_xianglong& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         int temp_status = 0;
@@ -386,6 +422,10 @@ public:
         health_cost = 4;
         card_tag[BENG_QUAN_CARD] = true;
     }
+    Card_dx_jdq_bengquan_jiemai* Clone() const {
+        return new Card_dx_jdq_bengquan_jiemai(*this);
+    }
+    Card_dx_jdq_bengquan_jiemai(const Card_dx_jdq_bengquan_jiemai& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         DebuffRandomReduce(my_status, 1, true, enemy_status);
         Attack(my_status, enemy_status, attack, card_sp_attr);
@@ -411,6 +451,10 @@ public:
         is_attacking = false;
         card_tag[CHI_XU_CARD] = true;
     }
+    Card_dx_jdq_bengtianbu* Clone() const {
+        return new Card_dx_jdq_bengtianbu(*this);
+    }
+    Card_dx_jdq_bengtianbu(const Card_dx_jdq_bengtianbu& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int ling_qi_gain = 0;
         switch (level) {

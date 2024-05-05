@@ -1,14 +1,10 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-// #include "buff.h"
 #include "flag.h"
 #include "head.h"
 #include "effect_task_quene.h"
 #include "account_task_quene.h"
-#include "./status_effects/buffs.h"
-#include "./status_effects/debuffs.h"
-#include "./status_effects/status_vals.h"
 #include "./status_effects/status_effects.h"
 
 class Deck; // 前置声明
@@ -42,8 +38,6 @@ public:
             is_usable[i] = true;
         }
         // 初始化buffs和debuff
-        num_buffs = 0;
-        num_debuffs = 0;
         for (int i = 0; i < BUFF_END_INDEX; i++) {
             buffs[i] = buff_create(i, this, 0);
         }
@@ -64,16 +58,6 @@ public:
         task_quene_before_round = new AccountTaskQueue(this);
         task_quene_after_round = new AccountTaskQueue(this);
         task_quene_at_battle_start = new AccountTaskQueue(this);
-
-        // 校验(目前校验无作用，因为buff和debuff数量是固定的)
-        if (num_buffs != BUFF_END_INDEX) {
-            std::cout << "error:--buff数量校验失败--" << std::endl;
-            exit(1);
-        }
-        if (num_debuffs != DEBUFF_END_INDEX) {
-            std::cout << "error:--debuff数量校验失败--" << std::endl;
-            exit(1);
-        }
     
     }
 
@@ -193,8 +177,6 @@ public:
     bool is_usable[DECK_END_INDEX]; // 某个格子的牌是否可用（未被消耗）(使用的消耗牌和持续牌将被消耗）
 
     // Buff和Debuff
-    int num_buffs; // buff数量，每注册一个buff，num_buffs+1，用于校验
-    int num_debuffs; // debuff数量，每注册一个debuff，num_debuffs+1，用于校验
     Buff* buffs[BUFF_END_INDEX]; // buff
     Debuff* debuffs[DEBUFF_END_INDEX]; // debuff
     

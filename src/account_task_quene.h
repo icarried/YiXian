@@ -16,9 +16,16 @@ class Status; // 前置声明
 */
 class AccountTaskQueue {
 public:
-    AccountTaskQueue(Status *status) : status(status) {
+    AccountTaskQueue(Status *status) : status(status) {}
 
+    // 拷贝构造函数
+    AccountTaskQueue(const AccountTaskQueue& other, Status *new_status) {
+        //status = other.status; // 直接复制状态指针（浅拷贝），假设状态管理在外部处理
+        status = new_status;
+        taskQueue = other.taskQueue; // 任务队列，因为Task是可以拷贝的
+        // 新队列无需初始化待移除任务
     }
+
     // 添加任务到队列
     //
     //使用示例：

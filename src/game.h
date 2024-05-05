@@ -24,6 +24,12 @@ public:
         InitMyDeck();
         InitEnemyDeck();
 
+        // // 测试：尝试调用卡组的拷贝构造函数
+        // sor_my_deck->hand_cards[0]->attack = 100;
+        // Deck *test_deck = new Deck(*sor_my_deck);
+        // std::cout << "测试：尝试调用卡组的拷贝构造函数" << test_deck->hand_cards[0]->attack << std::endl;
+
+
         // 选取仙命
         my_role->PickDestiny(new RoleDxXiaobu::ExclusiveDestinyHSQ(my_role));
         enemy_role->PickDestiny(new RoleDxXiaobu::ExclusiveDestinyHSQ(enemy_role));

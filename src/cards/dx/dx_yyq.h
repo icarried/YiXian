@@ -14,6 +14,10 @@ public:
         card_name = "玄手夺魂";
         ling_qi_cost = 1;
     }
+    Card_dx_yyq_xuanshouduohun* Clone() const override {
+        return new Card_dx_yyq_xuanshouduohun(*this);
+    }
+    Card_dx_yyq_xuanshouduohun(const Card_dx_yyq_xuanshouduohun& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int temp_suck = 0;
         int temp_ex_suck_max = 0;
@@ -48,6 +52,10 @@ public:
         card_name = "磅礴之势";
         is_attacking = false;
     }
+    Card_dx_yyq_pangbozhishi* Clone() const override {
+        return new Card_dx_yyq_pangbozhishi(*this);
+    }
+    Card_dx_yyq_pangbozhishi(const Card_dx_yyq_pangbozhishi& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int shen_fa_gain = 0;
         switch (level) {
@@ -92,6 +100,10 @@ public:
         card_name = "冲霄破浪";
         is_attacking = false;
     }
+    Card_dx_yyq_chongxiaopolang* Clone() const override {
+        return new Card_dx_yyq_chongxiaopolang(*this);
+    }
+    Card_dx_yyq_chongxiaopolang(const Card_dx_yyq_chongxiaopolang& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int ling_qi_gain = 0;
         switch (level) {
@@ -132,8 +144,11 @@ public:
                 health_cost = 5;
                 break;
         }
-
     }
+    Card_dx_yyq_mingyingshenfa* Clone() const override {
+        return new Card_dx_yyq_mingyingshenfa(*this);
+    }
+    Card_dx_yyq_mingyingshenfa(const Card_dx_yyq_mingyingshenfa& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int jian_gong_gain = 0;
         int shen_fa_gain = 0;
@@ -159,7 +174,7 @@ public:
 };
 
 /*
-灵气+1/2/3，身法+2/3/4，持续：每回合首次失去生命时，加1灵气和1身法！！！！似乎版本更新成了仅自己回合首次失去生命时
+灵气+1/2/3，身法+2/3/4，持续：自身每回合首次失去生命时，加1灵气和1身法
 */
 class Card_dx_yyq_lingxuanmizongbu : public BaseCard {
 public:
@@ -168,6 +183,10 @@ public:
         is_attacking = false;
         card_tag[CHI_XU_CARD] = true;
     }
+    Card_dx_yyq_lingxuanmizongbu* Clone() const override {
+        return new Card_dx_yyq_lingxuanmizongbu(*this);
+    }
+    Card_dx_yyq_lingxuanmizongbu(const Card_dx_yyq_lingxuanmizongbu& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int ling_qi_gain = 0;
         int shen_fa_gain = 0;
@@ -203,13 +222,6 @@ public:
             [](int round){ return true; },
             [](int round){ return false; }
         );
-        enemy_status->task_quene_after_round->addTask(
-            [my_status](int round){
-                my_status->flag.flag[FLAG_LINGXUANMIZONGBU] = false;
-            },
-            [](int round){ return true; },
-            [](int round){ return false; }
-        );
         return 0;
     }
 };
@@ -223,6 +235,10 @@ public:
         card_name = "鹤步";
         is_attacking = false;
     }
+    Card_dx_yyq_hebu* Clone() const override {
+        return new Card_dx_yyq_hebu(*this);
+    }
+    Card_dx_yyq_hebu(const Card_dx_yyq_hebu& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int health_gain = 0;
         int shen_fa_gain_max = 0;
@@ -260,6 +276,10 @@ public:
         is_attacking = false;
         card_tag[TI_PO_CARD] = true;
     }
+    Card_dx_yyq_duansui* Clone() const override {
+        return new Card_dx_yyq_duansui(*this);
+    }
+    Card_dx_yyq_duansui(const Card_dx_yyq_duansui& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         my_status->ti_po->add(3);
         float temp_percent = 0;
@@ -304,6 +324,10 @@ public:
         card_tag[BENG_QUAN_CARD] = true;
         card_sp_attr[CARD_SP_ATTR_SHUANG_BEI_QI_SHI] = true;
     }
+    Card_dx_yyq_bengquan_cunjing* Clone() const override {
+        return new Card_dx_yyq_bengquan_cunjing(*this);
+    }
+    Card_dx_yyq_bengquan_cunjing(const Card_dx_yyq_bengquan_cunjing& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->task_quene_before_effect->addTask(
@@ -349,15 +373,18 @@ public:
         health_cost = 6;
         card_tag[BENG_QUAN_CARD] = true;
         is_before_task_queue_effect = true;
-
     }
+    Card_dx_yyq_bengquan_lianbeng* Clone() const override {
+        return new Card_dx_yyq_bengquan_lianbeng(*this);
+    }
+    Card_dx_yyq_bengquan_lianbeng(const Card_dx_yyq_bengquan_lianbeng& other) : BaseCard(other) {}
     int BeforeTaskQueueEffect(Status* my_status, Status* enemy_status) {
         // 记录将触发的崩拳效果
         for (auto& task : my_status->task_quene_before_effect->taskQueue) {
-        if (task.remark == REMARK_BENG_QUAN) {
-            this->recordedTasks.push_back(task);
+            if (task.remark == REMARK_BENG_QUAN) {
+                this->recordedTasks.push_back(task);
+            }
         }
-    }
         return 0;
     }
     int Effect(Status* my_status, Status* enemy_status) {
@@ -381,6 +408,10 @@ public:
         is_attacking = false;
         card_tag[CHI_XU_CARD] = true;
     }
+    Card_dx_yyq_bengmiexinfa* Clone() const override {
+        return new Card_dx_yyq_bengmiexinfa(*this);
+    }
+    Card_dx_yyq_bengmiexinfa(const Card_dx_yyq_bengmiexinfa& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int qi_shi_gain = 0;
         switch (level) {

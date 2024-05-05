@@ -16,11 +16,11 @@ Deck::Deck() {
 // 拷贝构造函数
 Deck::Deck(const Deck &deck) {
     for (int i = 0; i < DECK_END_INDEX; i++) {
-        cards[i] = deck.cards[i];
+        cards[i] = new BaseCard(*deck.cards[i]);
     }
-    
+
     for (int i = 0; i < HAND_CARD_END_INDEX; i++) {
-        hand_cards[i] = deck.hand_cards[i];
+        hand_cards[i] = new BaseCard(*deck.hand_cards[i]);
     }
 }
 

@@ -24,6 +24,10 @@ public:
                 break;
         }
     }
+    Card_dx_hsq_tiandihaodang* Clone() const override {
+        return new Card_dx_hsq_tiandihaodang(*this);
+    }
+    Card_dx_hsq_tiandihaodang(const Card_dx_hsq_tiandihaodang& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         int health_gain = 0;
@@ -57,6 +61,10 @@ public:
         card_name = "修罗吼";
         is_attacking = false;
     }
+    Card_dx_hsq_xiuluohou* Clone() const override {
+        return new Card_dx_hsq_xiuluohou(*this);
+    }
+    Card_dx_hsq_xiuluohou(const Card_dx_hsq_xiuluohou& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int temp_debuff = 0;
         switch (level) {
@@ -90,6 +98,10 @@ public:
         card_name = "威震四方";
         is_attacking = false;
     }
+    Card_dx_hsq_weizhensifang* Clone() const override {
+        return new Card_dx_hsq_weizhensifang(*this);
+    }
+    Card_dx_hsq_weizhensifang(const Card_dx_hsq_weizhensifang& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int defence = 0;
         int qi_shi_max_gain = 0;
@@ -139,6 +151,10 @@ public:
                 break;
         }
     }
+    Card_dx_hsq_xuanxinzhanpo* Clone() const override {
+        return new Card_dx_hsq_xuanxinzhanpo(*this);
+    }
+    Card_dx_hsq_xuanxinzhanpo(const Card_dx_hsq_xuanxinzhanpo& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
             if (my_status->debuffs[debuff_type]->getValue() > 0) {
@@ -190,6 +206,10 @@ public:
         }
         card_tag[TI_PO_CARD] = true;
     }
+    Card_dx_hsq_baishapojingzhang* Clone() const override {
+        return new Card_dx_hsq_baishapojingzhang(*this);
+    }
+    Card_dx_hsq_baishapojingzhang(const Card_dx_hsq_baishapojingzhang& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         int temp_attack = 0;
         switch (level) {
@@ -233,6 +253,10 @@ public:
         }
         card_tag[TI_PO_CARD] = true;
     }
+    Card_dx_hsq_duanshenkaihai* Clone() const override {
+        return new Card_dx_hsq_duanshenkaihai(*this);
+    }
+    Card_dx_hsq_duanshenkaihai(const Card_dx_hsq_duanshenkaihai& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->ti_po->add(level + 2);
@@ -266,6 +290,10 @@ public:
         health_cost = 8;
         card_tag[BENG_QUAN_CARD] = true;
     }
+    Card_dx_hsq_bengquan_jingchu* Clone() const override {
+        return new Card_dx_hsq_bengquan_jingchu(*this);
+    }
+    Card_dx_hsq_bengquan_jingchu(const Card_dx_hsq_bengquan_jingchu& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         my_status->task_quene_before_effect->addTask(
@@ -307,6 +335,10 @@ public:
         health_cost = 7;
         card_tag[BENG_QUAN_CARD] = true;
     }
+    Card_dx_hsq_bengquan_shanji* Clone() const override {
+        return new Card_dx_hsq_bengquan_shanji(*this);
+    }
+    Card_dx_hsq_bengquan_shanji(const Card_dx_hsq_bengquan_shanji& other) : BaseCard(other) {}
     int Effect(Status* my_status, Status* enemy_status) {
         Attack(my_status, enemy_status, attack, card_sp_attr);
         int temp_status = 0;

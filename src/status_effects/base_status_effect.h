@@ -37,6 +37,7 @@ protected:
 public:
     Status* linked_status;
     BaseStatusEffect(Status* linking_status, int val);
+    BaseStatusEffect(const BaseStatusEffect& other, Status* new_status); // 拷贝构造函数
     virtual ~BaseStatusEffect();
     int getValue() const; // 获取数值
     void setValue(int val); // 设置数值, 用于初始化
@@ -51,12 +52,14 @@ public:
 class StatusVal : public BaseStatusEffect {
 public:
     StatusVal(Status* linking_status, int val);
+    StatusVal(const StatusVal& other, Status* new_status); // 拷贝构造函数
 };
 
 // buff，不能小于0
 class Buff : public BaseStatusEffect {
 public:
     Buff(Status* linking_status, int val);
+    Buff(const Buff& other, Status* new_status); // 拷贝构造函数
     void add(int val) override;
     void sub(int val) override;
     std::string name;
@@ -67,6 +70,7 @@ public:
 class Debuff : public BaseStatusEffect {
 public:
     Debuff(Status* linking_status, int val);
+    Debuff(const Debuff& other, Status* new_status); // 拷贝构造函数
     void add(int val) override;
     void sub(int val) override;
     std::string name;

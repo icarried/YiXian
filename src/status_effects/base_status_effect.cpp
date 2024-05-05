@@ -6,6 +6,14 @@ BaseStatusEffect::BaseStatusEffect(Status* linking_status, int val) : linked_sta
     sub_task_quene = new AccountTaskQueue(linking_status);
 }
 
+// 拷贝构造函数
+BaseStatusEffect::BaseStatusEffect(const BaseStatusEffect& other, Status* new_status) {
+    linked_status = new_status;
+    value = other.value;
+    add_task_quene = new AccountTaskQueue(*add_task_quene, new_status);
+    sub_task_quene = new AccountTaskQueue(*sub_task_quene, new_status);
+}
+
 BaseStatusEffect::~BaseStatusEffect() {
     delete add_task_quene;
     delete sub_task_quene;
@@ -37,8 +45,18 @@ void BaseStatusEffect::add_or_sub(int val) {
 
 StatusVal::StatusVal(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {}
 
+// 拷贝构造函数
+StatusVal::StatusVal(const StatusVal& other, Status* new_status) : BaseStatusEffect(other, new_status) {}
+
 Buff::Buff(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
-    linking_status->num_buffs++;
+    name = "无名buff";
+    id = 0;
+}
+
+// 拷贝构造函数
+Buff::Buff(const Buff& other, Status* new_status) : BaseStatusEffect(other, new_status) {
+    name = other.name;
+    id = other.id;
 }
 
 void Buff::add(int val) {
@@ -61,7 +79,14 @@ void Buff::sub(int val) {
 }
 
 Debuff::Debuff(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
-    linking_status->num_debuffs++;
+    name = "无名debuff";
+    id = 0;
+}
+
+// 拷贝构造函数
+Debuff::Debuff(const Debuff& other, Status* new_status) : BaseStatusEffect(other, new_status) {
+    name = other.name;
+    id = other.id;
 }
 
 // debuff获取
