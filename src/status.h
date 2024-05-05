@@ -61,6 +61,54 @@ public:
     
     }
 
+    // 虚拷贝函数
+    virtual Status* Clone(Deck* new_deck) const {
+        return new Status(*this, new_deck);
+    }
+
+    // 拷贝构造函数
+    Status(const Status& other, Deck* new_deck) : deck(new_deck) {
+        // 初始化状态值
+        health_sub_total = other.health_sub_total->Clone(this); // 失去的血量总和
+        ti_po_add_total = other.ti_po_add_total->Clone(this); // 体魄增加总和
+        health = other.health->Clone(this); // 血量
+        health_max = other.health_max->Clone(this); // 血量上限
+        defense = other.defense->Clone(this); // 防御
+        ling_qi = other.ling_qi->Clone(this); // 灵气
+        xiu_wei = other.xiu_wei->Clone(this); // 修为
+        ti_po = other.ti_po->Clone(this); // 体魄
+        ti_po_max = other.ti_po_max->Clone(this); // 体魄上限
+
+        // 初始化星位
+        for (int i = 0; i < DECK_END_INDEX; i++) {
+            is_xing_wei[i] = other.is_xing_wei[i];
+        }
+        // 初始化牌可用
+        for (int i = 0; i < DECK_END_INDEX; i++) {
+            is_usable[i] = other.is_usable[i];
+        }
+        // 初始化buffs和debuff
+        for (int i = 0; i < BUFF_END_INDEX; i++) {
+            buffs[i] = other.buffs[i]->Clone(this);
+        }
+        for (int i = 0; i < DEBUFF_END_INDEX; i++) {
+            debuffs[i] = other.debuffs[i]->Clone(this);
+        }
+
+        // 使用卡牌的状态记录
+        is_card_attacked = other.is_card_attacked;
+        using_card_position = other.using_card_position;
+        using_yun_jian_continuous = other.using_yun_jian_continuous;
+        attack_damage_percent = other.attack_damage_percent;
+
+        task_quene_before_effect = other.task_quene_before_effect->Clone(this);
+        task_quene_after_effect = other.task_quene_after_effect->Clone(this);
+        task_quene_before_round = other.task_quene_before_round->Clone(this);
+        task_quene_after_round = other.task_quene_after_round->Clone(this);
+        task_quene_at_battle_start = other.task_quene_at_battle_start->Clone(this);
+
+    }
+
     // 析构函数
     ~Status() {
 

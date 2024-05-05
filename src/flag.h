@@ -19,6 +19,18 @@ public:
         }
     }
 
+    // 虚拷贝函数
+    virtual Flag* Clone() const {
+        return new Flag(*this);
+    }
+
+    // 拷贝构造函数
+    Flag(const Flag& other) {
+        for (int i = 0; i < FLAG_END_INDEX; i++) {
+            flag[i] = other.flag[i];
+        }
+    }
+
     // 析构函数
     ~Flag() {
 

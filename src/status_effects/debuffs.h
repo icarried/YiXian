@@ -14,31 +14,43 @@
 class DebuffPoZhan : public Debuff {
 public:
     DebuffPoZhan(Status* linking_status, int val);
+    DebuffPoZhan* Clone(Status* new_status) const override;
+    DebuffPoZhan(const DebuffPoZhan& other, Status* new_status);
 };
 
 class DebuffWaiShang : public Debuff {
 public:
     DebuffWaiShang(Status* linking_status, int val);
+    DebuffWaiShang* Clone(Status* new_status) const override;
+    DebuffWaiShang(const DebuffWaiShang& other, Status* new_status);
 };
 
 class DebuffJianGong : public Debuff {
 public:
     DebuffJianGong(Status* linking_status, int val);
+    DebuffJianGong* Clone(Status* new_status) const override;
+    DebuffJianGong(const DebuffJianGong& other, Status* new_status);
 };
 
 class DebuffXuRuo : public Debuff {
 public:
     DebuffXuRuo(Status* linking_status, int val);
+    DebuffXuRuo* Clone(Status* new_status) const override;
+    DebuffXuRuo(const DebuffXuRuo& other, Status* new_status);
 };
 
 class DebuffNeiShang : public Debuff {
 public:
     DebuffNeiShang(Status* linking_status, int val);
+    DebuffNeiShang* Clone(Status* new_status) const override;
+    DebuffNeiShang(const DebuffNeiShang& other, Status* new_status);
 };
 
 class DebuffKunFu : public Debuff {
 public:
     DebuffKunFu(Status* linking_status, int val);
+    DebuffKunFu* Clone(Status* new_status) const override;
+    DebuffKunFu(const DebuffKunFu& other, Status* new_status);
 };
 
 Debuff* debuff_create(int id, Status* linking_status, int val);

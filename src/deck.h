@@ -17,8 +17,9 @@ struct CardCountList {
 class Deck {
 public:
     Deck();
+    virtual Deck* Clone() const;
     Deck(const Deck &deck);
-    ~Deck();
+    virtual ~Deck();
     
     void SwapCard(int position1, int position2);
     void SwapHandCard(int position1, int position2);

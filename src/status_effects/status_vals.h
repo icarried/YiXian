@@ -7,17 +7,23 @@
 class HealthSubTotal : public StatusVal {
 public:
     HealthSubTotal(Status* linking_status, int val);
+    HealthSubTotal* Clone(Status* new_status) const override;
+    HealthSubTotal(const HealthSubTotal& other, Status* new_status);
 };
 
 class TiPoAddTotal : public StatusVal {
 public:
     TiPoAddTotal(Status* linking_status, int val);
+    TiPoAddTotal* Clone(Status* new_status) const override;
+    TiPoAddTotal(const TiPoAddTotal& other, Status* new_status);
 };
 
 // 生命值上限
 class HealthMax : public StatusVal {
 public:
     HealthMax(Status* linking_status, int val);
+    HealthMax* Clone(Status* new_status) const override;
+    HealthMax(const HealthMax& other, Status* new_status);
     void add(int val) override;
     void sub(int val) override;
 };
@@ -26,6 +32,8 @@ public:
 class Health : public StatusVal {
 public:
     Health(Status* linking_status, int val);
+    Health* Clone(Status* new_status) const override;
+    Health(const Health& other, Status* new_status);
     void add(int val) override;
     void sub(int val) override;
 };
@@ -34,6 +42,8 @@ public:
 class Defense : public StatusVal {
 public:
     Defense(Status* linking_status, int val);
+    Defense* Clone(Status* new_status) const override;
+    Defense(const Defense& other, Status* new_status);
     void add(int val) override;
     void sub(int val) override;
 };
@@ -42,6 +52,8 @@ public:
 class LingQi : public StatusVal {
 public:
     LingQi(Status* linking_status, int val);
+    LingQi* Clone(Status* new_status) const override;
+    LingQi(const LingQi& other, Status* new_status);
     void add(int val) override;
     void sub(int val) override;
 };
@@ -50,6 +62,8 @@ public:
 class XiuWei : public StatusVal {
 public:
     XiuWei(Status* linking_status, int val);
+    XiuWei* Clone(Status* new_status) const override;
+    XiuWei(const XiuWei& other, Status* new_status);
     void add(int val) override;
     void sub(int val) override;
 };
@@ -58,6 +72,8 @@ public:
 class TiPoMax : public StatusVal {
 public:
     TiPoMax(Status* linking_status, int val);
+    TiPoMax* Clone(Status* new_status) const override;
+    TiPoMax(const TiPoMax& other, Status* new_status);
     void add(int val) override;
     void sub(int val) override;
 };
@@ -66,6 +82,8 @@ public:
 class TiPo : public StatusVal {
 public:
     TiPo(Status* linking_status, int val);
+    TiPo* Clone(Status* new_status) const override;
+    TiPo(const TiPo& other, Status* new_status);
     void add(int val) override;
     void sub(int val) override;
 };

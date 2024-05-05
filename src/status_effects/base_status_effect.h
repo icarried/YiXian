@@ -37,6 +37,7 @@ protected:
 public:
     Status* linked_status;
     BaseStatusEffect(Status* linking_status, int val);
+    virtual BaseStatusEffect* Clone(Status* new_status) const; // 虚拷贝函数
     BaseStatusEffect(const BaseStatusEffect& other, Status* new_status); // 拷贝构造函数
     virtual ~BaseStatusEffect();
     int getValue() const; // 获取数值
@@ -52,6 +53,7 @@ public:
 class StatusVal : public BaseStatusEffect {
 public:
     StatusVal(Status* linking_status, int val);
+    StatusVal* Clone(Status* new_status) const override; // 虚拷贝函数
     StatusVal(const StatusVal& other, Status* new_status); // 拷贝构造函数
 };
 
@@ -59,6 +61,7 @@ public:
 class Buff : public BaseStatusEffect {
 public:
     Buff(Status* linking_status, int val);
+    Buff* Clone(Status* new_status) const override; // 虚拷贝函数
     Buff(const Buff& other, Status* new_status); // 拷贝构造函数
     void add(int val) override;
     void sub(int val) override;
@@ -70,6 +73,7 @@ public:
 class Debuff : public BaseStatusEffect {
 public:
     Debuff(Status* linking_status, int val);
+    Debuff* Clone(Status* new_status) const override; // 虚拷贝函数
     Debuff(const Debuff& other, Status* new_status); // 拷贝构造函数
     void add(int val) override;
     void sub(int val) override;

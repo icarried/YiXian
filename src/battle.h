@@ -16,7 +16,8 @@
 class Battle {
 public:
     // 构造函数
-    Battle(Deck *my_deck, Deck *enemy_deck, Status *my_status, Status *enemy_status, int battle_round) : my_deck(my_deck), enemy_deck(enemy_deck), my_status(my_status), enemy_status(enemy_status), battle_round(battle_round) {
+    Battle(Deck *my_deck, Deck *enemy_deck, Status *my_status, Status *enemy_status, int battle_round) 
+    : my_deck(my_deck), enemy_deck(enemy_deck), my_status(my_status), enemy_status(enemy_status), battle_round(battle_round) {
         decks[0] = my_deck;
         decks[1] = enemy_deck;
 

@@ -6,12 +6,17 @@ BaseStatusEffect::BaseStatusEffect(Status* linking_status, int val) : linked_sta
     sub_task_quene = new AccountTaskQueue(linking_status);
 }
 
+// 虚拷贝函数
+BaseStatusEffect* BaseStatusEffect::Clone(Status* new_status) const {
+    return new BaseStatusEffect(*this, new_status);
+}
+
 // 拷贝构造函数
 BaseStatusEffect::BaseStatusEffect(const BaseStatusEffect& other, Status* new_status) {
     linked_status = new_status;
     value = other.value;
-    add_task_quene = new AccountTaskQueue(*add_task_quene, new_status);
-    sub_task_quene = new AccountTaskQueue(*sub_task_quene, new_status);
+    add_task_quene = other.add_task_quene->Clone(new_status);
+    sub_task_quene = other.sub_task_quene->Clone(new_status);
 }
 
 BaseStatusEffect::~BaseStatusEffect() {
@@ -45,12 +50,22 @@ void BaseStatusEffect::add_or_sub(int val) {
 
 StatusVal::StatusVal(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {}
 
+// 虚拷贝函数
+StatusVal* StatusVal::Clone(Status* new_status) const {
+    return new StatusVal(*this, new_status);
+}
+
 // 拷贝构造函数
 StatusVal::StatusVal(const StatusVal& other, Status* new_status) : BaseStatusEffect(other, new_status) {}
 
 Buff::Buff(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
     name = "无名buff";
     id = 0;
+}
+
+// 虚拷贝函数
+Buff* Buff::Clone(Status* new_status) const {
+    return new Buff(*this, new_status);
 }
 
 // 拷贝构造函数
@@ -81,6 +96,11 @@ void Buff::sub(int val) {
 Debuff::Debuff(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {
     name = "无名debuff";
     id = 0;
+}
+
+// 虚拷贝函数
+Debuff* Debuff::Clone(Status* new_status) const {
+    return new Debuff(*this, new_status);
 }
 
 // 拷贝构造函数
