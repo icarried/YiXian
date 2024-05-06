@@ -54,16 +54,16 @@ public:
 
         // 初始化卡组
         delete sor_my_deck->cards[0];
-        sor_my_deck->cards[0] = new Card_dx_hsq_xiuluohou(1, 0);
+        sor_my_deck->cards[0] = BaseCard::createInstance("修罗吼", 1, 0);
 
         delete sor_my_deck->cards[1];
-        sor_my_deck->cards[1] = new Card_dx_lqq_luochapu(1, 1);
+        sor_my_deck->cards[1] = BaseCard::createInstance("罗刹扑", 1, 1);
 
         delete sor_my_deck->cards[2];
-        sor_my_deck->cards[2] = new Card_dx_lqq_luochapu(1, 2);
+        sor_my_deck->cards[2] = BaseCard::createInstance("罗刹扑", 1, 2);
 
         delete sor_my_deck->cards[3];
-        sor_my_deck->cards[3] = new Card_dx_hsq_xuanxinzhanpo(1, 3);
+        sor_my_deck->cards[3] = BaseCard::createInstance("玄心斩魄", 1, 3);
     }
 
     // 初始化敌方信息

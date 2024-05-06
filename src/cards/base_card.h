@@ -1,7 +1,11 @@
 #ifndef BASE_CARD_H
 #define BASE_CARD_H
 
+#include <iostream>
 #include <string>
+#include <map>
+#include <functional>
+#include <memory>
 #include "../status.h"
 #include "../account.h"
 #include "../head.h"
@@ -110,6 +114,24 @@ public:
     }
     
     virtual ~BaseCard() = default;
+
+    static std::map<std::string, std::function<BaseCard*(int, int)>>& getRegistry() {
+        static std::map<std::string, std::function<BaseCard*(int, int)>> registry;
+        return registry;
+    }
+
+    static bool registerCard(const std::string& name, std::function<BaseCard*(int, int)> constructor) {
+        getRegistry()[name] = constructor;
+        return true;
+    }
+
+    static BaseCard* createInstance(const std::string& name, int level, int position) {
+        auto it = getRegistry().find(name);
+        if (it != getRegistry().end()) {
+            return it->second(level, position);
+        }
+        return nullptr;
+    }
 
     //虚函数，执行牌的效果，并返回执行状态值
     virtual int Effect(Status* my_status, Status* enemy_status){

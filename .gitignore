@@ -5,7 +5,7 @@
 __pycache__/
 modules/__pycache__/
 log/*
-build/
+build/*
 help.md
 *.exe
 src/*.exe
