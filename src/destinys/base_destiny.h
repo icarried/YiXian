@@ -20,6 +20,25 @@ class BaseDestiny {
 public:
     BaseDestiny(BaseRole* role) : role(role) {}
     virtual ~BaseDestiny() = default;
+    
+    static std::map<int, std::map<std::string, std::function<BaseDestiny*(BaseRole*)>>>& getRegistry() {
+        static std::map<int, std::map<std::string, std::function<BaseDestiny*(BaseRole*)>>> registry;
+        return registry;
+    }
+
+    static bool registerDestiny(int realm, const std::string& name, std::function<BaseDestiny*(BaseRole*)> constructor) {
+        getRegistry()[realm][name] = constructor;
+        return true;
+    }
+
+    static BaseDestiny* createInstance(int realm, const std::string& name, BaseRole* role) {
+        auto it = getRegistry()[realm].find(name);
+        if (it != getRegistry()[realm].end()) {
+            return it->second(role);
+        }
+        throw std::runtime_error("Destiny not found: " + name + " in realm " + std::to_string(realm));
+        return nullptr;
+    }
     // 选取效果
     virtual int PickEffect() {
         return 0;
@@ -45,6 +64,8 @@ public:
         realm = REALM_NONE;
     }
     ~EmptyDestiny() = default;
+    static bool registered;
 };
+
 
 #endif // BASE_DESTINY_H

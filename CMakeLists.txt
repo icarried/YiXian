@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(YiXian)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # 添加所有源文件
 # 添加子目录："${CMAKE_SOURCE_DIR}/子目录/*.cpp"
@@ -21,3 +21,9 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 # 指定生成的可执行文件名称为 main.exe
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
+
+# 寻找yaml-cpp库
+find_package(yaml-cpp REQUIRED)
+
+# 链接yaml-cpp库
+target_link_libraries(${PROJECT_NAME} yaml-cpp)

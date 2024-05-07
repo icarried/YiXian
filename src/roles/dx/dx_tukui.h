@@ -89,11 +89,24 @@ public:
         exclusive_destinies[REALM_JDQ] = new ExclusiveDestinyJDQ(this);
         exclusive_destinies[REALM_YYQ] = new ExclusiveDestinyYYQ(this);
         exclusive_destinies[REALM_HSQ] = new ExclusiveDestinyHSQ(this);
+        BaseDestiny::registerDestiny(REALM_LQQ, "锻躯之道", [](BaseRole* role) {
+            return new ExclusiveDestinyLQQ(role);
+        });
+        BaseDestiny::registerDestiny(REALM_ZJQ, "盛气凌人", [](BaseRole* role) {
+            return new ExclusiveDestinyZJQ(role);
+        });
+        BaseDestiny::registerDestiny(REALM_JDQ, "搏命之勇", [](BaseRole* role) {
+            return new ExclusiveDestinyJDQ(role);
+        });
+        BaseDestiny::registerDestiny(REALM_YYQ, "崩裂之拳", [](BaseRole* role) {
+            return new ExclusiveDestinyYYQ(role);
+        });
+        BaseDestiny::registerDestiny(REALM_HSQ, "猛攻之姿", [](BaseRole* role) {
+            return new ExclusiveDestinyHSQ(role);
+        });
     }
     ~RoleDxTukui() = default;
-
-    std::string name = "屠馗";
-
+    static bool registered;
 };
 
 

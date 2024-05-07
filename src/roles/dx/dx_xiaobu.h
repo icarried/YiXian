@@ -80,8 +80,24 @@ public:
         exclusive_destinies[REALM_JDQ] = new ExclusiveDestinyJDQ(this);
         exclusive_destinies[REALM_YYQ] = new ExclusiveDestinyYYQ(this);
         exclusive_destinies[REALM_HSQ] = new ExclusiveDestinyHSQ(this);
+        BaseDestiny::registerDestiny(REALM_LQQ, "磨砺不止", [](BaseRole* role) {
+            return new ExclusiveDestinyLQQ(role);
+        });
+        BaseDestiny::registerDestiny(REALM_ZJQ, "锻体不息", [](BaseRole* role) {
+            return new ExclusiveDestinyZJQ(role);
+        });
+        BaseDestiny::registerDestiny(REALM_JDQ, "灵涌不竭", [](BaseRole* role) {
+            return new ExclusiveDestinyJDQ(role);
+        });
+        BaseDestiny::registerDestiny(REALM_YYQ, "生机不灭", [](BaseRole* role) {
+            return new ExclusiveDestinyYYQ(role);
+        });
+        BaseDestiny::registerDestiny(REALM_HSQ, "修玄不泯", [](BaseRole* role) {
+            return new ExclusiveDestinyHSQ(role);
+        });
     }
     ~RoleDxXiaobu() = default;
+    static bool registered;
 };
 
 

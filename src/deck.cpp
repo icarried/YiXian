@@ -4,12 +4,12 @@
 Deck::Deck() {
      // 初始化卡组为普通攻击牌
     for (int i = 0; i < DECK_END_INDEX; i++) {
-        cards[i] = new Card_qt_qtq_pttonggongji(1, i);
+        cards[i] = new Card_qt_lqq_pttonggongji(1, i);
     }
     
     // 初始化手牌为普通攻击牌
     for (int i = 0; i < HAND_CARD_END_INDEX; i++) {
-        hand_cards[i] = new Card_qt_qtq_pttonggongji(1, i);
+        hand_cards[i] = new Card_qt_lqq_pttonggongji(1, i);
     }
 }
 

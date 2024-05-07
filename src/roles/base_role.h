@@ -5,7 +5,7 @@
 
 #include "../head.h"
 #include "../status.h"
-#include "base_destiny.h"
+#include "../destinys/base_destiny.h"
 
 
 /*
@@ -33,12 +33,15 @@ public:
             }
         }
     }
-    // 选取仙命
+    // 选取仙命，！！目前会有删除原仙命导致已加入任务队列的战斗开始效果无法执行的问题
     void PickDestiny(BaseDestiny* destiny) {
         if (picked_destinies[destiny->realm] != nullptr) {
             delete picked_destinies[destiny->realm];
         }
         picked_destinies[destiny->realm] = destiny;
+        if (destiny->name == "空仙命") {
+            return;
+        }
         destiny->PickEffect();
         this->my_status->task_quene_at_battle_start->addTask(
             [destiny](int battle_round) {
@@ -47,6 +50,25 @@ public:
             [](int){ return true; },
             [](int){ return false; }
         );
+    }
+
+    static std::map<std::string, std::function<BaseRole*(Status*, Status*)>>& getRegistry() {
+        static std::map<std::string, std::function<BaseRole*(Status*, Status*)>> registry;
+        return registry;
+    }
+
+    static bool registerRole(const std::string& name, std::function<BaseRole*(Status*, Status*)> constructor) {
+        getRegistry()[name] = constructor;
+        return true;
+    }
+
+    static BaseRole* createInstance(const std::string& name, Status* my_status, Status* enemy_status) {
+        auto it = getRegistry().find(name);
+        if (it != getRegistry().end()) {
+            return it->second(my_status, enemy_status);
+        }
+        throw std::runtime_error("Role not found: " + name);
+        return nullptr;
     }
 
     // 专属仙命数组

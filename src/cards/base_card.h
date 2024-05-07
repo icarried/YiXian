@@ -130,6 +130,7 @@ public:
         if (it != getRegistry().end()) {
             return it->second(level, position);
         }
+        throw std::runtime_error("Destiny not found: " + name);
         return nullptr;
     }
 
@@ -176,6 +177,7 @@ public:
             card_sp_attr[sp_attr] -= 1;
     }
 
+    static const std::string name;
     std::string card_name; //牌名
     int level; //牌等级
     int position; //牌位置

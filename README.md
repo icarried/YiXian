@@ -72,44 +72,52 @@ buff完成了大部分<br>
 ```
     
 ## *使用方法*<br>
-修改`src/game.h`文件中的`InitMyInfo()`函数和`InitEnemyInfo()`函数，按自己的需求修改角色、仙命、卡牌等信息，然后编译src内所有.cpp文件即可<br>
+修改`my_info.yaml`文件和`enemy_info.yaml`函数，按自己的需求修改角色、仙命、卡牌等信息再运行即可，请填写正确的角色名、仙命名、卡牌名<br>
 以修改己方信息为例：<br>
-```cpp
-    // 初始化己方信息
-    void InitMyInfo() {
-        // 更改初始化角色
-        delete my_role;
-        my_role = new RoleDxXiaobu(sor_my_status, sor_enemy_status); // 更改角色为小布
-        my_role->realm = REALM_HSQ; // 更改境界为化神期
-
-        // 选取仙命
-        my_role->PickDestiny(new RoleDxXiaobu::ExclusiveDestinyHSQ(my_role)); // 选取化神期专属仙命
-
-        // 更改初始化状态
-        sor_my_status->health_max->setValue(60); // 最大生命值修改为60
-
-        // 初始化卡组，未修改的卡牌为1级的“普通攻击”
-        delete sor_my_deck->cards[0];
-        sor_my_deck->cards[0] = new Card_dx_hsq_xiuluohou(1, 0); // 卡牌位置0处的卡牌修改为1级的“卡牌_锻玄宗_化神期_修罗吼”
-
-        delete sor_my_deck->cards[1];
-        sor_my_deck->cards[1] = new Card_dx_lqq_luochapu(1, 1); // 卡牌位置1处的卡牌修改为1级的“卡牌_锻玄宗_炼气期_罗刹扑”
-
-        delete sor_my_deck->cards[2];
-        sor_my_deck->cards[2] = new Card_dx_lqq_luochapu(1, 2); // 卡牌位置2处的卡牌修改为1级的“卡牌_锻玄宗_炼气期_罗刹扑”
-
-        delete sor_my_deck->cards[3];
-        sor_my_deck->cards[3] = new Card_dx_hsq_xuanxinzhanpo(1, 3); // 卡牌位置3处的卡牌修改为1级的“卡牌_锻玄宗_化神期_玄心斩魄”
-    }|
+```yaml
+    role:
+  name: "小布"
+  realm: "化神期"
+destinys:
+  # 炼气期仙命
+  - name: "空仙命"
+  # 筑基期仙命
+  - name: "空仙命"
+  # 金丹期仙命
+  - name: "空仙命"
+  # 元婴期仙命
+  - name: "空仙命"
+  # 化神期仙命
+  - name: "修玄不泯"
+cards:
+  # 第1张牌
+  - name: "修罗吼"
+    level: 1
+  # 第2张牌
+  - name: "罗刹扑"
+    level: 1
+  # 第3张牌
+  - name: "罗刹扑"
+    level: 1
+  # 第4张牌
+  - name: "普通攻击"
+    level: 1
+  # 第5张牌
+  - name: "普通攻击"
+    level: 1
+  # 第6张牌
+  - name: "普通攻击"
+    level: 1
+  # 第7张牌
+  - name: "普通攻击"
+    level: 1
+  # 第8张牌
+  - name: "普通攻击"
+    level: 1
 ```
 *目前仅完成了锻玄宗的卡牌效果*<br>
-修改卡组中的卡牌时，需要注意卡牌的构造函数参数，第一个参数为卡牌等级，第二个参数为卡牌在卡组中的位置<br>
-可以以如下方式修改牌组的卡牌：<br>
-```cpp
-        delete sor_my_deck->cards[{卡牌在卡组中的位置0-7}];
-        sor_my_deck->cards[4] = new Card_{门派或副职或机缘}_{卡牌所属境界}_{卡牌名拼音全小写}({卡牌等级1-3}, {卡牌在卡组中的位置0-7});
-```
-其中卡牌的命名方法为`Card_{门派或副职或机缘}_{卡牌所属境界}_{卡牌名拼音全小写}`，详解如下<br>
+
+DIY卡牌时，其中卡牌的命名方法为`Card_{门派或副职或机缘}_{卡牌所属境界}_{卡牌名拼音全小写}`，详解如下<br>
 ```
 命名方法：
 牌以Card_开头，后面跟牌的信息
@@ -152,7 +160,6 @@ card_{门派或副职或机缘}_{境界}_{牌名}
 ```
     
 如果需要添加DIY的卡牌，需要在`src/cards/`目录下找到对应.h文件，复制其他卡牌的写法修改类名和效果完成卡牌定义<br>
-然后在`src/game.h`文件中的`InitMyInfo()`函数和`InitEnemyInfo()`函数中添加新的卡牌<br>
 
 构建方法：
 ```shell
