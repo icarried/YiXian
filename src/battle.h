@@ -94,23 +94,47 @@ public:
     // decks[0]为我方，decks[1]为敌方
     // 返回值为正数，胜利方为我方，负数为敌方，0为平局，绝对值为血量差
     int BattleStart() {
-        int side;
-        int other_side;
+        // 先手方
+        int first_side;
+        int side_iter = 1;
         statuss[0]->task_quene_at_battle_start->executeTaskQueue(this->battle_round);
         statuss[1]->task_quene_at_battle_start->executeTaskQueue(this->battle_round);
+        // 显示双方修为+速度
+        std::cout << statuss[0]->style << side_string[0] << "修为：" << statuss[0]->xiu_wei->getValue() << "，速度：" << statuss[0]->speed->getValue() << DEFAULT_STYLE << std::endl;
+        std::cout << statuss[1]->style << side_string[1] << "修为：" << statuss[1]->xiu_wei->getValue() << "，速度：" << statuss[1]->speed->getValue() << DEFAULT_STYLE << std::endl;
+        // 修为+速度更大的一方先手，相同则随机
+        if (statuss[0]->xiu_wei->getValue() + statuss[0]->speed->getValue() > statuss[1]->xiu_wei->getValue() + statuss[1]->speed->getValue()) {
+            first_side = 0;
+            side_iter = 1;
+        }
+        else if (statuss[0]->xiu_wei->getValue() + statuss[0]->speed->getValue() < statuss[1]->xiu_wei->getValue() + statuss[1]->speed->getValue()) {
+            first_side = 1;
+            side_iter = -1;
+        }
+        else {
+            first_side = rand() % 2;
+            if (first_side == 0) {
+                side_iter = 1;
+            }
+            else {
+                side_iter = -1;
+            }
+        }
+        std::cout << "先手方为" << statuss[first_side]->style << side_string[first_side] << DEFAULT_STYLE << std::endl;
         for (this->round = 1; this->round < BATTLE_END_ROUND; this->round++) {
             std::cout << "--------第" << this->round << "回合--------" << std::endl;
-            for (side = 0; side < 2; side++) {
+            for (int side = first_side, other_side = 0; side < 2 && side >= 0; side += side_iter) {
                 other_side = (side + 1) % 2;
-                std::cout << side_string[side] << "回合" << std::endl;
+                std::cout << statuss[side]->style << side_string[side] << "回合" << DEFAULT_STYLE << std::endl;
                 statuss[side]->ShowStatus();
                 // 双方轮流行动
                 // 1. 检查回合任务队列和buff
                 statuss[side]->task_quene_before_round->executeTaskQueue(this->round);
                 if (statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue() > 0) {
                     // 内伤
+                    std::cout << statuss[side]->style << side_string[side]  << "由于内伤";
                     NonSourseDamage(statuss[side], statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue());
-                    std::cout << side_string[side]  << "受到内伤造成" << statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue() << "点伤害" << std::endl;
+                    std::cout << std::endl;
                 }
                 if (statuss[0]->health->getValue() <= 0 || statuss[1]->health->getValue() <= 0) {
                     // 有一方血量为0则结束战斗
@@ -120,13 +144,13 @@ public:
                     // 有防御则减少一半防御
                     int target_defense = statuss[side]->defense->getValue() / 2;
                     statuss[side]->defense->sub(statuss[side]->defense->getValue() - target_defense);
-                    std::cout << side_string[side] << "防减半，剩余" << statuss[side]->defense->getValue() << "点防" << std::endl;
+                    std::cout << statuss[side]->style << side_string[side] << "防减半，剩余" << statuss[side]->defense->getValue() << "点防" << std::endl << DEFAULT_STYLE;
                 }
 
                 // 2. 行动相关，一回合可能包含多次行动
                 if (statuss[side]->buffs[WU_FA_XING_DONG]->getValue() > 0) {
                     // 无法行动，优先于使用牌
-                    std::cout << side_string[side] << "无法行动" << std::endl;
+                    std::cout << statuss[side]->style << side_string[side] << "无法行动" << DEFAULT_STYLE << std::endl;
                     statuss[side]->buffs[WU_FA_XING_DONG]->sub(1);
                     continue;
                 }
@@ -137,14 +161,14 @@ public:
                 && !statuss[side]->flag.flag[FLAG_YI_ZAI_CI_XING_DONG] 
                 || !reexecute) {
                     if (reexecute) {
-                        std::cout << side_string[side] << "再次行动" << std::endl;
+                        std::cout << statuss[side]->style << side_string[side] << "再次行动" << DEFAULT_STYLE << std::endl;
                     }
                     if (statuss[side]->buffs[SKIP_CARD]->getValue() > 0){
                         // 跳过下N张牌
                         while (statuss[side]->buffs[SKIP_CARD]->getValue() > 0){
                             statuss[side]->buffs[SKIP_CARD]->sub(1);
                             statuss[side]->NextCardPosition();
-                            std::cout << side_string[side] << "跳过一张牌" << std::endl;
+                            std::cout << statuss[side]->style << side_string[side] << "跳过一张牌" << DEFAULT_STYLE << std::endl;
                         }
                     }
                     // 开始根据当前使用的牌进行判断
@@ -159,13 +183,13 @@ public:
                     if (statuss[side]->ling_qi->getValue() < card_ling_qi_cost) {
                         // 灵气不足，则恢复一点灵气，不使用牌
                         statuss[side]->ling_qi->add(1);
-                        std::cout << side_string[side] << "灵气不足，恢复一点灵气" << std::endl;
+                        std::cout << statuss[side]->style << side_string[side] << "灵气不足，恢复一点灵气" << DEFAULT_STYLE << std::endl;
                     }
                     else {
                         // 正常消耗灵气使用牌
                         if (card_ling_qi_cost) {
                             statuss[side]->ling_qi->sub(card_ling_qi_cost);
-                            std::cout<< "，";
+                            std::cout<< ", ";
                         }
                         // 如果耗费血量
                         if (decks[side]->cards[statuss[side]->using_card_position]->is_health_cost) {
@@ -178,10 +202,10 @@ public:
                             }
 
                             statuss[side]->health->sub(card_health_cost);
-                            std::cout << "消耗" << card_health_cost << "点血量，";
+                            std::cout << statuss[side]->style << "消耗" << card_health_cost << "点血量，" << DEFAULT_STYLE;
                         }
                         // 执行牌效果Effect开始
-                        std::cout << "使用了第" << statuss[side]->using_card_position + 1 << "张牌" << decks[side]->cards[statuss[side]->using_card_position]->level << "级《" << decks[side]->cards[statuss[side]->using_card_position]->card_name << "》";
+                        std::cout << statuss[side]->style << "使用了第" << statuss[side]->using_card_position + 1 << "张牌" << decks[side]->cards[statuss[side]->using_card_position]->level << "级《" << decks[side]->cards[statuss[side]->using_card_position]->card_name << "》" << DEFAULT_STYLE;
                         if (decks[side]->cards[statuss[side]->using_card_position]->is_before_task_queue_effect) {
                             decks[side]->cards[statuss[side]->using_card_position]->BeforeTaskQueueEffect(statuss[side], statuss[other_side]);
                         }
@@ -211,13 +235,13 @@ public:
                     // 如果有无法再次行动buff，则跳出
                     if (statuss[side]->flag.flag[FLAG_WU_FA_ZAI_CI_XING_DONG]) {
                         ReexecuteLoss(statuss[side]);
-                        std::cout << side_string[side] << "无法再次行动" << std::endl;
+                        std::cout << statuss[side]->style << side_string[side] << "无法再次行动" << DEFAULT_STYLE << std::endl;
                         break;
                     }
                     // 如果有debuff困缚，困缚减一层，并跳出
                     else if (statuss[side]->debuffs[DEBUFF_KUN_FU]->getValue() > 0) {
                         ReexecuteLoss(statuss[side]);
-                        std::cout << side_string[side] << "因困缚无法再次行动" << std::endl;
+                        std::cout << statuss[side]->style << side_string[side] << "因困缚无法再次行动" <<DEFAULT_STYLE << std::endl;
                         break;
                     }
                     
@@ -225,7 +249,7 @@ public:
                     if (!reexecute && !statuss[side]->flag.flag[FLAG_ZAI_CI_XING_DONG] && statuss[side]->buffs[BUFF_SHEN_FA]->getValue() >= 10) {
                         statuss[side]->buffs[BUFF_SHEN_FA]->sub(10);
                         ReexecuteGain(statuss[side]);
-                        std::cout << side_string[side] << "身法转化为再次行动" << std::endl;
+                        std::cout << statuss[side]->style << side_string[side] << "身法转化为再次行动" <<DEFAULT_STYLE << std::endl;
                     }
 
                     // 如果为第二次行动，将标记为已再次行动

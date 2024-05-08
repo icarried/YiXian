@@ -24,6 +24,8 @@ public:
         // 初始化状态，传入对应deck指针（方便检索卡组的效果）
         sor_my_status = new Status(sor_my_deck);
         sor_enemy_status = new Status(sor_enemy_deck);
+        sor_my_status->style = "\033[34m";
+        sor_enemy_status->style = "\033[31m";
 
         // 初始化角色
         my_role = new RoleDxXiaobu(sor_my_status, sor_enemy_status);
@@ -45,8 +47,8 @@ public:
         }
 
         // 初始化角色、状态、卡组
-        InitMyInfo(my_info_yaml_path);
-        InitEnemyInfo(enemy_info_yaml_path);
+        InitPlayerInfo(my_info_yaml_path, my_role, sor_my_deck, sor_my_status, sor_enemy_status);
+        InitPlayerInfo(enemy_info_yaml_path, enemy_role, sor_enemy_deck, sor_enemy_status, sor_my_status);
 
         // 准备好开始战斗
         is_game_ready = true;
@@ -59,114 +61,85 @@ public:
         delete sor_enemy_status;
         delete sor_my_deck;
         delete sor_enemy_deck;
-    }
-    
-    // 初始化己方信息
-    void InitMyInfo(std::string my_info_yaml_path) {
-        YAML::Node config = YAML::LoadFile(my_info_yaml_path);
-
-        // 初始化角色
-        YAML::Node role_node = config["role"];
-        // 使用角色名字实例化对象
         delete my_role;
-        my_role = BaseRole::createInstance(role_node["name"].as<std::string>(), sor_my_status, sor_enemy_status); // !@!!不同边要用side
-        my_role->realm = StrToRealm(role_node["realm"].as<std::string>());
-        std::cout << "Role name: " << my_role->name << std::endl;
-        std::cout << "Role realm: " << my_role->realm << std::endl;
-
-        // 初始化仙命
-        YAML::Node destiny_node = config["destinys"];
-        int realm_index = REALM_LQQ;
-        for (YAML::const_iterator it=destiny_node.begin();it!=destiny_node.end();++it, ++realm_index) {
-            std::string destiny_name = (*it)["name"].as<std::string>();
-            std::cout << "Destiny name: " << destiny_name << std::endl;
-
-            // 使用仙命名字实例化对象
-            BaseDestiny* destiny = BaseDestiny::createInstance(realm_index, destiny_name, my_role);
-            my_role->PickDestiny(destiny);
-        }
-
-        // 更改初始化状态!!
-        // sor_my_status->health_max->setValue(60);
-
-        // 初始化卡组
-        YAML::Node cards_node = config["cards"];
-        int index = 0;
-        for(YAML::const_iterator it=cards_node.begin();it!=cards_node.end();++it, ++index) {
-            std::string card_name = (*it)["name"].as<std::string>();
-            int card_level = (*it)["level"].as<int>();
-            std::cout << "Card name: " << card_name << ", level: " << card_level << std::endl;
-
-            // 使用卡牌名字和等级实例化对象
-            BaseCard* card = BaseCard::createInstance(card_name, card_level, index);
-            delete sor_my_deck->cards[index];
-            sor_my_deck->cards[index] = card;
-        }
-    }
-
-    // 初始化敌方信息
-    void InitEnemyInfo(std::string enemy_info_yaml_path) {
-        YAML::Node config = YAML::LoadFile(enemy_info_yaml_path);
-
-        // 初始化角色
-        YAML::Node role_node = config["role"];
-        // 使用角色名字实例化对象
         delete enemy_role;
-        enemy_role = BaseRole::createInstance(role_node["name"].as<std::string>(), sor_enemy_status, sor_my_status); // !@!!不同边要用side
-        enemy_role->realm = StrToRealm(role_node["realm"].as<std::string>());
-        std::cout << "Role name: " << enemy_role->name << std::endl;
-        std::cout << "Role realm: " << enemy_role->realm << std::endl;
+    }
 
+    // 初始化玩家信息
+    void InitPlayerInfo(const std::string& info_yaml_path, BaseRole*& role, Deck* deck, Status* status, Status* another_status) {
+        // 初始化角色
+        YAML::Node config = YAML::LoadFile(info_yaml_path);
+        
+        YAML::Node role_node = config["role"];
+        delete role;
+        role = BaseRole::createInstance(role_node["name"].as<std::string>(), status, another_status);
+        role->realm = StrToRealm(role_node["realm"].as<std::string>());
+        std::cout << "Role name: " << role->name << std::endl;
         // 初始化仙命
         YAML::Node destiny_node = config["destinys"];
         int realm_index = REALM_LQQ;
-        for (YAML::const_iterator it=destiny_node.begin();it!=destiny_node.end();++it, ++realm_index) {
+        for (auto it = destiny_node.begin(); it != destiny_node.end(); ++it, ++realm_index) {
             std::string destiny_name = (*it)["name"].as<std::string>();
+            BaseDestiny* destiny = BaseDestiny::createInstance(realm_index, destiny_name, role);
+            role->PickDestiny(destiny);
             std::cout << "Destiny name: " << destiny_name << std::endl;
-
-            // 使用仙命名字实例化对象
-            BaseDestiny* destiny = BaseDestiny::createInstance(realm_index, destiny_name, enemy_role);
-            enemy_role->PickDestiny(destiny);
         }
-
-        // 更改初始化状态!!
-        // sor_enemy_status->health_max->setValue(60);
-
+        // 初始化状态
+        YAML::Node status_node = config["status"];
+        if (status_node["health"]) {
+            status->health->setValue(status_node["health"].as<int>());
+        }
+        if (status_node["health_max"]) {
+            status->health_max->setValue(status_node["health_max"].as<int>());
+        }
+        if (status_node["ling_qi"]) {
+            status->ling_qi->setValue(status_node["ling_qi"].as<int>());
+        }
+        if (status_node["xiu_wei"]) {
+            status->xiu_wei->setValue(status_node["xiu_wei"].as<int>());
+        }
+        if (status_node["ti_po"]) {
+            status->ti_po->setValue(status_node["ti_po"].as<int>());
+        }
+        if (status_node["ti_po_max"]) {
+            status->ti_po_max->setValue(status_node["ti_po_max"].as<int>());
+        }
         // 初始化卡组
         YAML::Node cards_node = config["cards"];
         int index = 0;
-        for(YAML::const_iterator it=cards_node.begin();it!=cards_node.end();++it, ++index) {
+        for (auto it = cards_node.begin(); it != cards_node.end(); ++it, ++index) {
             std::string card_name = (*it)["name"].as<std::string>();
             int card_level = (*it)["level"].as<int>();
-            std::cout << "Card name: " << card_name << ", level: " << card_level << std::endl;
-
-            // 使用卡牌名字和等级实例化对象
             BaseCard* card = BaseCard::createInstance(card_name, card_level, index);
-            delete sor_enemy_deck->cards[index];
-            sor_enemy_deck->cards[index] = card;
+            delete deck->cards[index];
+            deck->cards[index] = card;
+            std::cout << "Card name: " << card_name << ", level: " << card_level << std::endl;
         }
     }
-
 
     void BattleStart() {
         // 从源状态复制当前状态和卡组
-        Deck *my_deck = sor_my_deck->Clone();
-        Deck *enemy_deck = sor_enemy_deck->Clone();
-        Status *my_status = sor_my_status->Clone(my_deck);
-        Status *enemy_status = sor_enemy_status->Clone(enemy_deck);
+        Deck *battle_my_deck = sor_my_deck->Clone();
+        Deck *battle_enemy_deck = sor_enemy_deck->Clone();
+        Status *battle_my_status = sor_my_status->Clone(battle_my_deck);
+        Status *battle_enemy_status = sor_enemy_status->Clone(battle_enemy_deck);
+
+        // 更新角色战斗状态指针
+        my_role->battle_my_status = battle_my_status;
+        enemy_role->battle_my_status = battle_enemy_status;
 
         // 体力同步到体力上限
-        my_status->health->setValue(my_status->health_max->getValue());
-        enemy_status->health->setValue(enemy_status->health_max->getValue());
+        battle_my_status->health->setValue(battle_my_status->health_max->getValue());
+        battle_enemy_status->health->setValue(battle_enemy_status->health_max->getValue());
         // 从体魄获得体力上限
-        my_status->health_max->setValue(my_status->health_max->getValue() + my_status->ti_po_max->getValue());
-        enemy_status->health_max->setValue(enemy_status->health_max->getValue() + enemy_status->ti_po_max->getValue());
+        battle_my_status->health_max->setValue(battle_my_status->health_max->getValue() + battle_my_status->ti_po_max->getValue());
+        battle_enemy_status->health_max->setValue(battle_enemy_status->health_max->getValue() + battle_enemy_status->ti_po_max->getValue());
 
         // 创建战斗
         if (battle != nullptr) {
             delete battle;
         }
-        battle = new Battle(my_deck, enemy_deck, my_status, enemy_status, battle_round);
+        battle = new Battle(battle_my_deck, battle_enemy_deck, battle_my_status, battle_enemy_status, battle_round);
 
         std::cout << "我方角色：" << my_role->name << std::endl;
         std::cout << "我方仙命：" ;
@@ -202,20 +175,20 @@ public:
         // 战斗后需要向源状态同步的一些状态（若不同步，下次战斗会继续使用上次的状态）
         if (is_sync) {
             // 同步体魄
-            if (my_status->ti_po->getValue() > sor_my_status->ti_po_max->getValue()) {
-                sor_my_status->ti_po->setValue(my_status->ti_po_max->getValue());
+            if (battle_my_status->ti_po->getValue() > sor_my_status->ti_po_max->getValue()) {
+                sor_my_status->ti_po->setValue(battle_my_status->ti_po_max->getValue());
             } else {
-                sor_my_status->ti_po->setValue(my_status->ti_po->getValue());
+                sor_my_status->ti_po->setValue(battle_my_status->ti_po->getValue());
             }
         }
 
         // 删除战斗
         delete battle;
         // 删除战斗使用的状态和卡组
-        delete my_status;
-        delete enemy_status;
-        delete my_deck;
-        delete enemy_deck;
+        delete battle_my_status;
+        delete battle_enemy_status;
+        delete battle_my_deck;
+        delete battle_enemy_deck;
     }
 
     // 角色

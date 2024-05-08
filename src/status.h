@@ -23,6 +23,7 @@ public:
         defense = new Defense(this, 0); // 防御
         ling_qi = new LingQi(this, 0); // 灵气
         xiu_wei = new XiuWei(this, 0); // 修为
+        speed = new Speed(this, 0); // 速度
         ti_po = new TiPo(this, 0); // 体魄
         ti_po_max = new TiPoMax(this, 0); // 体魄上限
 
@@ -76,6 +77,7 @@ public:
         defense = other.defense->Clone(this); // 防御
         ling_qi = other.ling_qi->Clone(this); // 灵气
         xiu_wei = other.xiu_wei->Clone(this); // 修为
+        speed = other.speed->Clone(this); // 速度
         ti_po = other.ti_po->Clone(this); // 体魄
         ti_po_max = other.ti_po_max->Clone(this); // 体魄上限
 
@@ -106,7 +108,11 @@ public:
         task_quene_before_round = other.task_quene_before_round->Clone(this);
         task_quene_after_round = other.task_quene_after_round->Clone(this);
         task_quene_at_battle_start = other.task_quene_at_battle_start->Clone(this);
-
+        
+        // Flag对象
+        flag = other.flag;
+        // 使用文字样式
+        style = other.style;
     }
 
     // 析构函数
@@ -120,6 +126,7 @@ public:
         delete defense;
         delete ling_qi;
         delete xiu_wei;
+        delete speed;
         delete ti_po;
         delete ti_po_max;
 
@@ -218,6 +225,7 @@ public:
     StatusVal* defense; // 防御
     StatusVal* ling_qi; // 灵气
     StatusVal* xiu_wei; // 修为
+    StatusVal* speed; // 速度
     StatusVal* ti_po; // 体魄
     StatusVal* ti_po_max; // 体魄上限
 
@@ -233,5 +241,8 @@ public:
     int using_card_position; // 将使用卡牌的位置
     int using_yun_jian_continuous; // 连续使用云剑的次数（！未启用）
     float attack_damage_percent; // 临时记录伤害百分比
+
+    // 使用文字样式
+    std::string style = "";
 };
 #endif // !STATUS_H

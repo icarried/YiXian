@@ -17,11 +17,13 @@
 
 class BaseRole {
 public:
-    BaseRole(Status* my_status, Status* enemy_status) : my_status(my_status), enemy_status(enemy_status) {
+    BaseRole(Status* my_status, Status* enemy_status) : sor_my_status(my_status), sor_enemy_status(enemy_status) {
         for (int i = 0; i < ROLE_REALM_MAX + 1; i++) {
             picked_destinies[i] = new EmptyDestiny(this);
             exclusive_destinies[i] = nullptr;
         }
+        battle_my_status = nullptr;
+        battle_enemy_status = nullptr;
     }
     virtual ~BaseRole() {
         for (int i = 0; i < ROLE_REALM_MAX + 1; i++) {
@@ -43,7 +45,7 @@ public:
             return;
         }
         destiny->PickEffect();
-        this->my_status->task_quene_at_battle_start->addTask(
+        this->sor_my_status->task_quene_at_battle_start->addTask(
             [destiny](int battle_round) {
                 destiny->BattleStartEffect();
             },
@@ -76,8 +78,10 @@ public:
     // 选取的仙命数组
     BaseDestiny* picked_destinies[ROLE_REALM_MAX + 1];
     // 角色状态
-    Status* my_status;
-    Status* enemy_status;
+    Status* sor_my_status;
+    Status* sor_enemy_status;
+    Status* battle_my_status;
+    Status* battle_enemy_status;
 
     // 角色名
     std::string name = "空角色名";

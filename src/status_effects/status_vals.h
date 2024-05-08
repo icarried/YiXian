@@ -68,6 +68,16 @@ public:
     void sub(int val) override;
 };
 
+// 速度
+class Speed : public StatusVal {
+public:
+    Speed(Status* linking_status, int val);
+    Speed* Clone(Status* new_status) const override;
+    Speed(const Speed& other, Status* new_status);
+    void add(int val) override;
+    void sub(int val) override;
+};
+
 // 体魄上限
 class TiPoMax : public StatusVal {
 public:

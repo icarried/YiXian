@@ -12,6 +12,14 @@ destinys:
   - name: "空仙命"
   # 化神期仙命
   - name: "修玄不泯"
+status:
+  # 状态值可选，不需要的可以注释掉
+  health: 65
+  health_max: 65
+  #ling_qi: 0
+  xiu_wei: 51
+  #ti_po: 0
+  #ti_po_max: 0
 cards:
   # 第1张牌
   - name: "修罗吼"

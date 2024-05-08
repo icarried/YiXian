@@ -5,16 +5,16 @@
 // 注意回合过多时将强制结束战斗
 
 /*
-效果造成的生命失去，能结算护体，如寒冰咒
+效果造成的生命失去, 能结算护体, 如寒冰咒
 */
 int EffectHealthLoss(Status* losser, int loss_value){
     // 结算失去血量
     if (loss_value > 0) {
-        // 有护体则免伤，并减少一层护体
+        // 有护体则免伤, 并减少一层护体
         if (losser->buffs[BUFF_HU_TI]->getValue()) {
             loss_value = 0;
             losser->buffs[BUFF_HU_TI]->sub(1);
-            std::cout << "，护体生效";
+            std::cout << ", 护体生效";
         }
         if (loss_value > 0) {
             losser->health->sub(loss_value);
@@ -30,16 +30,16 @@ int EffectHealthLoss(Status* losser, int loss_value){
 int NonSourseDamage(Status* defender, int damage_value){
     // 结算伤害
     int damage = damage_value;
-    // 有护体则免伤，并减少一层护体
+    // 有护体则免伤, 并减少一层护体
     if (defender->buffs[BUFF_HU_TI]->getValue()) {
         damage = 0;
         defender->buffs[BUFF_HU_TI]->sub(1);
-        std::cout << "，护体生效";
+        std::cout << ", " << defender->style << "护体生效" << DEFAULT_STYLE;
     }
     if (damage > 0) {
         // 无视防
         defender->health->sub(damage);
-        std::cout << "，受到{" << damage << "}点伤害";
+        std::cout << ", " << defender->style << "受到{" << damage << "}点伤害" << DEFAULT_STYLE;
     }
     return damage;
 }
@@ -51,11 +51,11 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
     int damage = damage_value; // 用于计算伤害
     int defense_loss = 0; // 对方损失的防
     bool is_hurting = false;
-    // 如果有无视防御的特殊属性，则结算无视防御
+    // 如果有无视防御的特殊属性, 则结算无视防御
     if (card_sp_attr[CARD_SP_ATTR_WU_SHI_FANG_YU] || attacker->buffs[BUFF_GONG_JI_WU_SHI_FANG_YU]->getValue() > 0) {
         // do nothing
     }
-    // 如果有碎防的特殊属性，则每一点伤害能抵消一点防
+    // 如果有碎防的特殊属性, 则每一点伤害能抵消一点防
     else if (card_sp_attr[CARD_SP_ATTR_SUI_FANG]) {
         if (2 * damage > defender->defense->getValue()) {
             damage -= defender->defense->getValue() / 2;
@@ -68,7 +68,7 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
     }
     else {
         // 无特殊防御变更状态的正常情况
-        // 如果对方有防，结算防，damage和defense同时减少，令其中一方为0
+        // 如果对方有防, 结算防, damage和defense同时减少, 令其中一方为0
         if (defender->defense->getValue() > 0) {
             if (damage > defender->defense->getValue()) {
                 damage -= defender->defense->getValue();
@@ -82,26 +82,26 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
     }
     
     if (defense_loss > 0) {
-        std::cout << "，令对方";
+        std::cout << ", 令对方";
         defender->defense->sub(defense_loss);
     }
 
     if (damage > 0) {
-        // 破防，能造成伤害
-        // 伤害能使对方扣减生命值时，结算护体，结算护体后若仍然有伤害，则结算锋锐
+        // 破防, 能造成伤害
+        // 伤害能使对方扣减生命值时, 结算护体, 结算护体后若仍然有伤害, 则结算锋锐
         
-        // 有护体则免伤，并减少一层护体
+        // 有护体则免伤, 并减少一层护体
         if (defender->buffs[BUFF_HU_TI]->getValue() > 0) {
             damage = 0;
             defender->buffs[BUFF_HU_TI]->sub(1);
-            std::cout << "，护体生效";
+            std::cout << ", " << defender->style << "护体生效" << DEFAULT_STYLE;
         }
         // 锋锐结算
         if (damage > 0 && is_attacking && attacker->buffs[BUFF_FENG_RUI]->getValue() > 0) {
             damage += int(float(attacker->buffs[BUFF_FENG_RUI]->getValue()) * attacker->attack_damage_percent);
         }
         if (damage > 0) {
-            std::cout << "，对敌方造成{" << damage << "}点伤害";
+            std::cout << ", " << attacker->style << "对" << defender->style << "敌方" << attacker->style << "造成{" << damage << "}点伤害" << DEFAULT_STYLE;
             defender->health->sub(damage);
             is_hurting = true;
         }
@@ -111,20 +111,20 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
     return damage;
 }
 
-// 伤害结算的重载实现，给伤害函数传入均为0的card_sp_attr数组，长度为CARD_SP_ATTR_END_INDEX
+// 伤害结算的重载实现, 给伤害函数传入均为0的card_sp_attr数组, 长度为CARD_SP_ATTR_END_INDEX
 // 用于非牌追加的伤害结算
 int Damage(Status* attacker, Status* defender, int damage_value){
     int card_sp_attr[CARD_SP_ATTR_END_INDEX] = {0};
     return Damage(attacker, defender, damage_value, card_sp_attr);
 }
 
-// 攻击结算，附带牌的特殊效果
+// 攻击结算, 附带牌的特殊效果
 int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_attr[]){
     // 特殊属性加成的多攻
     if (card_sp_attr[CARD_SP_ATTR_DUO_GONG]) {
         attack_value += card_sp_attr[CARD_SP_ATTR_DUO_GONG];
     }
-    std::cout << "，攻{" << attack_value << "}";
+    std::cout << ", " << attacker->style << "攻{" << attack_value << "}" << DEFAULT_STYLE;
     // *计算攻击力的结算加减*
     int damage_value = attack_value;
     damage_value += attacker->buffs[BUFF_JIA_GONG]->getValue() 
@@ -166,7 +166,7 @@ int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_att
         damage_value = int(float(damage_value) * 0.6);
         damage_percent = damage_percent * 0.6;
     }
-    // 临时记录伤害百分比，用于结算锋锐
+    // 临时记录伤害百分比, 用于结算锋锐
     attacker->attack_damage_percent = damage_percent;
     if (defender->buffs[BUFF_TIE_GU]->getValue()) {
         // 铁骨
@@ -182,7 +182,7 @@ int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_att
     return damage;
 }
 
-// 攻击结算的重载实现，给攻击函数传入均为0的card_sp_attr数组，长度为CARD_SP_ATTR_END_INDEX
+// 攻击结算的重载实现, 给攻击函数传入均为0的card_sp_attr数组, 长度为CARD_SP_ATTR_END_INDEX
 // 用于非牌追加的攻击结算
 int Attack(Status* attacker, Status* defender, int attack_value){
     int card_sp_attr[CARD_SP_ATTR_END_INDEX] = {0};
@@ -198,20 +198,20 @@ int HealthSuck(Status* gainer, Status* losser, int suck_value){
     if (suck > losser->health->getValue()) {
         suck = losser->health->getValue();
     }
-    std::cout << "，吸取" << suck << "点血，敌方";
+    std::cout << ", " << gainer->style << "吸取" << suck << "点血" << DEFAULT_STYLE << ", " << losser->style << "敌方" << DEFAULT_STYLE;
     losser->health->sub(suck);
     gainer->health->add(suck);
     return 0;
 }
 
-// 消耗所有灵气，并返回消耗的灵气值
+// 消耗所有灵气, 并返回消耗的灵气值
 int LingQiCostAll(Status* coster){
     int cost_value = coster->ling_qi->getValue();
     coster->ling_qi->sub(cost_value);
     return cost_value;
 }
 
-// 消耗最多n点灵气，并返回消耗的灵气值（耗X灵气）
+// 消耗最多n点灵气, 并返回消耗的灵气值（耗X灵气）
 int LingQiCostMax(Status* coster, int max_cost_value){
     int cost_value = coster->ling_qi->getValue();
     if (cost_value > max_cost_value) {
@@ -224,7 +224,7 @@ int LingQiCostMax(Status* coster, int max_cost_value){
 // 再次行动获取
 int ReexecuteGain(Status* gainer){
     gainer->flag.flag[FLAG_ZAI_CI_XING_DONG] = true;
-    std::cout << "，获得再次行动效果";
+    std::cout << ", " << gainer->style << "获得再次行动效果" << DEFAULT_STYLE;
     return 0;
 }
 
@@ -254,7 +254,7 @@ int DebuffTotal(Status* status){
     return total;
 }
 
-// 将debuff_type按照层数从大到小排序，返回排序后的debuff_type数组
+// 将debuff_type按照层数从大到小排序, 返回排序后的debuff_type数组
 // debuff_type数组长度为DEBUFF_END_INDEX - DEBUFF_START_INDEX
 int* DebuffSort(Status* sorter){
     int* debuff_type = new int[DEBUFF_END_INDEX];
@@ -290,10 +290,10 @@ int* DebuffSort(Status* sorter){
 
 
 
-// 随机减少总计n层debuff，每种debuff至少减少到0，n为正数
-// 先获取debuff_type按照层数从大到小排序，并得到大于0的debuff种类数量
+// 随机减少总计n层debuff, 每种debuff至少减少到0, n为正数
+// 先获取debuff_type按照层数从大到小排序, 并得到大于0的debuff种类数量
 // 随机减少大于0的debuff
-// 当is_transfer_to_enemy为true时，将减少的debuff转移给敌方，enemy为敌方状态指针
+// 当is_transfer_to_enemy为true时, 将减少的debuff转移给敌方, enemy为敌方状态指针
 int DebuffRandomReduce(Status* reducer, int reduce_value, bool is_transfer_to_enemy, Status* enemy){
     int* debuff_type = DebuffSort(reducer);
     int debuff_count = 0;
@@ -317,11 +317,11 @@ int DebuffRandomReduce(Status* reducer, int reduce_value, bool is_transfer_to_en
             reducer->debuffs[debuff_type[random_index]]->sub(1);
             if (is_transfer_to_enemy) {
                 enemy->debuffs[debuff_type[random_index]]->add(1);
-                std::cout << "，转移" << debuff_type[random_index] << "1层";
+                std::cout << ", " << reducer->style << "转移" << debuff_type[random_index] << "1层" << DEFAULT_STYLE;
             }
-            std::cout << "，减少" << debuff_type[random_index] << "1层";
+            std::cout << ",  " << reducer->style << "减少" << debuff_type[random_index] << "1层" << DEFAULT_STYLE;
             reduce_count++;
-            // 如果减少到0，则减少debuff_count，并将该debuff_type与最后一个debuff_type交换
+            // 如果减少到0, 则减少debuff_count, 并将该debuff_type与最后一个debuff_type交换
             if (reducer->debuffs[debuff_type[random_index]]->getValue() == 0) {
                 debuff_count--;
                 int temp = debuff_type[random_index];

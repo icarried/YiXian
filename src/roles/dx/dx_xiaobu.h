@@ -54,15 +54,15 @@ public:
         }
         ~ExclusiveDestinyHSQ() = default;
         int PickEffect() override {
-            role->my_status->health_max->setValue(role->my_status->health_max->getValue() + 5);
-            role->my_status->health->setValue(role->my_status->health->getValue() + 5);
+            role->sor_my_status->health_max->setValue(role->sor_my_status->health_max->getValue() + 5);
+            role->sor_my_status->health->setValue(role->sor_my_status->health->getValue() + 5);
             return 0;
         }
         int BattleStartEffect() override {
             for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
-                this->role->my_status->debuffs[debuff_type]->add_task_quene->addTask(
+                this->role->battle_my_status->debuffs[debuff_type]->add_task_quene->addTask(
                     [this](int debuff_add_val){
-                        this->role->my_status->health->add(debuff_add_val);
+                        this->role->battle_my_status->health->add(debuff_add_val);
                     },
                     [](int){ return true; },
                     [](int){ return false; }

@@ -76,7 +76,7 @@ Buff::Buff(const Buff& other, Status* new_status) : BaseStatusEffect(other, new_
 
 void Buff::add(int val) {
     BaseStatusEffect::add(val);
-    std::cout << "，获得" << val << "层" << name;
+    std::cout << ", "<< linked_status->style <<"获得" << val << "层" << name << DEFAULT_STYLE;
     this->add_task_quene->executeTaskQueue(val);
 }
 
@@ -89,7 +89,7 @@ void Buff::sub(int val) {
         this->value -= val;
     }
     BaseStatusEffect::sub(sub_value);
-    std::cout << "，减少" << sub_value << "层" << name;
+    std::cout << ", "<< linked_status->style <<"减少" << sub_value << "层" << name <<DEFAULT_STYLE;
     this->sub_task_quene->executeTaskQueue(sub_value);
 }
 
@@ -112,17 +112,19 @@ Debuff::Debuff(const Debuff& other, Status* new_status) : BaseStatusEffect(other
 // debuff获取
 void Debuff::add(int val) {
     // 如果有辟邪，则减少同时减少辟邪和debuff的获取层数
+    std::cout << ", ";
+    std::cout << linked_status->style;
     if (linked_status->buffs[BUFF_BI_XIE]->getValue()) {
         int pi_xie_reduce = linked_status->buffs[BUFF_BI_XIE]->getValue();
         if (pi_xie_reduce > val) {
             pi_xie_reduce = val;
         }
-        std::cout << "，辟邪生效";
+        std::cout << "辟邪生效, ";
         val -= pi_xie_reduce;
         linked_status->buffs[BUFF_BI_XIE]->sub(pi_xie_reduce);
     }
     BaseStatusEffect::add(val);
-    std::cout << "，获得" << val << "层" << name;
+    std::cout<< "获得" << val << "层" << name << DEFAULT_STYLE;
     this->add_task_quene->executeTaskQueue(val);
 }
 
@@ -135,6 +137,6 @@ void Debuff::sub(int val) {
         this->value -= val;
     }
     BaseStatusEffect::sub(sub_value);
-    std::cout << "，减少" << sub_value << "层" << name;
+    std::cout << ", " << linked_status->style << "减少" << sub_value << "层" << name << DEFAULT_STYLE;
     this->sub_task_quene->executeTaskQueue(sub_value);
 }

@@ -46,6 +46,9 @@
 #define VICE_JOB_LZS 6 //灵植师
 #define VICE_JOB_END_INDEX 7 //副职结束索引
 
+// 默认文字样式
+#define DEFAULT_STYLE "\033[0m"
+
 #include "cal.h"
 
 #endif // HEAD_H

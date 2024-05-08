@@ -24,7 +24,7 @@ public:
         }
         ~ExclusiveDestinyZJQ() = default;
         int PickEffect() override {
-            this->role->my_status->deck->AddCardtoHand(new Card_zsxm_zjq_shengqilingren(1, 0));
+            this->role->sor_my_status->deck->AddCardtoHand(new Card_zsxm_zjq_shengqilingren(1, 0));
             return 0;
         }
     };
@@ -38,12 +38,12 @@ public:
         }
         ~ExclusiveDestinyJDQ() = default;
         int PickEffect() override {
-            role->my_status->ti_po_max->setValue(role->my_status->ti_po_max->getValue() + 2);
+            role->sor_my_status->ti_po_max->setValue(role->sor_my_status->ti_po_max->getValue() + 2);
             return 0;
         }
         int BattleStartEffect() override {
-            role->my_status->buffs[BUFF_JIA_GONG]->add(1);
-            role->my_status->debuffs[DEBUFF_WAI_SHANG]->add(1);
+            role->battle_my_status->buffs[BUFF_JIA_GONG]->add(1);
+            role->battle_my_status->debuffs[DEBUFF_WAI_SHANG]->add(1);
             return 0;
         }
     };
@@ -67,12 +67,12 @@ public:
         }
         ~ExclusiveDestinyHSQ() = default;
         int PickEffect() override {
-            role->my_status->ti_po_max->setValue(role->my_status->ti_po_max->getValue() + 4);
+            role->sor_my_status->ti_po_max->setValue(role->sor_my_status->ti_po_max->getValue() + 4);
             return 0;
         }
         int BattleStartEffect() override {
-            role->my_status->task_quene_after_effect->addTask( 
-                [this](BaseCard* card){ Attack(this->role->my_status, this->role->enemy_status, 3); },
+            role->battle_my_status->task_quene_after_effect->addTask( 
+                [this](BaseCard* card){ Attack(this->role->battle_my_status, this->role->battle_enemy_status, 3); },
                 [](BaseCard* card){ return card->card_tag[TI_PO_CARD] ? true : false; },
                 [](BaseCard* card){ return true; },
                 REMARK_BENG_QUAN

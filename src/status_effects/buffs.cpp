@@ -57,7 +57,7 @@ void BuffQiShi::add(int val) {
         linked_status->defense->add(exceed_value);
         Buff::add(val);
         if (exceed_value > 0) {
-            std::cout << "，超出部分转为" << exceed_value << "点防";
+            std::cout << ", " << linked_status->style << "超出部分转为" << exceed_value << "点防" << DEFAULT_STYLE;
         }
     }
     else {
