@@ -47,3 +47,52 @@ int Card_zsxm_zjq_shengqilingren::Effect(Status* my_status, Status* enemy_status
 BaseCard* Card_zsxm_zjq_shengqilingren::create(int level, int position) {
     return new Card_zsxm_zjq_shengqilingren(level, position);
 }
+
+
+
+const std::string Card_zsxm_zjq_duantibuxi::name = "锻体不息";
+bool Card_zsxm_zjq_duantibuxi::registered = BaseCard::registerCard(Card_zsxm_zjq_duantibuxi::name, Card_zsxm_zjq_duantibuxi::create);
+
+/*
+锻玄宗_小布 专属仙命卡 锻体不息
+4/6/8攻, 体魄加3/4/5, 生命加3/4/5
+*/
+Card_zsxm_zjq_duantibuxi::Card_zsxm_zjq_duantibuxi(int level, int position) : BaseCard(level, position) {
+    card_name = "锻体不息";
+    is_attacking = true;
+    attack = 2 * level + 2;
+    card_tag[TI_PO_CARD] = true;
+}
+
+Card_zsxm_zjq_duantibuxi::Card_zsxm_zjq_duantibuxi(const Card_zsxm_zjq_duantibuxi& other) : BaseCard(other) {}
+
+Card_zsxm_zjq_duantibuxi* Card_zsxm_zjq_duantibuxi::Clone() const {
+    return new Card_zsxm_zjq_duantibuxi(*this);
+}
+
+int Card_zsxm_zjq_duantibuxi::Effect(Status* my_status, Status* enemy_status) {
+    Attack(my_status, enemy_status, attack, card_sp_attr);
+    int ti_po_gain = 0;
+    int health_gain = 0;
+    switch (level) {
+        case 1:
+            ti_po_gain = 3;
+            health_gain = 3;
+            break;
+        case 2:
+            ti_po_gain = 4;
+            health_gain = 4;
+            break;
+        case 3:
+            ti_po_gain = 5;
+            health_gain = 5;
+            break;
+    }
+    my_status->ti_po->add(ti_po_gain);
+    my_status->health->add(health_gain);
+    return 0;
+}
+
+BaseCard* Card_zsxm_zjq_duantibuxi::create(int level, int position) {
+    return new Card_zsxm_zjq_duantibuxi(level, position);
+}

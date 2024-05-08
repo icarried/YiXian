@@ -491,7 +491,7 @@ int Card_dx_zjq_bengquan_can::Effect(Status* my_status, Status* enemy_status) {
             temp_status = 3;
             break;
     }
-    enemy_status->task_quene_before_effect->addTask(
+    my_status->task_quene_before_effect->addTask(
         [enemy_status, temp_status](BaseCard* card){
             enemy_status->debuffs[DEBUFF_WAI_SHANG]->add(temp_status);
         },

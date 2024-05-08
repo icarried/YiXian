@@ -24,5 +24,6 @@ int RandomNumber(int min, int max);
 int DebuffTotal(Status* status);
 int* DebuffSort(Status* sorter);
 int DebuffRandomReduce(Status* reducer, int reduce_value, bool is_transfer_to_enemy = false, Status* enemy = nullptr);
+int DebuffRandomAdd(Status* adder, int add_value);
 
 #endif // !ACCOUNT_H

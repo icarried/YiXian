@@ -132,8 +132,8 @@ public:
         battle_my_status->health->setValue(battle_my_status->health_max->getValue());
         battle_enemy_status->health->setValue(battle_enemy_status->health_max->getValue());
         // 从体魄获得体力上限
-        battle_my_status->health_max->setValue(battle_my_status->health_max->getValue() + battle_my_status->ti_po_max->getValue());
-        battle_enemy_status->health_max->setValue(battle_enemy_status->health_max->getValue() + battle_enemy_status->ti_po_max->getValue());
+        battle_my_status->health_max->setValue(battle_my_status->health_max->getValue() + battle_my_status->ti_po->getValue());
+        battle_enemy_status->health_max->setValue(battle_enemy_status->health_max->getValue() + battle_enemy_status->ti_po->getValue());
 
         // 创建战斗
         if (battle != nullptr) {
@@ -151,6 +151,8 @@ public:
         std::cout << std::endl;
         std::cout << "我方卡组" << std::endl;
         battle->decks[0]->ShowDeck();
+        // std::cout << "我方手牌" << std::endl;
+        // battle->decks[0]->ShowHand();
         std::cout << "敌方角色：" << enemy_role->name << std::endl;
         std::cout << "敌方仙命：" ;
         for (int i = REALM_START_INDEX; i < ROLE_REALM_MAX + 1; i++) {
@@ -161,6 +163,8 @@ public:
         std::cout << std::endl;
         std::cout << "敌方卡组" << std::endl;
         battle->decks[1]->ShowDeck();
+        // std::cout << "敌方手牌" << std::endl;
+        // battle->decks[1]->ShowHand();
         std::cout << "战斗开始…………" << std::endl;
         int result = battle->BattleStart();
         if (result > 0) {

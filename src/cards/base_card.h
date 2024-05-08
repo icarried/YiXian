@@ -130,7 +130,7 @@ public:
         if (it != getRegistry().end()) {
             return it->second(level, position);
         }
-        throw std::runtime_error("Destiny not found: " + name);
+        throw std::runtime_error("Card not found: " + name);
         return nullptr;
     }
 

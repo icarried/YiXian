@@ -3,38 +3,38 @@ role:
   realm: "化神期"
 destinys:
   # 炼气期仙命
-  - name: "空仙命"
+  - name: "磨砺不止"
   # 筑基期仙命
-  - name: "空仙命"
+  - name: "锻体不息"
   # 金丹期仙命
-  - name: "空仙命"
+  - name: "灵涌不竭"
   # 元婴期仙命
   - name: "空仙命"
   # 化神期仙命
   - name: "修玄不泯"
 status:
   # 状态值可选，不需要的可以注释掉
-  health: 65
-  health_max: 65
+  health: 110
+  health_max: 110
   #ling_qi: 0
   xiu_wei: 50
-  #ti_po: 0
-  #ti_po_max: 0
+  ti_po: 15
+  ti_po_max: 50
 cards:
   # 第1张牌
   - name: "修罗吼"
-    level: 1
+    level: 2
   # 第2张牌
-  - name: "罗刹扑"
+  - name: "修罗吼"
     level: 1
   # 第3张牌
-  - name: "罗刹扑"
-    level: 1
+  - name: "恶虎扑食"
+    level: 2
   # 第4张牌
-  - name: "普通攻击"
-    level: 1
+  - name: "玄手夺魂"
+    level: 2
   # 第5张牌
-  - name: "普通攻击"
+  - name: "玄心斩魄"
     level: 1
   # 第6张牌
   - name: "普通攻击"

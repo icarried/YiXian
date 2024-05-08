@@ -48,7 +48,7 @@ public:
         }
     };
 
-    // ！！未完成
+    // 耗生命的牌改为耗生命上限
     class ExclusiveDestinyYYQ : public BaseDestiny {
     public:
         ExclusiveDestinyYYQ(BaseRole* role) : BaseDestiny(role) {
@@ -56,6 +56,10 @@ public:
             realm = REALM_YYQ;
         }
         ~ExclusiveDestinyYYQ() = default;
+        int PickEffect() override {
+            role->sor_my_status->flag.flag[FLAG_BENGLIEZHIQUAN] = true;
+            return 0;
+        }
     };
 
     // 体魄上限+4；战斗中每次使用加体魄的牌后，追加3攻

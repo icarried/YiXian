@@ -15,7 +15,7 @@ public:
         ~ExclusiveDestinyLQQ() = default;
     };
 
-    // ！！未完成
+    // 获得1张《锻体不息》
     class ExclusiveDestinyZJQ : public BaseDestiny {
     public:
         ExclusiveDestinyZJQ(BaseRole* role) : BaseDestiny(role) {
@@ -23,9 +23,13 @@ public:
             realm = REALM_ZJQ;
         }
         ~ExclusiveDestinyZJQ() = default;
+        int PickEffect() override {
+            this->role->sor_my_status->deck->AddCardtoHand(new Card_zsxm_zjq_duantibuxi(1, 0));
+            return 0;
+        }
     };
 
-    // ！！未完成
+    // 使用卡牌时若灵气不足，每点灵气耗3生命和1体魄代替（生命或体魄不足则无效）
     class ExclusiveDestinyJDQ : public BaseDestiny {
     public:
         ExclusiveDestinyJDQ(BaseRole* role) : BaseDestiny(role) {
@@ -33,6 +37,21 @@ public:
             realm = REALM_JDQ;
         }
         ~ExclusiveDestinyJDQ() = default;
+        int BattleStartEffect() override {
+            this->role->battle_my_status->task_quene_before_ling_qi_cost->addTask(
+                [this](BaseCard* card) {
+                    int required_ling_qi = card->ling_qi_cost - this->role->battle_my_status->ling_qi->getValue();
+                    if (this->role->battle_my_status->health->getValue() >= 3 * required_ling_qi && this->role->battle_my_status->ti_po->getValue() >= required_ling_qi) {
+                        this->role->battle_my_status->health->sub(3 * required_ling_qi);
+                        this->role->battle_my_status->ti_po->sub(1 * required_ling_qi);
+                        this->role->battle_my_status->ling_qi->add(required_ling_qi);
+                    }
+                },
+                [this](BaseCard* card){ return card->ling_qi_cost > this->role->battle_my_status->ling_qi->getValue();},
+                [](BaseCard* card){ return false; }
+            );
+            return 0;
+        }
     };
 
     // ！！未完成

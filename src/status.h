@@ -9,8 +9,11 @@
 
 class Deck; // 前置声明
 
-// 状态类
-
+/*
+状态类
+新增任何指针成员变量时，需要在拷贝构造函数中拷贝，在构造函数中初始化，在析构函数中删除
+新增任何非指针成员变量时，需要在拷贝构造函数中拷贝，在构造函数中初始化
+*/
 class Status {
 public:
     // 构造函数
@@ -56,6 +59,7 @@ public:
 
         task_quene_before_effect = new EffectTaskQueue(this);
         task_quene_after_effect = new EffectTaskQueue(this);
+        task_quene_before_ling_qi_cost = new EffectTaskQueue(this);
         task_quene_before_round = new AccountTaskQueue(this);
         task_quene_after_round = new AccountTaskQueue(this);
         task_quene_at_battle_start = new AccountTaskQueue(this);
@@ -105,6 +109,7 @@ public:
 
         task_quene_before_effect = other.task_quene_before_effect->Clone(this);
         task_quene_after_effect = other.task_quene_after_effect->Clone(this);
+        task_quene_before_ling_qi_cost = other.task_quene_before_ling_qi_cost->Clone(this);
         task_quene_before_round = other.task_quene_before_round->Clone(this);
         task_quene_after_round = other.task_quene_after_round->Clone(this);
         task_quene_at_battle_start = other.task_quene_at_battle_start->Clone(this);
@@ -141,6 +146,7 @@ public:
         // 删除任务队列
         delete task_quene_before_effect;
         delete task_quene_after_effect;
+        delete task_quene_before_ling_qi_cost;
         delete task_quene_before_round;
         delete task_quene_after_round;
         delete task_quene_at_battle_start;
@@ -213,6 +219,7 @@ public:
     // 任务队列
     EffectTaskQueue* task_quene_before_effect; // 卡牌效果执行前的任务队列，参数为使用的牌
     EffectTaskQueue* task_quene_after_effect; // 卡牌效果执行后的任务队列，参数为使用的牌，给下一张牌的执行后任务队列的任务必须通过卡牌效果执行前的任务队列放入
+    EffectTaskQueue* task_quene_before_ling_qi_cost; // 灵气消耗前的任务队列，参数为使用的牌，执行队列参数为牌的灵气消耗
     AccountTaskQueue* task_quene_before_round; // 回合开始时触发的任务队列，参数为回合数
     AccountTaskQueue* task_quene_after_round; // 回合结束时触发的任务队列，参数为回合数
     AccountTaskQueue* task_quene_at_battle_start; // 战斗开始时触发的任务队列，参数为战斗轮数

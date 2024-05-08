@@ -333,3 +333,16 @@ int DebuffRandomReduce(Status* reducer, int reduce_value, bool is_transfer_to_en
     delete[] debuff_type;
     return 0;
 }
+
+// 随机增加n层debuff
+int DebuffRandomAdd(Status* adder, int add_value){
+    int add_count = 0;
+    int random_index;
+    while (add_count < add_value) {
+        random_index = RandomNumber(0, DEBUFF_END_INDEX - 1);
+        adder->debuffs[random_index]->add(1);
+        std::cout << ", " << adder->style << "增加" << random_index << "1层" << DEFAULT_STYLE;
+        add_count++;
+    }
+    return 0;
+}

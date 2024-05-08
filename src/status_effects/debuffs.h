@@ -9,7 +9,8 @@
 #define DEBUFF_XU_RUO 3 //虚弱
 #define DEBUFF_NEI_SHANG 4 //内伤
 #define DEBUFF_KUN_FU 5 //困缚
-#define DEBUFF_END_INDEX 6 //负面buff结束索引
+#define DEBUFF_MING 6 //冥
+#define DEBUFF_END_INDEX 7 //负面buff结束索引
 
 class DebuffPoZhan : public Debuff {
 public:
@@ -51,6 +52,15 @@ public:
     DebuffKunFu(Status* linking_status, int val);
     DebuffKunFu* Clone(Status* new_status) const override;
     DebuffKunFu(const DebuffKunFu& other, Status* new_status);
+};
+
+class DebuffMing : public Debuff {
+public:
+    DebuffMing(Status* linking_status, int val);
+    DebuffMing* Clone(Status* new_status) const override;
+    DebuffMing(const DebuffMing& other, Status* new_status);
+    void add(int val) override;
+    void sub(int val) override;
 };
 
 Debuff* debuff_create(int id, Status* linking_status, int val);

@@ -97,8 +97,9 @@ public:
         // 先手方
         int first_side;
         int side_iter = 1;
-        statuss[0]->task_quene_at_battle_start->executeTaskQueue(this->battle_round);
-        statuss[1]->task_quene_at_battle_start->executeTaskQueue(this->battle_round);
+        // 执行包括仙命的战斗开始效果BattleStartEffect()
+        statuss[0]->task_quene_at_battle_start->executeTaskQueue(battle_round);
+        statuss[1]->task_quene_at_battle_start->executeTaskQueue(battle_round);
         // 显示双方修为+速度
         std::cout << statuss[0]->style << side_string[0] << "修为：" << statuss[0]->xiu_wei->getValue() << "，速度：" << statuss[0]->speed->getValue() << DEFAULT_STYLE << std::endl;
         std::cout << statuss[1]->style << side_string[1] << "修为：" << statuss[1]->xiu_wei->getValue() << "，速度：" << statuss[1]->speed->getValue() << DEFAULT_STYLE << std::endl;
@@ -176,10 +177,13 @@ public:
                     int card_ling_qi_cost = 0;
                     if (decks[side]->cards[statuss[side]->using_card_position]->is_ling_qi_cost_modifiable) {
                         card_ling_qi_cost = decks[side]->cards[statuss[side]->using_card_position]->LingQiCostModify(statuss[side], statuss[other_side]);
+                        // 因为灵气消耗可覆盖，所以不再执行默认的灵气消耗，改变灵气消耗数值也可，便于执行灵气消耗队列
+                        decks[side]->cards[statuss[side]->using_card_position]->ling_qi_cost = card_ling_qi_cost;
                     }
                     else {
                         card_ling_qi_cost = decks[side]->cards[statuss[side]->using_card_position]->ling_qi_cost;
                     }
+                    statuss[side]->task_quene_before_ling_qi_cost->executeTaskQueue(decks[side]->cards[statuss[side]->using_card_position]);
                     if (statuss[side]->ling_qi->getValue() < card_ling_qi_cost) {
                         // 灵气不足，则恢复一点灵气，不使用牌
                         statuss[side]->ling_qi->add(1);
@@ -196,13 +200,21 @@ public:
                             int card_health_cost = 0;
                             if (decks[side]->cards[statuss[side]->using_card_position]->is_health_cost_modifiable) {
                                 card_health_cost = decks[side]->cards[statuss[side]->using_card_position]->HealthCostModify(statuss[side], statuss[other_side]);
+                                // 因为血量消耗可覆盖，所以不再执行默认的血量消耗，改变血量消耗数值也可
+                                decks[side]->cards[statuss[side]->using_card_position]->health_cost = card_health_cost;
                             }
                             else {
                                 card_health_cost = decks[side]->cards[statuss[side]->using_card_position]->health_cost;
                             }
-
-                            statuss[side]->health->sub(card_health_cost);
-                            std::cout << statuss[side]->style << "消耗" << card_health_cost << "点血量，" << DEFAULT_STYLE;
+                            if (statuss[side]->flag.flag[FLAG_BENGLIEZHIQUAN]) {
+                                // 有崩裂之拳仙命，耗生命改为耗生命上限（对机制造成影响）
+                                statuss[side]->health_max->sub(card_health_cost);
+                                std::cout << statuss[side]->style << "消耗" << card_health_cost << "点血量上限，" << DEFAULT_STYLE;
+                            }
+                            else {
+                                statuss[side]->health->sub(card_health_cost);
+                                std::cout << statuss[side]->style << "消耗" << card_health_cost << "点血量，" << DEFAULT_STYLE;
+                            }
                         }
                         // 执行牌效果Effect开始
                         std::cout << statuss[side]->style << "使用了第" << statuss[side]->using_card_position + 1 << "张牌" << decks[side]->cards[statuss[side]->using_card_position]->level << "级《" << decks[side]->cards[statuss[side]->using_card_position]->card_name << "》" << DEFAULT_STYLE;

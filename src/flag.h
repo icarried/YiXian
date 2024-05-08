@@ -6,7 +6,9 @@
 #define FLAG_ZAI_CI_XING_DONG 1 //再次行动（不延续到下回合）使用ReexecuteGain获取
 #define FLAG_WU_FA_ZAI_CI_XING_DONG 2 //无法再次行动（天音困仙曲）
 #define FLAG_LINGXUANMIZONGBU 3 //灵玄迷踪步标志（本回合失去过生命）（非正常buff）
-#define FLAG_END_INDEX 4
+#define FLAG_BENGLIEZHIQUAN 4 //崩裂之拳标志（有崩裂之拳仙命）
+#define FLAG_YEMINGMING 5 //夜冥冥标志，受到debuff冥的增加或减少改为回复生命
+#define FLAG_END_INDEX 6
 
 // flag类
 

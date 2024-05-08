@@ -1,5 +1,5 @@
 role:
-  name: "小布"
+  name: "叶冥冥"
   realm: "化神期"
 destinys:
   # 炼气期仙命
@@ -7,34 +7,34 @@ destinys:
   # 筑基期仙命
   - name: "空仙命"
   # 金丹期仙命
-  - name: "空仙命"
+  - name: "疯魔"
   # 元婴期仙命
-  - name: "空仙命"
+  - name: "崩拳·冥夜"
   # 化神期仙命
-  - name: "修玄不泯"
+  - name: "冥月蟾光"
 status:
   # 状态值可选，不需要的可以注释掉
-  health: 65
-  health_max: 65
+  health: 110
+  health_max: 110
   #ling_qi: 0
   xiu_wei: 51
-  #ti_po: 0
-  #ti_po_max: 0
+  ti_po: 50
+  ti_po_max: 50
 cards:
   # 第1张牌
-  - name: "修罗吼"
+  - name: "崩拳·冥夜"
     level: 1
   # 第2张牌
-  - name: "罗刹扑"
+  - name: "冥月蟾光"
     level: 1
   # 第3张牌
-  - name: "罗刹扑"
+  - name: "疯魔"
     level: 1
   # 第4张牌
-  - name: "普通攻击"
+  - name: "崩拳·降龙"
     level: 1
   # 第5张牌
-  - name: "普通攻击"
+  - name: "百杀破境掌"
     level: 1
   # 第6张牌
   - name: "普通攻击"

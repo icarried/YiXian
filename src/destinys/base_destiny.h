@@ -39,11 +39,11 @@ public:
         throw std::runtime_error("Destiny not found: " + name + " in realm " + std::to_string(realm));
         return nullptr;
     }
-    // 选取效果
+    // 选取效果, 使用状态时使用this->role->sor_my_status
     virtual int PickEffect() {
         return 0;
     }
-    // 战斗开始效果
+    // 战斗开始效果, 使用状态时使用this->role->battle_my_status
     virtual int BattleStartEffect() {
         return 0;
     }

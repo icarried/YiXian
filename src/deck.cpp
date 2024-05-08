@@ -152,3 +152,11 @@ void Deck::ShowDeck() {
     }
     std::cout << std::endl;
 }
+
+// 显示手牌
+void Deck::ShowHand() {
+    for (int i = 0; i < HAND_CARD_END_INDEX; i++) {
+        std::cout << hand_cards[i]->level << "级《" << hand_cards[i]->card_name << "》 ";
+    }
+    std::cout << std::endl;
+}
