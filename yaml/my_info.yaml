@@ -31,14 +31,14 @@ cards:
   - name: "冥月蟾光"
     level: 1
   # 第4张牌
-  - name: "疯魔"
-    level: 1
+  - name: "崩天步"
+    level: 2
   # 第5张牌
   - name: "锻神开海"
     level: 2
   # 第6张牌
-  - name: "锻髓"
-    level: 2
+  - name: "疯魔"
+    level: 1
   # 第7张牌
   - name: "崩拳·降龙"
     level: 1
