@@ -44,7 +44,7 @@ public:
         return 0;
     }
     // 战斗开始效果, 使用状态时使用this->role->battle_my_status
-    virtual int BattleStartEffect() {
+    virtual int BattleStartEffect(int battle_round) {
         return 0;
     }
     // 战斗结束效果 ！！！！未加入选取效果中，需要在选取效果中加入

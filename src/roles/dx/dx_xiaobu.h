@@ -37,7 +37,7 @@ public:
             realm = REALM_JDQ;
         }
         ~ExclusiveDestinyJDQ() = default;
-        int BattleStartEffect() override {
+        int BattleStartEffect(int battle_round) override {
             this->role->battle_my_status->task_quene_before_ling_qi_cost->addTask(
                 [this](BaseCard* card) {
                     int required_ling_qi = card->ling_qi_cost - this->role->battle_my_status->ling_qi->getValue();
@@ -77,7 +77,7 @@ public:
             role->sor_my_status->health->setValue(role->sor_my_status->health->getValue() + 5);
             return 0;
         }
-        int BattleStartEffect() override {
+        int BattleStartEffect(int battle_round) override {
             for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
                 this->role->battle_my_status->debuffs[debuff_type]->add_task_quene->addTask(
                     [this](int debuff_add_val){

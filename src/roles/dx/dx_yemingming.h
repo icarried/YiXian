@@ -13,19 +13,12 @@ public:
             realm = REALM_LQQ;
         }
         ~ExclusiveDestinyLQQ() = default;
-        int BattleStartEffect() override {
-            // this->role->battle_my_status->task_quene_at_battle_start->addTask(
-            //     [this](int round) {
-            //         if (round % 2 == 1) {
-            //             this->role->change_card_times += 1;
-            //         }
-            //         else {
-            //             this->role->battle_my_status->speed->add(3);
-            //         }
-            //     },
-            //     [](int){ return true; },
-            //     [](int){ return false; }
-            // );
+        int BattleStartEffect(int battle_round) override {
+            if (battle_round % 2 == 1) {
+                this->role->change_card_times += 1;
+            } else {
+                this->role->battle_my_status->speed->add(3);
+            }
             return 0;
         }
     };
@@ -38,16 +31,9 @@ public:
             realm = REALM_ZJQ;
         }
         ~ExclusiveDestinyZJQ() = default;
-        int BattleStartEffect() override {
-            // this->role->battle_my_status->task_quene_at_battle_start->addTask(
-            //     [this](int round) {
-            //         this->role->battle_my_status->debuffs[DEBUFF_MING]->add(1);
-            //     },
-            //     [](int){ return true; },
-            //     [](int){ return false; }
-            // );
-            // return 0;
+        int BattleStartEffect(int battle_round) override {
             this->role->battle_my_status->debuffs[DEBUFF_MING]->add(1);
+            return 0;
         }
     };
 

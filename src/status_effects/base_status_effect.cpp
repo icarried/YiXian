@@ -84,9 +84,8 @@ void Buff::sub(int val) {
     int sub_value = val;
     if (val > this->value) {
         sub_value = this->value;
-        this->value = 0;
     } else {
-        this->value -= val;
+        sub_value = val;
     }
     BaseStatusEffect::sub(sub_value);
     std::cout << ", "<< linked_status->style <<"减少" << sub_value << "层" << name <<DEFAULT_STYLE;
@@ -132,9 +131,8 @@ void Debuff::sub(int val) {
     int sub_value = val;
     if (val > this->value) {
         sub_value = this->value;
-        this->value = 0;
     } else {
-        this->value -= val;
+        sub_value = val;
     }
     BaseStatusEffect::sub(sub_value);
     std::cout << ", " << linked_status->style << "减少" << sub_value << "层" << name << DEFAULT_STYLE;

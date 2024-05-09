@@ -19,7 +19,7 @@ status:
   #ling_qi: 0
   xiu_wei: 50
   ti_po: 15
-  ti_po_max: 50
+  ti_po_max: 60
 cards:
   # 第1张牌
   - name: "修罗吼"
@@ -31,17 +31,17 @@ cards:
   - name: "恶虎扑食"
     level: 2
   # 第4张牌
+  - name: "恶虎扑食"
+    level: 1
+  # 第5张牌
   - name: "玄手夺魂"
     level: 2
-  # 第5张牌
-  - name: "玄心斩魄"
-    level: 1
   # 第6张牌
-  - name: "普通攻击"
+  - name: "玄手夺魂"
     level: 1
   # 第7张牌
-  - name: "普通攻击"
+  - name: "玄手夺魂"
     level: 1
   # 第8张牌
-  - name: "普通攻击"
-    level: 1
+  - name: "玄心斩魄"
+    level: 2

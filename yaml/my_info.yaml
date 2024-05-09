@@ -3,9 +3,9 @@ role:
   realm: "化神期"
 destinys:
   # 炼气期仙命
-  - name: "空仙命"
+  - name: "阴晴圆缺"
   # 筑基期仙命
-  - name: "空仙命"
+  - name: "入冥"
   # 金丹期仙命
   - name: "疯魔"
   # 元婴期仙命
@@ -18,30 +18,30 @@ status:
   health_max: 110
   #ling_qi: 0
   xiu_wei: 51
-  ti_po: 50
-  ti_po_max: 50
+  ti_po: 60
+  ti_po_max: 60
 cards:
   # 第1张牌
+  - name: "鹤步"
+    level: 2
+  # 第2张牌
   - name: "崩拳·冥夜"
     level: 1
-  # 第2张牌
+  # 第3张牌
   - name: "冥月蟾光"
     level: 1
-  # 第3张牌
+  # 第4张牌
   - name: "疯魔"
     level: 1
-  # 第4张牌
+  # 第5张牌
+  - name: "锻神开海"
+    level: 2
+  # 第6张牌
+  - name: "锻髓"
+    level: 2
+  # 第7张牌
   - name: "崩拳·降龙"
     level: 1
-  # 第5张牌
-  - name: "百杀破境掌"
-    level: 1
-  # 第6张牌
-  - name: "普通攻击"
-    level: 1
-  # 第7张牌
-  - name: "普通攻击"
-    level: 1
   # 第8张牌
-  - name: "普通攻击"
+  - name: "百杀破境掌"
     level: 1

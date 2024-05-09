@@ -41,7 +41,7 @@ public:
             role->sor_my_status->ti_po_max->setValue(role->sor_my_status->ti_po_max->getValue() + 2);
             return 0;
         }
-        int BattleStartEffect() override {
+        int BattleStartEffect(int battle_round) override {
             role->battle_my_status->buffs[BUFF_JIA_GONG]->add(1);
             role->battle_my_status->debuffs[DEBUFF_WAI_SHANG]->add(1);
             return 0;
@@ -74,7 +74,7 @@ public:
             role->sor_my_status->ti_po_max->setValue(role->sor_my_status->ti_po_max->getValue() + 4);
             return 0;
         }
-        int BattleStartEffect() override {
+        int BattleStartEffect(int battle_round) override {
             role->battle_my_status->task_quene_after_effect->addTask( 
                 [this](BaseCard* card){ Attack(this->role->battle_my_status, this->role->battle_enemy_status, 3); },
                 [](BaseCard* card){ return card->card_tag[TI_PO_CARD] ? true : false; },

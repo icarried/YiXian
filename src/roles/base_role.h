@@ -47,7 +47,7 @@ public:
         destiny->PickEffect();
         this->sor_my_status->task_quene_at_battle_start->addTask(
             [destiny](int battle_round) {
-                destiny->BattleStartEffect();
+                destiny->BattleStartEffect(battle_round);
             },
             [](int){ return true; },
             [](int){ return false; }
