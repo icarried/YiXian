@@ -16,7 +16,7 @@
 class Battle {
 public:
     // 构造函数
-    Battle(Deck *my_deck, Deck *enemy_deck, Status *my_status, Status *enemy_status, int battle_round) 
+    Battle(Deck *my_deck, Deck *enemy_deck, Status *my_status, Status *enemy_status, int battle_round, int battle_seed) 
     : my_deck(my_deck), enemy_deck(enemy_deck), my_status(my_status), enemy_status(enemy_status), battle_round(battle_round) {
         decks[0] = my_deck;
         decks[1] = enemy_deck;
@@ -24,9 +24,14 @@ public:
         // 初始化状态，传入对应deck指针（方便检索卡组的效果）
         statuss[0] = my_status;
         statuss[1] = enemy_status;
-        // 初始化随机数种子
-        srand((unsigned)time(NULL));
-
+        // 初始化随机数种子, 为负数则使用使用随机种子
+        if (battle_seed < 0) {
+            uint_battle_seed = (unsigned)time(NULL);
+        }
+        else {
+            uint_battle_seed = battle_seed;
+        }
+        srand(uint_battle_seed);
     }
     
     // 析构函数
@@ -94,6 +99,8 @@ public:
     // decks[0]为我方，decks[1]为敌方
     // 返回值为正数，胜利方为我方，负数为敌方，0为平局，绝对值为血量差
     int BattleStart() {
+        std::cout << "战斗轮数：" << battle_round << std::endl;
+        std::cout << "战斗随机数种子：" << uint_battle_seed << std::endl;
         // 先手方
         int first_side;
         int side_iter = 1;
@@ -290,6 +297,7 @@ public:
     int round = 0; // 回合数, 从1开始
     // 本次战斗的轮次数（不是回合数）
     int battle_round;
+    unsigned int uint_battle_seed; // 随机数种子
 };
 
 

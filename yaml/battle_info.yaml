@@ -1,0 +1,4 @@
+# 战斗轮数
+battle_round: 16
+# 战斗随机数种子，-1表示随机
+battle_seed: -1

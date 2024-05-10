@@ -34,6 +34,7 @@ public:
         // 加载信息的yaml文件路径
         std::string my_info_yaml_path = "./yaml/my_info.yaml";
         std::string enemy_info_yaml_path = "./yaml/enemy_info.yaml";
+        std::string battle_info_yaml_path = "./yaml/battle_info.yaml";
         // 输出当前路径
         // std::cout << "当前路径：" << std::filesystem::current_path() << std::endl;
         //判断文件是否存在
@@ -45,10 +46,16 @@ public:
             std::cout << "文件不存在：" << enemy_info_yaml_path << std::endl;
             return;
         }
+        if (!std::filesystem::exists(battle_info_yaml_path)) {
+            std::cout << "文件不存在：" << battle_info_yaml_path << std::endl;
+            return;
+        }
 
         // 初始化角色、状态、卡组
         InitPlayerInfo(my_info_yaml_path, my_role, sor_my_deck, sor_my_status, sor_enemy_status);
         InitPlayerInfo(enemy_info_yaml_path, enemy_role, sor_enemy_deck, sor_enemy_status, sor_my_status);
+        // 初始化战斗信息
+        InitBattleInfo(battle_info_yaml_path);
 
         // 准备好开始战斗
         is_game_ready = true;
@@ -74,7 +81,7 @@ public:
         delete role;
         role = BaseRole::createInstance(role_node["name"].as<std::string>(), status, another_status);
         role->realm = StrToRealm(role_node["realm"].as<std::string>());
-        std::cout << "Role name: " << role->name << std::endl;
+        // std::cout << "Role name: " << role->name << std::endl;
         // 初始化仙命
         YAML::Node destiny_node = config["destinys"];
         int realm_index = REALM_LQQ;
@@ -82,7 +89,7 @@ public:
             std::string destiny_name = (*it)["name"].as<std::string>();
             BaseDestiny* destiny = BaseDestiny::createInstance(realm_index, destiny_name, role);
             role->PickDestiny(destiny);
-            std::cout << "Destiny name: " << destiny_name << std::endl;
+            // std::cout << "Destiny name: " << destiny_name << std::endl;
         }
         // 初始化状态
         YAML::Node status_node = config["status"];
@@ -113,8 +120,15 @@ public:
             BaseCard* card = BaseCard::createInstance(card_name, card_level, index);
             delete deck->cards[index];
             deck->cards[index] = card;
-            std::cout << "Card name: " << card_name << ", level: " << card_level << std::endl;
+            // std::cout << "Card name: " << card_name << ", level: " << card_level << std::endl;
         }
+    }
+
+    void InitBattleInfo(const std::string& info_yaml_path) {
+        // 初始化战斗信息
+        YAML::Node config = YAML::LoadFile(info_yaml_path);
+        battle_round = config["battle_round"].as<int>();
+        battle_seed = config["battle_seed"].as<int>();
     }
 
     void BattleStart() {
@@ -139,7 +153,7 @@ public:
         if (battle != nullptr) {
             delete battle;
         }
-        battle = new Battle(battle_my_deck, battle_enemy_deck, battle_my_status, battle_enemy_status, battle_round);
+        battle = new Battle(battle_my_deck, battle_enemy_deck, battle_my_status, battle_enemy_status, battle_round, battle_seed);
 
         std::cout << "我方角色：" << my_role->name << std::endl;
         std::cout << "我方仙命：" ;
@@ -209,6 +223,7 @@ public:
     // 战斗
     Battle *battle;
     int battle_round;
+    int battle_seed;
     
     // 是否在战斗后同步一些需要同步的状态，这在需要反复进行同一场战斗时需要设置为false
     bool is_sync;
