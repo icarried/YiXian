@@ -35,11 +35,11 @@ int Card_zsxm_zjq_shengqilingren::Effect(Status* my_status, Status* enemy_status
     }
     my_status->buffs[BUFF_QI_SHI]->add(qi_shi_gain);
     my_status->buffs[BUFF_QI_SHI]->sub_task_quene->addTask(
-        [my_status, enemy_status](int qi_shi_sub_val){
+        [my_status, enemy_status](int& qi_shi_sub_val){
             Damage(my_status, enemy_status, 2 * qi_shi_sub_val);
         },
-        [](int){ return true; },
-        [](int){ return false; }
+        [](int&){ return true; },
+        [](int&){ return false; }
     );
     return 0;
 }

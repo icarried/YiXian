@@ -9,6 +9,8 @@ build/*
 help.md
 *.exe
 src/*.exe
+*.zip
+src/*.zip
 *.o
 src/*.o
 output/*

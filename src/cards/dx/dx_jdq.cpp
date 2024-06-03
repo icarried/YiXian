@@ -119,15 +119,18 @@ int Card_dx_jdq_qiruoxuanhe::Effect(Status* my_status, Status* enemy_status) {
             temp_status = 4;
             break;
     }
-    my_status->buffs[QIRUOXUANHE_TIMES]->add(temp_status);
+    my_status->AddOrSubCardEffectVal(name, temp_status, true);
     my_status->ling_qi->add(ling_qi_gain);
     my_status->buffs[BUFF_QI_SHI]->add(1);
     my_status->task_quene_before_effect->addTask(
         [my_status](BaseCard* card){
+            my_status->AddOrSubCardEffectVal(name, -1, false);
             my_status->buffs[BUFF_QI_SHI]->add(1);
         },
-        [my_status](BaseCard* card){ return my_status->buffs[QIRUOXUANHE_TIMES]->getValue() > 0 && card->is_attacking ? true : false; },
-        [my_status](BaseCard* card){ return my_status->buffs[QIRUOXUANHE_TIMES]->getValue() == 0 ? true : false; }
+        [my_status](BaseCard* card){ return my_status->GetCardEffectVal(name) > 0 && card->is_attacking ? true : false; },
+        [my_status](BaseCard* card){ return my_status->GetCardEffectVal(name) == 0 ? true : false; },
+        name,
+        true
     );
     return 0;
 }
@@ -379,23 +382,18 @@ int Card_dx_jdq_duangu::Effect(Status* my_status, Status* enemy_status) {
             temp_status = 4;
             break;
     }
-    my_status->buffs[DUANGU_TIMES]->add(temp_status);
+    my_status->AddOrSubCardEffectVal(name, temp_status, true);
     my_status->health->add(health_gain);
-    my_status->task_quene_before_effect->addTask(
-        [my_status](BaseCard* card){
-            my_status->buffs[DUANGU_TIMES]->sub(1);
+    my_status->task_quene_before_attack->addTask(
+        [my_status](int& attack_value){
+            my_status->AddOrSubCardEffectVal(name, -1, false);
             my_status->ti_po->add(1);
-            card->card_sp_attr[CARD_SP_ATTR_DUO_GONG] += 3;
-            my_status->task_quene_after_effect->addTask(
-                [my_status](BaseCard* card){
-                    card->card_sp_attr[CARD_SP_ATTR_DUO_GONG] -= 3;
-                },
-                [](BaseCard* card){ return true; },
-                [](BaseCard* card){ return true; }
-            );
+            attack_value += 3;
         },
-        [my_status](BaseCard* card){ return my_status->buffs[DUANGU_TIMES]->getValue() > 0 && card->is_attacking ? true : false; },
-        [my_status](BaseCard* card){ return my_status->buffs[DUANGU_TIMES]->getValue() == 0 ? true : false; }
+        [my_status](int& attack_value){ return my_status->GetCardEffectVal(name) > 0 ? true : false; },
+        [my_status](int& attack_value){ return my_status->GetCardEffectVal(name) == 0 ? true : false; },
+        name,
+        true
     );
     return 0;
 }

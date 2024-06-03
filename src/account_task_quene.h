@@ -34,22 +34,32 @@ public:
     // 添加任务到队列
     //
     //使用示例：
-    //taskQueue.addTask([my_status, 额外参数](int){ do something; }, // 执行函数
+    //taskQueue.addTask([my_status, 额外参数](int){ do something; }, // 执行函数, 参数为引用, 可以被执行的函数修改
     //                  [](int){ return true; }, // 执行条件
     //                  [](int){ return true; }, // 执行后移除条件，如果不需要移除，return false
     //                  （可选）备注
+    //                  是否确保所备注任务唯一
     //                 );
     //
-    void addTask(std::function<void(int)> function,
-                 std::function<bool(int)> executeCondition,
-                 std::function<bool(int)> removeCondition,
-                 std::string remark = "") {
+    void addTask(std::function<void(int&)> function,
+                 std::function<bool(int&)> executeCondition,
+                 std::function<bool(int&)> removeCondition,
+                 std::string remark = "",
+                 bool ensureSingleRemark = false) {
+        if (ensureSingleRemark) {
+            auto it = std::find_if(taskQueue.begin(), taskQueue.end(), [&](const Task& t) {
+                return t.remark == remark;
+            });
+            if (it != taskQueue.end()) {
+                return;
+            }
+        }
         Task task{function, executeCondition, removeCondition, remark};
         taskQueue.push_back(task);
     }
 
     // 执行任务队列
-    void executeTaskQueue(int value) {
+    void executeTaskQueue(int& value) {
         tasksToRemove.clear();
 
         for (auto& task : taskQueue) {
@@ -75,9 +85,9 @@ public:
     Status *status;
     // 任务结构体
     struct Task {
-        std::function<void(int)> function;
-        std::function<bool(int)> executeCondition;
-        std::function<bool(int)> removeCondition;
+        std::function<void(int&)> function;
+        std::function<bool(int&)> executeCondition;
+        std::function<bool(int&)> removeCondition;
         std::string remark;
     };
 

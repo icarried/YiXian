@@ -60,6 +60,8 @@ public:
         task_quene_before_ling_qi_cost = new EffectTaskQueue(this);
         task_quene_before_round = new AccountTaskQueue(this);
         task_quene_after_round = new AccountTaskQueue(this);
+        task_quene_before_attack = new AccountTaskQueue(this);
+        task_quene_after_attack = new AccountTaskQueue(this);
         task_quene_at_battle_start = new AccountTaskQueue(this);
     
     }
@@ -108,10 +110,14 @@ public:
         task_quene_before_ling_qi_cost = other.task_quene_before_ling_qi_cost->Clone(this);
         task_quene_before_round = other.task_quene_before_round->Clone(this);
         task_quene_after_round = other.task_quene_after_round->Clone(this);
+        task_quene_before_attack = other.task_quene_before_attack->Clone(this);
+        task_quene_after_attack = other.task_quene_after_attack->Clone(this);
         task_quene_at_battle_start = other.task_quene_at_battle_start->Clone(this);
         
         // Flag对象
         flag = other.flag;
+        // 卡牌效果数值映射
+        card_effect_val_map = other.card_effect_val_map;
         // 使用文字样式
         style = other.style;
     }
@@ -143,6 +149,8 @@ public:
         delete task_quene_before_ling_qi_cost;
         delete task_quene_before_round;
         delete task_quene_after_round;
+        delete task_quene_before_attack;
+        delete task_quene_after_attack;
         delete task_quene_at_battle_start;
     }
 
@@ -186,6 +194,35 @@ public:
         }
     }
 
+    // card_effect_val_map中某个键是否存在
+    bool IsCardEffectValExist(std::string key) {
+        return card_effect_val_map.find(key) != card_effect_val_map.end();
+    }
+
+    // 给出一个键和一个增加的数值(可为负数)以及不存在时是否创建的判断，如果键存在则增加，不存在则创建, 目标为card_effect_val_map, 返回值为是否存在
+    bool AddOrSubCardEffectVal(std::string key, int val, bool create) {
+        if (IsCardEffectValExist(key)) {
+            card_effect_val_map[key] += val;
+            return true;
+        } else {
+            if (create) {
+                card_effect_val_map[key] = val;
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    // 获取card_effect_val_map中某个键的值
+    int GetCardEffectVal(std::string key) {
+        if (IsCardEffectValExist(key)) {
+            return card_effect_val_map[key];
+        } else {
+            return 0;
+        }
+    }
+
     // 结算BUFF变更
     void attack_change();
     void a_card_change();
@@ -199,6 +236,7 @@ public:
 
     // 每个Status带一个Flag对象
     Flag flag;
+    std::unordered_map<std::string, int> card_effect_val_map; // 卡牌效果数值映射, 通过AddCardEffectVal方法添加
     // 每个Status带一个Deck对象指针
     Deck* deck;
 
@@ -209,6 +247,8 @@ public:
     EffectTaskQueue* task_quene_before_ling_qi_cost; // 灵气消耗前的任务队列，参数为使用的牌，执行队列参数为牌的灵气消耗
     AccountTaskQueue* task_quene_before_round; // 回合开始时触发的任务队列，参数为回合数
     AccountTaskQueue* task_quene_after_round; // 回合结束时触发的任务队列，参数为回合数
+    AccountTaskQueue* task_quene_before_attack; // 攻击前触发的任务队列（计算变更攻击数值的buff之前），参数为攻击数值
+    AccountTaskQueue* task_quene_after_attack; // 攻击后触发的任务队列，参数为造成的伤害
     AccountTaskQueue* task_quene_at_battle_start; // 战斗开始时触发的任务队列，参数为战斗轮数
 
     // 状态值

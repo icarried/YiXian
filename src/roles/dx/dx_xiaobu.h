@@ -80,11 +80,11 @@ public:
         int BattleStartEffect(int battle_round) override {
             for (int debuff_type = 0; debuff_type < DEBUFF_END_INDEX; debuff_type++) {
                 this->role->battle_my_status->debuffs[debuff_type]->add_task_quene->addTask(
-                    [this](int debuff_add_val){
+                    [this](int& debuff_add_val){
                         this->role->battle_my_status->health->add(debuff_add_val);
                     },
-                    [](int){ return true; },
-                    [](int){ return false; }
+                    [](int&){ return true; },
+                    [](int&){ return false; }
                 );
             }
             return 0;

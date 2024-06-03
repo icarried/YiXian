@@ -120,6 +120,8 @@ int Damage(Status* attacker, Status* defender, int damage_value){
 
 // 攻击结算, 附带牌的特殊效果
 int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_attr[]){
+    // 执行攻击任务队列
+    attacker->task_quene_before_attack->executeTaskQueue(attack_value);
     // 特殊属性加成的多攻
     if (card_sp_attr[CARD_SP_ATTR_DUO_GONG]) {
         attack_value += card_sp_attr[CARD_SP_ATTR_DUO_GONG];
@@ -179,6 +181,8 @@ int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_att
 
     int damage = Damage(attacker, defender, damage_value, card_sp_attr, true);
     attacker->attack_change();
+    // 执行攻击后任务队列
+    attacker->task_quene_after_attack->executeTaskQueue(damage);
     return damage;
 }
 

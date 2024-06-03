@@ -41,13 +41,23 @@ public:
     //taskQueue.addTask([my_status, 额外参数](BaseCard*){ do something; }, // 执行函数
     //                  [](BaseCard*){ return true; }, // 执行条件
     //                  [](BaseCard*){ return true; }, // 执行后移除条件，如果不需要移除，如持续牌效果，return false
-    //                  （可选）备注 // 例如：REMARK_BENG_QUAN
+    //                  （可选）备注 // 例如：REMARK_BENG_QUAN, "xxxxx"
+    //                  是否确保所备注任务唯一
     //                 );
     //
     void addTask(std::function<void(BaseCard*)> function,
-                 std::function<bool(BaseCard*)> executeCondition,
-                 std::function<bool(BaseCard*)> removeCondition,
-                 std::string remark = REMARK_NONE) {
+             std::function<bool(BaseCard*)> executeCondition,
+             std::function<bool(BaseCard*)> removeCondition,
+             std::string remark = REMARK_NONE,
+             bool ensureSingleRemark = false) {
+        if (ensureSingleRemark) {
+            auto it = std::find_if(taskQueue.begin(), taskQueue.end(), [&](const Task& t) {
+                return t.remark == remark;
+            });
+            if (it != taskQueue.end()) {
+                return;
+            }
+        }
         Task task{function, executeCondition, removeCondition, remark};
         taskQueue.push_back(task);
     }

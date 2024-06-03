@@ -238,20 +238,20 @@ int Card_dx_yyq_lingxuanmizongbu::Effect(Status* my_status, Status* enemy_status
     my_status->ling_qi->add(ling_qi_gain);
     my_status->buffs[BUFF_SHEN_FA]->add(shen_fa_gain);
     my_status->health->sub_task_quene->addTask(
-        [my_status](int health_loss){
+        [my_status](int& health_loss){
             my_status->ling_qi->add(1);
             my_status->buffs[BUFF_SHEN_FA]->add(1);
             my_status->flag.flag[FLAG_LINGXUANMIZONGBU] = true;
         },
-        [my_status](int health_loss){ return !my_status->flag.flag[FLAG_LINGXUANMIZONGBU]; },
-        [](int health_loss){ return false; }
+        [my_status](int& health_loss){ return !my_status->flag.flag[FLAG_LINGXUANMIZONGBU]; },
+        [](int& health_loss){ return false; }
     );
     my_status->task_quene_after_round->addTask(
-        [my_status](int round){
+        [my_status](int& round){
             my_status->flag.flag[FLAG_LINGXUANMIZONGBU] = false;
         },
-        [](int round){ return true; },
-        [](int round){ return false; }
+        [](int& round){ return true; },
+        [](int& round){ return false; }
     );
     return 0;
 }
