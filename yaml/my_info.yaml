@@ -22,22 +22,22 @@ status:
   ti_po_max: 60
 cards:
   # 第1张牌
-  - name: "鹤步"
-    level: 2
-  # 第2张牌
-  - name: "崩拳·冥夜"
-    level: 1
-  # 第3张牌
   - name: "冥月蟾光"
     level: 1
-  # 第4张牌
+  # 第2张牌
   - name: "崩天步"
+    level: 1
+  # 第3张牌
+  - name: "崩拳·闪击"
     level: 2
+  # 第4张牌
+  - name: "崩拳·冥夜"
+    level: 1
   # 第5张牌
   - name: "锻神开海"
-    level: 2
+    level: 1
   # 第6张牌
-  - name: "疯魔"
+  - name: "锻神开海"
     level: 1
   # 第7张牌
   - name: "崩拳·降龙"

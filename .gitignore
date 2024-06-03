@@ -11,3 +11,4 @@ help.md
 src/*.exe
 *.o
 src/*.o
+output/*

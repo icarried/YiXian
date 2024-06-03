@@ -28,11 +28,12 @@ public:
     void PutAllDeckToHand();
     void ShowDeck();
     void ShowHand();
-    int AddCardtoHand(BaseCard* card);
-    BaseCard* GetCard(int position);
+    int AddCardtoHand(BaseCard* card); // 把一张牌新的牌放入手牌, 返回值为新牌的位置, 如果没有空位则返回-1, 并删除新牌
+    BaseCard* GetCard(int position); // 获取卡组中position位置的卡牌指针
 
     BaseCard *cards[DECK_END_INDEX];
     BaseCard *hand_cards[HAND_CARD_END_INDEX];
+    int opened_card_end_index; // 已经打开的卡牌槽位置, 为battle_round + 2 且不超过8
 };
 
 #endif // !DECK_H

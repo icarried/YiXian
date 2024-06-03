@@ -159,7 +159,7 @@ public:
     void NextCardPosition(){
         do {
             using_card_position++;
-            if (using_card_position >= DECK_END_INDEX) {
+            if (using_card_position >= deck->opened_card_end_index) {
                 using_card_position = 0;
             }
         } while (!is_usable[using_card_position]);

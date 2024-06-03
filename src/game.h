@@ -50,12 +50,14 @@ public:
             std::cout << "文件不存在：" << battle_info_yaml_path << std::endl;
             return;
         }
-
+        
+        // 初始化战斗信息
+        InitBattleInfo(battle_info_yaml_path);
+        sor_my_deck->opened_card_end_index = battle_round + 2 > 8 ? 8 : battle_round + 2;
+        sor_enemy_deck->opened_card_end_index = battle_round + 2 > 8 ? 8 : battle_round + 2;
         // 初始化角色、状态、卡组
         InitPlayerInfo(my_info_yaml_path, my_role, sor_my_deck, sor_my_status, sor_enemy_status);
         InitPlayerInfo(enemy_info_yaml_path, enemy_role, sor_enemy_deck, sor_enemy_status, sor_my_status);
-        // 初始化战斗信息
-        InitBattleInfo(battle_info_yaml_path);
 
         // 准备好开始战斗
         is_game_ready = true;
@@ -207,6 +209,13 @@ public:
         delete battle_enemy_status;
         delete battle_my_deck;
         delete battle_enemy_deck;
+
+        // 战斗回合更替
+        if (is_sync) {
+            battle_round++;
+            sor_my_deck->opened_card_end_index = battle_round + 2 > 8 ? 8 : battle_round + 2;
+            sor_enemy_deck->opened_card_end_index = battle_round + 2 > 8 ? 8 : battle_round + 2;
+        }
     }
 
     // 角色

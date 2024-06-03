@@ -2,6 +2,7 @@
 #include "./cards/cards.h"
 
 Deck::Deck() {
+    opened_card_end_index = 8;
      // 初始化卡组为普通攻击牌
     for (int i = 0; i < DECK_END_INDEX; i++) {
         cards[i] = new Card_qt_lqq_pttonggongji(1, i);
@@ -20,6 +21,7 @@ Deck* Deck::Clone() const {
 
 // 拷贝构造函数
 Deck::Deck(const Deck &deck) {
+    opened_card_end_index = deck.opened_card_end_index;
     for (int i = 0; i < DECK_END_INDEX; i++) {
         cards[i] = deck.cards[i]->Clone();
     }
@@ -128,6 +130,7 @@ void Deck::PutAllDeckToHand() {
 
 // 把一张牌新的牌放入手牌
 // 返回值为新牌的位置, 如果没有空位则返回-1, 并删除新牌
+// 用于获取不在卡牌堆的牌
 int Deck::AddCardtoHand(BaseCard* card) {
     for (int i = 0; i < HAND_CARD_END_INDEX; i++) {
         if (hand_cards[i]->card_tag[PU_TONG_GONG_JI_CARD]) {
@@ -147,7 +150,7 @@ BaseCard* Deck::GetCard(int position) {
 
 // 显示卡组
 void Deck::ShowDeck() {
-    for (int i = 0; i < DECK_END_INDEX; i++) {
+    for (int i = 0; i < opened_card_end_index; i++) {
         std::cout << cards[i]->level << "级《" << cards[i]->card_name << "》 ";
     }
     std::cout << std::endl;

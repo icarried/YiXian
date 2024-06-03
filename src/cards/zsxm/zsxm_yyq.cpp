@@ -6,8 +6,8 @@ bool Card_zsxm_yyq_bengquan_mingye::registered = BaseCard::registerCard(Card_zsx
 /*
 锻玄宗_叶冥冥 专属仙命卡 崩拳·冥夜
 ！！目前未知升级效果
-获得2层"冥"
-持续：使用“崩拳”卡牌攻击时，自身每有1层负面状态，多1攻（最多+6）
+获得2/3/4层"冥"
+持续：使用“崩拳”卡牌攻击时，自身每有1层负面状态，多1攻（最多+6/9/12）
 */
 Card_zsxm_yyq_bengquan_mingye::Card_zsxm_yyq_bengquan_mingye(int level, int position) : BaseCard(level, position) {
     card_name = "崩拳·冥夜";
@@ -23,8 +23,8 @@ Card_zsxm_yyq_bengquan_mingye* Card_zsxm_yyq_bengquan_mingye::Clone() const {
 }
 
 int Card_zsxm_yyq_bengquan_mingye::Effect(Status* my_status, Status* enemy_status) {
-    int ming_gain = 2;
-    int temp_attack_max = 6;
+    int ming_gain = 1 + level;
+    int temp_attack_max = 3 + 3 * level;
     my_status->debuffs[DEBUFF_MING]->add(ming_gain);
     my_status->task_quene_before_effect->addTask(
         [my_status, temp_attack_max](BaseCard* card){

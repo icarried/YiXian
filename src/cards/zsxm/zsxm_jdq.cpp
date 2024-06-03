@@ -6,7 +6,7 @@ bool Card_zsxm_jdq_fengmo::registered = BaseCard::registerCard(Card_zsxm_jdq_fen
 /*
 锻玄宗_叶冥冥 专属仙命卡 疯魔
 ！！目前未知升级效果
-获得2层"冥"和2层随机负面状态，体魄+2（每有1层负面状态多加1）
+获得2/4/6层"冥"和2/1/0层随机负面状态，体魄+1（每有1层负面状态多加1）
 */
 Card_zsxm_jdq_fengmo::Card_zsxm_jdq_fengmo(int level, int position) : BaseCard(level, position) {
     card_name = "疯魔";
@@ -21,11 +21,12 @@ Card_zsxm_jdq_fengmo* Card_zsxm_jdq_fengmo::Clone() const {
 }
 
 int Card_zsxm_jdq_fengmo::Effect(Status* my_status, Status* enemy_status) {
-    int ming_gain = 2;
-    int ti_po_gain = 2;
-    int random_debuff_gain = 2;
+    int ming_gain = 2 * level;
+    int ti_po_gain = 1;
+    int random_debuff_gain = 3 - level;
     my_status->debuffs[DEBUFF_MING]->add(ming_gain);
-    DebuffRandomAdd(my_status, random_debuff_gain);
+    if (random_debuff_gain > 0)
+        DebuffRandomAdd(my_status, random_debuff_gain);
     ti_po_gain += DebuffTotal(my_status);
     my_status->ti_po->add(ti_po_gain);
     return 0;

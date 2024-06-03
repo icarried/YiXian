@@ -45,6 +45,8 @@ public:
     virtual void add(int val); // value增加
     virtual void sub(int val); // value减少
     void add_or_sub(int val); // value增加或减少
+    void add(int val, bool just_set_value); // value增加，不触发任务队列，重载实现
+    void sub(int val, bool just_set_value); // value减少，不触发任务队列，重载实现
     AccountTaskQueue* add_task_quene; // 增加时触发的任务队列
     AccountTaskQueue* sub_task_quene; // 减少时触发的任务队列
 };

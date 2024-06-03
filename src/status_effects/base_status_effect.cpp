@@ -48,6 +48,22 @@ void BaseStatusEffect::add_or_sub(int val) {
     }
 }
 
+void BaseStatusEffect::add(int val, bool just_set_value) {
+    if (just_set_value) {
+        value = val;
+    } else {
+        add(val);
+    }
+}
+
+void BaseStatusEffect::sub(int val, bool just_set_value) {
+    if (just_set_value) {
+        value = val;
+    } else {
+        sub(val);
+    }
+}
+
 StatusVal::StatusVal(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {}
 
 // 虚拷贝函数
