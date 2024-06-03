@@ -8,6 +8,7 @@
 class Status; // 前置声明
 
 // 定义任务的备注
+// #define REMARK_NONE "" // 无备注
 
 /**
  * 结算效果任务队列
@@ -42,7 +43,7 @@ public:
     void addTask(std::function<void(int)> function,
                  std::function<bool(int)> executeCondition,
                  std::function<bool(int)> removeCondition,
-                 int remark = 0) {
+                 std::string remark = "") {
         Task task{function, executeCondition, removeCondition, remark};
         taskQueue.push_back(task);
     }
@@ -77,7 +78,7 @@ public:
         std::function<void(int)> function;
         std::function<bool(int)> executeCondition;
         std::function<bool(int)> removeCondition;
-        int remark;
+        std::string remark;
     };
 
     std::vector<Task> taskQueue; // 任务队列

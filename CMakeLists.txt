@@ -27,3 +27,13 @@ find_package(yaml-cpp REQUIRED)
 
 # 链接yaml-cpp库
 target_link_libraries(${PROJECT_NAME} yaml-cpp)
+
+# 输出链接的库
+message("Linked libraries:")
+get_target_property(LINK_LIBS ${PROJECT_NAME} LINK_LIBRARIES)
+foreach(lib ${LINK_LIBS})
+    message("  ${lib}")
+endforeach()
+
+
+

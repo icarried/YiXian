@@ -48,20 +48,12 @@ void BaseStatusEffect::add_or_sub(int val) {
     }
 }
 
-void BaseStatusEffect::add(int val, bool just_set_value) {
-    if (just_set_value) {
-        value = val;
-    } else {
-        add(val);
-    }
+void BaseStatusEffect::setAdd(int val) {
+    value += val;
 }
 
-void BaseStatusEffect::sub(int val, bool just_set_value) {
-    if (just_set_value) {
-        value = val;
-    } else {
-        sub(val);
-    }
+void BaseStatusEffect::setSub(int val) {
+    value -= val;
 }
 
 StatusVal::StatusVal(Status* linking_status, int val) : BaseStatusEffect(linking_status, val) {}

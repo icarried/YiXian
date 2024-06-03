@@ -200,6 +200,8 @@ public:
             } else {
                 sor_my_status->ti_po->setValue(battle_my_status->ti_po->getValue());
             }
+            // 体魄上限增加
+            sor_my_status->ti_po_max->setAdd(5);
         }
 
         // 删除战斗

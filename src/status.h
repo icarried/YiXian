@@ -156,14 +156,7 @@ public:
     切换到下一张卡牌位置
     如果牌已被消耗，则跳过
     */
-    void NextCardPosition(){
-        do {
-            using_card_position++;
-            if (using_card_position >= deck->opened_card_end_index) {
-                using_card_position = 0;
-            }
-        } while (!is_usable[using_card_position]);
-    }
+    void NextCardPosition();
 
     /*
     打印主要状态

@@ -10,8 +10,8 @@ class Status; // 前置声明
 class BaseCard; // 前置声明
 
 // 定义任务的备注
-#define REMARK_NONE 0 // 无备注
-#define REMARK_BENG_QUAN 1 // 崩拳
+#define REMARK_NONE "" // 无备注
+#define REMARK_BENG_QUAN "beng_quan" // 崩拳
 
 /**
  * 卡牌效果任务队列
@@ -47,7 +47,7 @@ public:
     void addTask(std::function<void(BaseCard*)> function,
                  std::function<bool(BaseCard*)> executeCondition,
                  std::function<bool(BaseCard*)> removeCondition,
-                 int remark = 0) {
+                 std::string remark = REMARK_NONE) {
         Task task{function, executeCondition, removeCondition, remark};
         taskQueue.push_back(task);
     }
@@ -82,7 +82,7 @@ public:
         std::function<void(BaseCard*)> function;
         std::function<bool(BaseCard*)> executeCondition;
         std::function<bool(BaseCard*)> removeCondition;
-        int remark;
+        std::string remark;
     };
 
     std::vector<Task> taskQueue; // 任务队列

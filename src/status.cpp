@@ -50,3 +50,16 @@ void Status::a_side_round_change() {
     if (this->buffs[BUFF_TIE_GU]->getValue() > 0)
         this->buffs[BUFF_TIE_GU]->sub(1);
 }
+
+/*
+切换到下一张卡牌位置
+如果牌已被消耗，则跳过
+*/
+void Status::NextCardPosition(){
+    do {
+        using_card_position++;
+        if (using_card_position >= this->deck->opened_card_end_index) {
+            using_card_position = 0;
+        }
+    } while (!is_usable[using_card_position]);
+}
