@@ -2,6 +2,8 @@
 #include "../status.h"
 
 BaseStatusEffect::BaseStatusEffect(Status* linking_status, int val) : linked_status(linking_status), value(val) {
+    add_total = 0;
+    sub_total = 0;
     add_task_quene = new AccountTaskQueue(linking_status);
     sub_task_quene = new AccountTaskQueue(linking_status);
 }
@@ -15,6 +17,8 @@ BaseStatusEffect* BaseStatusEffect::Clone(Status* new_status) const {
 BaseStatusEffect::BaseStatusEffect(const BaseStatusEffect& other, Status* new_status) {
     linked_status = new_status;
     value = other.value;
+    add_total = other.add_total;
+    sub_total = other.sub_total;
     add_task_quene = other.add_task_quene->Clone(new_status);
     sub_task_quene = other.sub_task_quene->Clone(new_status);
 }
@@ -28,16 +32,28 @@ int BaseStatusEffect::getValue() const {
     return value;
 }
 
+int BaseStatusEffect::getAddTotal() const {
+    return add_total;
+}
+
+int BaseStatusEffect::getSubTotal() const {
+    return sub_total;
+}
+
 void BaseStatusEffect::setValue(int val) {
     value = val;
 }
 
 void BaseStatusEffect::add(int val) {
     value += val;
+    add_total += val;
+    // 继承的类中会自行实现执行任务队列, 此处不执行任务队列
 }
 
 void BaseStatusEffect::sub(int val) {
     value -= val;
+    sub_total += val;
+    // 继承的类中会自行实现执行任务队列, 此处不执行任务队列
 }
 
 void BaseStatusEffect::add_or_sub(int val) {

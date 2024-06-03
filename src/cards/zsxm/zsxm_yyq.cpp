@@ -40,7 +40,7 @@ int Card_zsxm_yyq_bengquan_mingye::Effect(Status* my_status, Status* enemy_statu
             );
         },
         [](BaseCard* card){ return card->card_tag[BENG_QUAN_CARD] && card->is_attacking ? true : false; },
-        [](BaseCard* card){ return true; },
+        [](BaseCard* card){ return false; },
         REMARK_BENG_QUAN
     );
     return 0;

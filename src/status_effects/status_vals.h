@@ -3,21 +3,6 @@
 
 #include "base_status_effect.h"
 
-// 失去血量总和
-class HealthSubTotal : public StatusVal {
-public:
-    HealthSubTotal(Status* linking_status, int val);
-    HealthSubTotal* Clone(Status* new_status) const override;
-    HealthSubTotal(const HealthSubTotal& other, Status* new_status);
-};
-
-class TiPoAddTotal : public StatusVal {
-public:
-    TiPoAddTotal(Status* linking_status, int val);
-    TiPoAddTotal* Clone(Status* new_status) const override;
-    TiPoAddTotal(const TiPoAddTotal& other, Status* new_status);
-};
-
 // 生命值上限
 class HealthMax : public StatusVal {
 public:

@@ -249,13 +249,13 @@ int Card_dx_hsq_baishapojingzhang::Effect(Status* my_status, Status* enemy_statu
     int temp_attack = 0;
     switch (level) {
         case 1:
-            temp_attack = my_status->ti_po_add_total->getValue() / 4;
+            temp_attack = my_status->ti_po->getAddTotal() / 4;
             break;
         case 2:
-            temp_attack = my_status->ti_po_add_total->getValue() / 3;
+            temp_attack = my_status->ti_po->getAddTotal() / 3;
             break;
         case 3:
-            temp_attack = my_status->ti_po_add_total->getValue() / 2;
+            temp_attack = my_status->ti_po->getAddTotal() / 2;
             break;
     }
     int ex_attack_times = my_status->ti_po->getValue() / 25;
@@ -356,7 +356,7 @@ int Card_dx_hsq_bengquan_jingchu::Effect(Status* my_status, Status* enemy_status
         [my_status](BaseCard* card){
             my_status->task_quene_after_effect->addTask(
                 [my_status](BaseCard* card){
-                    int ex_attack = 1 + int(float(my_status->health_sub_total->getValue()) / 5);
+                    int ex_attack = 1 + int(float(my_status->health->getSubTotal()) / 5);
                     Attack(my_status, my_status, ex_attack);
                 },
                 [](BaseCard* card){ return true; },

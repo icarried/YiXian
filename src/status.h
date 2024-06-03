@@ -19,8 +19,6 @@ public:
     // 构造函数
     Status(Deck* deck) : deck(deck) {
         // 初始化状态值
-        health_sub_total = new HealthSubTotal(this, 0); // 失去的血量总和
-        ti_po_add_total = new TiPoAddTotal(this, 0); // 体魄增加总和
         health = new Health(this, 60); // 血量
         health_max = new HealthMax(this, 60); // 血量上限
         defense = new Defense(this, 0); // 防御
@@ -74,8 +72,6 @@ public:
     // 拷贝构造函数
     Status(const Status& other, Deck* new_deck) : deck(new_deck) {
         // 初始化状态值
-        health_sub_total = other.health_sub_total->Clone(this); // 失去的血量总和
-        ti_po_add_total = other.ti_po_add_total->Clone(this); // 体魄增加总和
         health = other.health->Clone(this); // 血量
         health_max = other.health_max->Clone(this); // 血量上限
         defense = other.defense->Clone(this); // 防御
@@ -124,8 +120,6 @@ public:
     ~Status() {
 
         // 删除状态值
-        delete health_sub_total;
-        delete ti_po_add_total;
         delete health;
         delete health_max;
         delete defense;
@@ -218,8 +212,6 @@ public:
     AccountTaskQueue* task_quene_at_battle_start; // 战斗开始时触发的任务队列，参数为战斗轮数
 
     // 状态值
-    StatusVal* health_sub_total; // 该次战斗中失去的血量总和
-    StatusVal* ti_po_add_total; // 该次战斗中体魄增加总和
     StatusVal* health; // 血量
     StatusVal* health_max; // 血量上限
     StatusVal* defense; // 防御

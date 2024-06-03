@@ -33,6 +33,8 @@ class AccountTaskQueue;
 class BaseStatusEffect {
 protected:
     int value;
+    int add_total; // 当次战斗中的增加总和
+    int sub_total; // 当次战斗中的减少总和
 
 public:
     Status* linked_status;
@@ -41,6 +43,8 @@ public:
     BaseStatusEffect(const BaseStatusEffect& other, Status* new_status); // 拷贝构造函数
     virtual ~BaseStatusEffect();
     int getValue() const; // 获取数值
+    int getAddTotal() const; // 获取增加总和
+    int getSubTotal() const; // 获取减少总和
     void setValue(int val); // 设置数值, 用于初始化
     virtual void add(int val); // value增加
     virtual void sub(int val); // value减少
