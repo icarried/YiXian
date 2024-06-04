@@ -57,7 +57,7 @@ public:
         }
         ~ExclusiveDestinyYYQ() = default;
         int PickEffect() override {
-            role->sor_my_status->flag.flag[FLAG_BENGLIEZHIQUAN] = true;
+            role->sor_my_status->SetFlag("崩裂之拳", true);
             return 0;
         }
     };

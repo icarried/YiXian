@@ -213,7 +213,7 @@ public:
                             else {
                                 card_health_cost = decks[side]->cards[statuss[side]->using_card_position]->health_cost;
                             }
-                            if (statuss[side]->flag.flag[FLAG_BENGLIEZHIQUAN]) {
+                            if (statuss[side]->GetFlag("崩裂之拳")) {
                                 // 有崩裂之拳仙命，耗生命改为耗生命上限（对机制造成影响）
                                 statuss[side]->health_max->sub(card_health_cost);
                                 std::cout << statuss[side]->style << "消耗" << card_health_cost << "点血量上限，" << DEFAULT_STYLE;

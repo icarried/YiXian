@@ -116,6 +116,7 @@ public:
         
         // Flag对象
         flag = other.flag;
+        flag_map = other.flag_map;
         // 卡牌效果数值映射
         card_effect_val_map = other.card_effect_val_map;
         // 使用文字样式
@@ -223,6 +224,20 @@ public:
         }
     }
 
+    // 设置flag_map中某个键的值，如果键不存在则创建
+    void SetFlag(std::string key, bool val) {
+        flag_map[key] = val;
+    }
+
+    // 获取flag_map中某个键的值
+    bool GetFlag(std::string key) {
+        if (flag_map.find(key) != flag_map.end()) {
+            return flag_map[key];
+        } else {
+            return false;
+        }
+    }
+
     // 结算BUFF变更
     void attack_change();
     void a_card_change();
@@ -237,6 +252,7 @@ public:
     // 每个Status带一个Flag对象
     Flag flag;
     std::unordered_map<std::string, int> card_effect_val_map; // 卡牌效果数值映射, 通过AddCardEffectVal方法添加
+    std::unordered_map<std::string, bool> flag_map; // 标志位映射
     // 每个Status带一个Deck对象指针
     Deck* deck;
 

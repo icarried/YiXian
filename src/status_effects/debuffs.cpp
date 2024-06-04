@@ -83,7 +83,7 @@ void DebuffMing::add(int val) {
     }
     BaseStatusEffect::add(val);
     std::cout<< "获得" << val << "层" << name << DEFAULT_STYLE;
-    if (linked_status->flag.flag[FLAG_YEMINGMING]) {
+    if (linked_status->GetFlag("叶冥冥")) {
         linked_status->health->add(3 * val);
     }
     else {
@@ -100,7 +100,7 @@ void DebuffMing::sub(int val) {
     }
     BaseStatusEffect::sub(sub_value);
     std::cout << ", " << linked_status->style << "减少" << sub_value << "层" << name << DEFAULT_STYLE;
-    if (linked_status->flag.flag[FLAG_YEMINGMING]) {
+    if (linked_status->GetFlag("叶冥冥")) {
         linked_status->health->add(3 * val);
     }
     else {

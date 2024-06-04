@@ -88,7 +88,7 @@ public:
         exclusive_destinies[REALM_YYQ] = new ExclusiveDestinyYYQ(this);
         exclusive_destinies[REALM_HSQ] = new ExclusiveDestinyHSQ(this);
         // 增加独特flag，受到debuff冥的增加或减少改为回复生命
-        my_status->flag.flag[FLAG_YEMINGMING] = true;
+        my_status->SetFlag("叶冥冥", true);
         BaseDestiny::registerDestiny(REALM_LQQ, "阴晴圆缺", [](BaseRole* role) {
             return new ExclusiveDestinyLQQ(role);
         });
