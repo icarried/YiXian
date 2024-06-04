@@ -122,13 +122,13 @@ int Card_dx_jdq_qiruoxuanhe::Effect(Status* my_status, Status* enemy_status) {
     my_status->AddOrSubCardEffectVal(name, temp_status, true);
     my_status->ling_qi->add(ling_qi_gain);
     my_status->buffs[BUFF_QI_SHI]->add(1);
-    my_status->task_quene_before_effect->addTask(
-        [my_status](BaseCard* card){
+    my_status->task_quene_before_attack->addTask(
+        [my_status](int& attack_value){
             my_status->AddOrSubCardEffectVal(name, -1, false);
             my_status->buffs[BUFF_QI_SHI]->add(1);
         },
-        [my_status](BaseCard* card){ return my_status->GetCardEffectVal(name) > 0 && card->is_attacking ? true : false; },
-        [my_status](BaseCard* card){ return my_status->GetCardEffectVal(name) == 0 ? true : false; },
+        [my_status](int& attack_value){ return my_status->GetCardEffectVal(name) > 0 ? true : false; },
+        [my_status](int& attack_value){ return my_status->GetCardEffectVal(name) == 0 ? true : false; },
         name,
         true
     );

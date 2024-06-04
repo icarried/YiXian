@@ -154,26 +154,6 @@ BuffWuFaXingDong* BuffWuFaXingDong::Clone(Status* new_status) const {
 }
 BuffWuFaXingDong::BuffWuFaXingDong(const BuffWuFaXingDong& other, Status* new_status) : Buff(other, new_status) {}
 
-
-BuffDuanGuTimes::BuffDuanGuTimes(Status* linking_status, int val) : Buff(linking_status, val) {
-    name = "锻骨剩余次数";
-    id = DUANGU_TIMES;
-}
-BuffDuanGuTimes* BuffDuanGuTimes::Clone(Status* new_status) const {
-    return new BuffDuanGuTimes(*this, new_status);
-}
-BuffDuanGuTimes::BuffDuanGuTimes(const BuffDuanGuTimes& other, Status* new_status) : Buff(other, new_status) {}
-
-
-BuffQiRuoXuanHeTimes::BuffQiRuoXuanHeTimes(Status* linking_status, int val) : Buff(linking_status, val) {
-    name = "气若悬河剩余次数";
-    id = QIRUOXUANHE_TIMES;
-}
-BuffQiRuoXuanHeTimes* BuffQiRuoXuanHeTimes::Clone(Status* new_status) const {
-    return new BuffQiRuoXuanHeTimes(*this, new_status);
-}
-BuffQiRuoXuanHeTimes::BuffQiRuoXuanHeTimes(const BuffQiRuoXuanHeTimes& other, Status* new_status) : Buff(other, new_status) {}
-
 Buff* buff_create(int id, Status* linking_status, int val) {
     switch (id) {
         case BUFF_JIA_GONG:
@@ -204,10 +184,6 @@ Buff* buff_create(int id, Status* linking_status, int val) {
             return new BuffSkipCard(linking_status, val);
         case WU_FA_XING_DONG:
             return new BuffWuFaXingDong(linking_status, val);
-        case DUANGU_TIMES:
-            return new BuffDuanGuTimes(linking_status, val);
-        case QIRUOXUANHE_TIMES:
-            return new BuffQiRuoXuanHeTimes(linking_status, val);
         default:
             return nullptr;
     }

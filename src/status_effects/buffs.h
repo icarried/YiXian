@@ -18,10 +18,8 @@
 
 #define SKIP_CARD 12 //跳过下N张牌
 #define WU_FA_XING_DONG 13 //无法行动
-#define DUANGU_TIMES 14 //锻骨剩余次数（非正常buff）
-#define QIRUOXUANHE_TIMES 15 //气若悬河剩余次数（非正常buff）
 
-#define BUFF_END_INDEX 16 //buff结束索引
+#define BUFF_END_INDEX 14 //buff结束索引
 
 class BuffJiaGong : public Buff {
 public:
@@ -120,20 +118,6 @@ public:
     BuffWuFaXingDong(Status* linking_status, int val);
     BuffWuFaXingDong* Clone(Status* new_status) const override;
     BuffWuFaXingDong(const BuffWuFaXingDong& other, Status* new_status);
-};
-
-class BuffDuanGuTimes : public Buff {
-public:
-    BuffDuanGuTimes(Status* linking_status, int val);
-    BuffDuanGuTimes* Clone(Status* new_status) const override;
-    BuffDuanGuTimes(const BuffDuanGuTimes& other, Status* new_status);
-};
-
-class BuffQiRuoXuanHeTimes : public Buff {
-public:
-    BuffQiRuoXuanHeTimes(Status* linking_status, int val);
-    BuffQiRuoXuanHeTimes* Clone(Status* new_status) const override;
-    BuffQiRuoXuanHeTimes(const BuffQiRuoXuanHeTimes& other, Status* new_status);
 };
 
 Buff* buff_create(int id, Status* linking_status, int val);
