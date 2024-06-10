@@ -169,7 +169,22 @@ public:
                 while (statuss[side]->flag.flag[FLAG_ZAI_CI_XING_DONG] 
                 && !statuss[side]->flag.flag[FLAG_YI_ZAI_CI_XING_DONG] 
                 || !reexecute) {
+                    // 判断是否再次行动受到限制
                     if (reexecute) {
+                        // 如果有无法再次行动buff，则跳出
+                        if (statuss[side]->flag.flag[FLAG_WU_FA_ZAI_CI_XING_DONG]) {
+                            ReexecuteLoss(statuss[side]);
+                            std::cout << statuss[side]->style << side_string[side] << "无法再次行动" << DEFAULT_STYLE << std::endl;
+                            break;
+                        }
+                        // 如果有debuff困缚，困缚减一层，并跳出
+                        else if (statuss[side]->debuffs[DEBUFF_KUN_FU]->getValue() > 0) {
+                            ReexecuteLoss(statuss[side]);
+                            statuss[side]->debuffs[DEBUFF_KUN_FU]->sub(1);
+                            std::cout << statuss[side]->style << side_string[side] << "因困缚无法再次行动" <<DEFAULT_STYLE << std::endl;
+                            break;
+                        }
+                        // 若未受到限制，则再次行动
                         std::cout << statuss[side]->style << side_string[side] << "再次行动" << DEFAULT_STYLE << std::endl;
                     }
                     // 执行行动前任务队列
@@ -252,19 +267,6 @@ public:
                     if (statuss[0]->health->getValue() <= 0 || statuss[1]->health->getValue() <= 0) {
                         // 有一方血量为0则结束战斗
                         return BattleEnd();
-                    }
-                    
-                    // 如果有无法再次行动buff，则跳出
-                    if (statuss[side]->flag.flag[FLAG_WU_FA_ZAI_CI_XING_DONG]) {
-                        ReexecuteLoss(statuss[side]);
-                        std::cout << statuss[side]->style << side_string[side] << "无法再次行动" << DEFAULT_STYLE << std::endl;
-                        break;
-                    }
-                    // 如果有debuff困缚，困缚减一层，并跳出
-                    else if (statuss[side]->debuffs[DEBUFF_KUN_FU]->getValue() > 0) {
-                        ReexecuteLoss(statuss[side]);
-                        std::cout << statuss[side]->style << side_string[side] << "因困缚无法再次行动" <<DEFAULT_STYLE << std::endl;
-                        break;
                     }
                     
                     // 若未再次行动，且没有再次行动flag，身法>=10则将10点身法转化为一次再次行动flag

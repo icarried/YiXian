@@ -96,9 +96,9 @@ int Damage(Status* attacker, Status* defender, int damage_value, int card_sp_att
             defender->buffs[BUFF_HU_TI]->sub(1);
             std::cout << ", " << defender->style << "护体生效" << DEFAULT_STYLE;
         }
-        // 锋锐结算
+        // 锋锐结算, 目前受到攻击比率的伤害加成
         if (damage > 0 && is_attacking && attacker->buffs[BUFF_FENG_RUI]->getValue() > 0) {
-            damage += int(float(attacker->buffs[BUFF_FENG_RUI]->getValue()) * attacker->attack_damage_percent);
+            damage += attacker->buffs[BUFF_FENG_RUI]->getValue();
         }
         if (damage > 0) {
             std::cout << ", " << attacker->style << "对" << defender->style << "敌方" << attacker->style << "造成{" << damage << "}点伤害" << DEFAULT_STYLE;
@@ -203,7 +203,7 @@ int HealthSuck(Status* gainer, Status* losser, int suck_value){
         suck = losser->health->getValue();
     }
     std::cout << ", " << gainer->style << "吸取" << suck << "点血" << DEFAULT_STYLE << ", " << losser->style << "敌方" << DEFAULT_STYLE;
-    losser->health->sub(suck);
+    EffectHealthLoss(losser, suck);
     gainer->health->add(suck);
     return 0;
 }
