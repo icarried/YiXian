@@ -51,9 +51,11 @@ public:
         // 使用卡牌的状态记录
         is_card_attacked = false;
         using_card_position = 0;
-        num_using_card_tag = 0;
-        num_using_card_tag_continuous = 0;
         attack_damage_percent = 0.0f;
+        for (int i = 0; i < CARD_TAG_END_INDEX; i++) {
+            num_using_card_tag[i] = 0;
+            num_using_card_tag_continuous[i] = 0;
+        }
 
         task_quene_before_action = new EffectTaskQueue(this);
         task_quene_after_action = new EffectTaskQueue(this);
@@ -104,9 +106,11 @@ public:
         // 使用卡牌的状态记录
         is_card_attacked = other.is_card_attacked;
         using_card_position = other.using_card_position;
-        num_using_card_tag = other.num_using_card_tag;
-        num_using_card_tag_continuous = other.num_using_card_tag_continuous;
         attack_damage_percent = other.attack_damage_percent;
+        for (int i = 0; i < CARD_TAG_END_INDEX; i++) {
+            num_using_card_tag[i] = other.num_using_card_tag[i];
+            num_using_card_tag_continuous[i] = other.num_using_card_tag_continuous[i];
+        }
         
         task_quene_before_action = other.task_quene_before_action->Clone(this);
         task_quene_after_action = other.task_quene_after_action->Clone(this);
@@ -312,8 +316,8 @@ public:
     // 使用卡牌的状态记录
     bool is_card_attacked;
     int using_card_position; // 将使用卡牌的位置
-    int num_using_card_tag; // 本次战斗中使用的某卡牌标签数
-    int num_using_card_tag_continuous; // 本次战斗中连续使用的某卡牌标签数
+    int num_using_card_tag[CARD_TAG_END_INDEX]; // 本次战斗中使用的某卡牌标签数
+    int num_using_card_tag_continuous[CARD_TAG_END_INDEX]; // 本次战斗中连续使用的某卡牌标签数
     float attack_damage_percent; // 临时记录伤害百分比
 
     // 使用文字样式

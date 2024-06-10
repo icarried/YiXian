@@ -295,11 +295,11 @@ public:
     void UsingCardTagRecord(Status *status, BaseCard *card) {
         for(int i = 0; i < CARD_TAG_END_INDEX; i++) {
             if (card->card_tag[i]) {
-                status->num_using_card_tag++;
-                status->num_using_card_tag_continuous++;
+                status->num_using_card_tag[i]++;
+                status->num_using_card_tag_continuous[i]++;
             }
             else {
-                status->num_using_card_tag_continuous = 0;
+                status->num_using_card_tag_continuous[i] = 0;
             }
         }
     }
