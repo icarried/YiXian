@@ -51,13 +51,15 @@ public:
         // 使用卡牌的状态记录
         is_card_attacked = false;
         using_card_position = 0;
-        using_yun_jian_continuous = 0;
+        num_using_card_tag = 0;
+        num_using_card_tag_continuous = 0;
         attack_damage_percent = 0.0f;
 
-
+        task_quene_before_action = new EffectTaskQueue(this);
+        task_quene_after_action = new EffectTaskQueue(this);
+        task_quene_before_ling_qi_cost = new EffectTaskQueue(this);
         task_quene_before_effect = new EffectTaskQueue(this);
         task_quene_after_effect = new EffectTaskQueue(this);
-        task_quene_before_ling_qi_cost = new EffectTaskQueue(this);
         task_quene_before_round = new AccountTaskQueue(this);
         task_quene_after_round = new AccountTaskQueue(this);
         task_quene_before_attack = new AccountTaskQueue(this);
@@ -102,12 +104,15 @@ public:
         // 使用卡牌的状态记录
         is_card_attacked = other.is_card_attacked;
         using_card_position = other.using_card_position;
-        using_yun_jian_continuous = other.using_yun_jian_continuous;
+        num_using_card_tag = other.num_using_card_tag;
+        num_using_card_tag_continuous = other.num_using_card_tag_continuous;
         attack_damage_percent = other.attack_damage_percent;
-
+        
+        task_quene_before_action = other.task_quene_before_action->Clone(this);
+        task_quene_after_action = other.task_quene_after_action->Clone(this);
+        task_quene_before_ling_qi_cost = other.task_quene_before_ling_qi_cost->Clone(this);
         task_quene_before_effect = other.task_quene_before_effect->Clone(this);
         task_quene_after_effect = other.task_quene_after_effect->Clone(this);
-        task_quene_before_ling_qi_cost = other.task_quene_before_ling_qi_cost->Clone(this);
         task_quene_before_round = other.task_quene_before_round->Clone(this);
         task_quene_after_round = other.task_quene_after_round->Clone(this);
         task_quene_before_attack = other.task_quene_before_attack->Clone(this);
@@ -145,9 +150,11 @@ public:
         }
 
         // 删除任务队列
+        delete task_quene_before_action;
+        delete task_quene_after_action;
+        delete task_quene_before_ling_qi_cost;
         delete task_quene_before_effect;
         delete task_quene_after_effect;
-        delete task_quene_before_ling_qi_cost;
         delete task_quene_before_round;
         delete task_quene_after_round;
         delete task_quene_before_attack;
@@ -156,10 +163,26 @@ public:
     }
 
     /*
+    输入为当前位置，返回前一格位置
+    */
+    int PreviousCardPosition(int position, bool skip_unusable = true);
+
+    /*
+    输入为当前位置，返回后一格位置
+    */
+    int NextCardPosition(int position, bool skip_unusable = true);
+
+    /*
+    切换到上一张卡牌位置
+    如果牌已被消耗，则跳过
+    */
+    void ToPreviousCardPosition();
+
+    /*
     切换到下一张卡牌位置
     如果牌已被消耗，则跳过
     */
-    void NextCardPosition();
+    void ToNextCardPosition();
 
     /*
     打印主要状态
@@ -240,7 +263,7 @@ public:
 
     // 结算BUFF变更
     void attack_change();
-    void a_card_change();
+    void a_action_change();
     void a_damage_change(bool attacking, bool hurting);
     void a_side_round_change();
 
@@ -258,9 +281,11 @@ public:
 
     
     // 任务队列
+    EffectTaskQueue* task_quene_before_action; // 行动前的任务队列，参数为使用的牌
+    EffectTaskQueue* task_quene_after_action; // 行动后的任务队列，参数为使用的牌
+    EffectTaskQueue* task_quene_before_ling_qi_cost; // 灵气消耗前的任务队列，参数为使用的牌，执行队列参数为牌的灵气消耗
     EffectTaskQueue* task_quene_before_effect; // 卡牌效果执行前的任务队列，参数为使用的牌
     EffectTaskQueue* task_quene_after_effect; // 卡牌效果执行后的任务队列，参数为使用的牌，给下一张牌的执行后任务队列的任务必须通过卡牌效果执行前的任务队列放入
-    EffectTaskQueue* task_quene_before_ling_qi_cost; // 灵气消耗前的任务队列，参数为使用的牌，执行队列参数为牌的灵气消耗
     AccountTaskQueue* task_quene_before_round; // 回合开始时触发的任务队列，参数为回合数
     AccountTaskQueue* task_quene_after_round; // 回合结束时触发的任务队列，参数为回合数
     AccountTaskQueue* task_quene_before_attack; // 攻击前触发的任务队列（计算变更攻击数值的buff之前），参数为攻击数值
@@ -287,7 +312,8 @@ public:
     // 使用卡牌的状态记录
     bool is_card_attacked;
     int using_card_position; // 将使用卡牌的位置
-    int using_yun_jian_continuous; // 连续使用云剑的次数（！未启用）
+    int num_using_card_tag; // 本次战斗中使用的某卡牌标签数
+    int num_using_card_tag_continuous; // 本次战斗中连续使用的某卡牌标签数
     float attack_damage_percent; // 临时记录伤害百分比
 
     // 使用文字样式

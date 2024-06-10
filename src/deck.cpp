@@ -1,4 +1,5 @@
 #include "Deck.h"
+#include "cards/base_card.h"
 #include "./cards/cards.h"
 
 Deck::Deck() {
@@ -162,4 +163,27 @@ void Deck::ShowHand() {
         std::cout << hand_cards[i]->level << "级《" << hand_cards[i]->card_name << "》 ";
     }
     std::cout << std::endl;
+}
+
+// 改变牌的等级，通过is_level_modifiable启用
+// 输入为增加或减少的等级，正数为增加，负数为减少
+// 最高3级，最低1级
+// 等级修改后使用构造函数重新初始化牌的属性
+// 返回值is_level_modifiable
+// 可以通过返回值判断是否修改成功
+// Deck::LevelModify()
+bool Deck::LevelModify(BaseCard* card, int level_change) {
+    if (card->is_level_modifiable) {
+        card->level += level_change;
+        if (card->level > 3)
+            card->level = 3;
+        if (card->level < 1)
+            card->level = 1;
+        //重新初始化牌的属性，删除原牌，创建新牌
+        BaseCard* new_card = BaseCard::createInstance(card->card_name, card->level, card->position);
+        *card = *new_card;
+        delete new_card;
+        return true;
+    }
+    return true;
 }

@@ -26,3 +26,29 @@ int Card_qt_lqq_pttonggongji::Effect(Status* my_status, Status* enemy_status) {
 BaseCard* Card_qt_lqq_pttonggongji::create(int level, int position) {
     return new Card_qt_lqq_pttonggongji(level, position);
 }
+
+
+const std::string Card_qt_lqq_zouhuorumo::name = "走火入魔";
+bool Card_qt_lqq_zouhuorumo::registered = BaseCard::registerCard(Card_qt_lqq_zouhuorumo::name, Card_qt_lqq_zouhuorumo::create);
+/*
+走火入魔：无任何效果
+*/
+Card_qt_lqq_zouhuorumo::Card_qt_lqq_zouhuorumo(int level, int position) : BaseCard(level, position) {
+    card_name = "走火入魔";
+    is_attacking = false;
+    card_tag[BU_KE_YONG_CARD] = true;
+}
+
+Card_qt_lqq_zouhuorumo* Card_qt_lqq_zouhuorumo::Clone() const {
+    return new Card_qt_lqq_zouhuorumo(*this);
+}
+
+Card_qt_lqq_zouhuorumo::Card_qt_lqq_zouhuorumo(const Card_qt_lqq_zouhuorumo& other) : BaseCard(other) {}
+
+int Card_qt_lqq_zouhuorumo::Effect(Status* my_status, Status* enemy_status) {
+    return 0;
+}
+
+BaseCard* Card_qt_lqq_zouhuorumo::create(int level, int position) {
+    return new Card_qt_lqq_zouhuorumo(level, position);
+}

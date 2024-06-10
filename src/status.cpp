@@ -16,7 +16,7 @@ void Status::attack_change() {
 }
 
 // 一次卡牌结算后，结算BUFF变更
-void Status::a_card_change() {
+void Status::a_action_change() {
     if (is_card_attacked) {
         if (this->buffs[BUFF_JIAN_YI]->getValue() > 0)
             this->buffs[BUFF_JIAN_YI]->sub(1);
@@ -52,14 +52,53 @@ void Status::a_side_round_change() {
 }
 
 /*
+输入为当前位置，返回前一格位置
+*/
+int Status::PreviousCardPosition(int position, bool skip_unusable) {
+    do {
+        position--;
+        if (position < 0) {
+            position = this->deck->opened_card_end_index - 1;
+        }
+    } while (skip_unusable && !is_usable[position]);
+    return position;
+}
+
+/*
+输入为当前位置，返回后一格位置
+*/
+int Status::NextCardPosition(int position, bool skip_unusable) {
+    do {
+        position++;
+        if (position >= this->deck->opened_card_end_index) {
+            position = 0;
+        }
+    } while (skip_unusable && !is_usable[position]);
+    return position;
+}
+
+/*
+切换到上一张卡牌位置
+如果牌已被消耗，则跳过
+*/
+void Status::ToPreviousCardPosition(){
+    do {
+        this->using_card_position--;
+        if (this->using_card_position < 0) {
+            this->using_card_position = this->deck->opened_card_end_index - 1;
+        }
+    } while (!is_usable[this->using_card_position]);
+}
+
+/*
 切换到下一张卡牌位置
 如果牌已被消耗，则跳过
 */
-void Status::NextCardPosition(){
+void Status::ToNextCardPosition(){
     do {
-        using_card_position++;
-        if (using_card_position >= this->deck->opened_card_end_index) {
-            using_card_position = 0;
+        this->using_card_position++;
+        if (this->using_card_position >= this->deck->opened_card_end_index) {
+            this->using_card_position = 0;
         }
-    } while (!is_usable[using_card_position]);
+    } while (!is_usable[this->using_card_position]);
 }

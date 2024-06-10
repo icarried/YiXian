@@ -155,7 +155,7 @@ public:
                     std::cout << statuss[side]->style << side_string[side] << "防减半，剩余" << statuss[side]->defense->getValue() << "点防" << std::endl << DEFAULT_STYLE;
                 }
 
-                // 2. 行动相关，一回合可能包含多次行动
+                // 2. 行动相关，一回合可能包含多次行动(action)
                 if (statuss[side]->buffs[WU_FA_XING_DONG]->getValue() > 0) {
                     // 无法行动，优先于使用牌
                     std::cout << statuss[side]->style << side_string[side] << "无法行动" << DEFAULT_STYLE << std::endl;
@@ -165,17 +165,20 @@ public:
                 bool reexecute = false;
                 // 首次执行或再次行动时执行
                 // 当有再次行动buff且未当前回合为发动再次行动时，再次行动
+                // ---行动循环---
                 while (statuss[side]->flag.flag[FLAG_ZAI_CI_XING_DONG] 
                 && !statuss[side]->flag.flag[FLAG_YI_ZAI_CI_XING_DONG] 
                 || !reexecute) {
                     if (reexecute) {
                         std::cout << statuss[side]->style << side_string[side] << "再次行动" << DEFAULT_STYLE << std::endl;
                     }
+                    // 执行行动前任务队列
+                    statuss[side]->task_quene_before_action->executeTaskQueue(decks[side]->cards[statuss[side]->using_card_position]);
                     if (statuss[side]->buffs[SKIP_CARD]->getValue() > 0){
                         // 跳过下N张牌
                         while (statuss[side]->buffs[SKIP_CARD]->getValue() > 0){
                             statuss[side]->buffs[SKIP_CARD]->sub(1);
-                            statuss[side]->NextCardPosition();
+                            statuss[side]->ToNextCardPosition();
                             std::cout << statuss[side]->style << side_string[side] << "跳过一张牌" << DEFAULT_STYLE << std::endl;
                         }
                     }
@@ -235,21 +238,21 @@ public:
                         if (decks[side]->cards[statuss[side]->using_card_position]->card_tag[XIAO_HAO_CARD] || decks[side]->cards[statuss[side]->using_card_position]->card_tag[CHI_XU_CARD]) {
                             statuss[side]->is_usable[statuss[side]->using_card_position] = false;
                         }
-                        statuss[side]->a_card_change();
+                        UsingCardTagRecord(statuss[side], decks[side]->cards[statuss[side]->using_card_position]);
                         // 执行牌效果Effect结束
                         //切换到下一张牌
-                        statuss[side]->NextCardPosition();
+                        statuss[side]->ToNextCardPosition();
                     }
+
+                    // 执行行动后任务队列
+                    statuss[side]->a_action_change();
+                    statuss[side]->task_quene_after_action->executeTaskQueue(decks[side]->cards[statuss[side]->using_card_position]);
+
                     std::cout << std::endl;
                     if (statuss[0]->health->getValue() <= 0 || statuss[1]->health->getValue() <= 0) {
                         // 有一方血量为0则结束战斗
                         return BattleEnd();
                     }
-
-                    // 回合结束，回合结束buff结算
-                    statuss[side]->a_side_round_change();
-                    statuss[side]->flag.a_side_round_change();
-                    statuss[side]->task_quene_after_round->executeTaskQueue(this->round);
                     
                     // 如果有无法再次行动buff，则跳出
                     if (statuss[side]->flag.flag[FLAG_WU_FA_ZAI_CI_XING_DONG]) {
@@ -278,11 +281,27 @@ public:
                         reexecute = true;
                     }
                 }
+                // 回合结束，回合结束buff结算
+                statuss[side]->a_side_round_change();
+                statuss[side]->flag.a_side_round_change();
+                statuss[side]->task_quene_after_round->executeTaskQueue(this->round);
             }
         }
         // 战斗回合数超过最大回合数，强制结束战斗
         std::cout << "战斗回合数超过最大回合数，强制结束战斗" << std::endl;
         return BattleEnd();
+    }
+
+    void UsingCardTagRecord(Status *status, BaseCard *card) {
+        for(int i = 0; i < CARD_TAG_END_INDEX; i++) {
+            if (card->card_tag[i]) {
+                status->num_using_card_tag++;
+                status->num_using_card_tag_continuous++;
+            }
+            else {
+                status->num_using_card_tag_continuous = 0;
+            }
+        }
     }
 
     Status *my_status;

@@ -14,12 +14,15 @@
 #define PU_TONG_GONG_JI_CARD 0 //普通攻击牌
 #define XIAO_HAO_CARD 1 //消耗牌
 #define CHI_XU_CARD 2 //持续牌
-#define LING_JIAN_CARD 3 //灵剑牌
-#define YUN_JIAN_CARD 4 //云剑牌
-#define KUANG_JIAN_CARD 5 //狂剑牌
-#define BENG_QUAN_CARD 6 //崩拳牌
-#define TI_PO_CARD 7 //体魄牌
-#define CARD_TAG_END_INDEX 8 //牌标签结束索引
+#define ZHI_HUAN_CARD 3 //置换牌 一般为不可用牌
+#define LIAN_HUA_CARD 4 //炼化牌 一般为不可用牌
+#define BU_KE_YONG_CARD 5 //不可用牌 不可置入牌组
+#define LING_JIAN_CARD 6 //灵剑牌
+#define YUN_JIAN_CARD 7 //云剑牌
+#define KUANG_JIAN_CARD 8 //狂剑牌
+#define BENG_QUAN_CARD 9 //崩拳牌
+#define TI_PO_CARD 10 //体魄牌
+#define CARD_TAG_END_INDEX 11 //牌标签结束索引
 
 
 
@@ -69,6 +72,7 @@ public:
     //构造函数
     BaseCard(int level, int position) : level(level), position(position) {
         card_name = "基础牌";
+        is_level_modifiable = true;
         is_attacking = false;
         attack = 0;
         ling_qi_cost = 0;
@@ -96,6 +100,7 @@ public:
     BaseCard(const BaseCard& other) {
         card_name = other.card_name;
         level = other.level;
+        is_level_modifiable = other.is_level_modifiable;
         position = other.position;
         is_attacking = other.is_attacking;
         attack = other.attack;
@@ -176,10 +181,33 @@ public:
         if (card_sp_attr[sp_attr] > 0)
             card_sp_attr[sp_attr] -= 1;
     }
+    // // 改变牌的等级，通过is_level_modifiable启用
+    // // 输入为增加或减少的等级，正数为增加，负数为减少
+    // // 最高3级，最低1级
+    // // 等级修改后使用构造函数重新初始化牌的属性
+    // // 返回值is_level_modifiable
+    // // 可以通过返回值判断是否修改成功
+    // bool LevelModify(int level_change){
+    //     if (is_level_modifiable){
+    //         this->level += level_change;
+    //         if (this->level > 3)
+    //             this->level = 3;
+    //         if (this->level < 1)
+    //             this->level = 1;
+    //         //重新初始化牌的属性，删除原牌，创建新牌
+    //         BaseCard* old_card = this;
+    //         BaseCard* new_card = createInstance(this->name, this->level, this->position);
+    //         delete old_card;
+    //         *this = *new_card;
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     static const std::string name;
     std::string card_name; //牌名
     int level; //牌等级
+    bool is_level_modifiable; // 等级是否可修改
     int position; //牌位置
     bool is_attacking; //是否为攻击牌
     int attack; //攻

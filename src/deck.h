@@ -30,6 +30,7 @@ public:
     void ShowHand();
     int AddCardtoHand(BaseCard* card); // 把一张牌新的牌放入手牌, 返回值为新牌的位置, 如果没有空位则返回-1, 并删除新牌
     BaseCard* GetCard(int position); // 获取卡组中position位置的卡牌指针
+    static bool LevelModify(BaseCard* card, int level_change); // 改变牌的等级，通过is_level_modifiable启用，返回值is_level_modifiable，可以通过返回值判断是否修改成功
 
     BaseCard *cards[DECK_END_INDEX];
     BaseCard *hand_cards[HAND_CARD_END_INDEX];
