@@ -6,5 +6,6 @@
 
 int buff_reduce(int value);
 int StrToRealm(std::string realm_str);
+std::string RealmToStr(int realm);
 
 #endif // !CAL_H

@@ -1,5 +1,10 @@
 #include "zsxm_yyq.h"
 
+// 定义文件内所有牌的变量
+#define FILE_CARDS_SOVJ "专属仙命"
+#define FILE_CARDS_REALM REALM_YYQ
+// 该文件中的牌不注册门派副职和境界
+
 const std::string Card_zsxm_yyq_bengquan_mingye::name = "崩拳·冥夜";
 bool Card_zsxm_yyq_bengquan_mingye::registered = BaseCard::registerCard(Card_zsxm_yyq_bengquan_mingye::name, Card_zsxm_yyq_bengquan_mingye::create);
 
@@ -10,6 +15,8 @@ bool Card_zsxm_yyq_bengquan_mingye::registered = BaseCard::registerCard(Card_zsx
 持续：使用“崩拳”卡牌攻击时，自身每有1层负面状态，多1攻（最多+6/9/12）
 */
 Card_zsxm_yyq_bengquan_mingye::Card_zsxm_yyq_bengquan_mingye(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "崩拳·冥夜";
     is_attacking = false;
     card_tag[BENG_QUAN_CARD] = true;

@@ -88,9 +88,9 @@ public:
     // 当前境界, 初始为炼气期
     int realm = REALM_LQQ;
     // 当前门派, 由角色文件初始化
-    int sect = SECT_NONE;
+    std::string sect = "";
     // 副职
-    int vice_job = VICE_JOB_NONE;
+    std::string vice_job = "";
     // 换牌次数
     int change_card_times = 0;
     // 换牌次数上限

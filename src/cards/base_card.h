@@ -55,6 +55,8 @@ class BaseCard {
 public:
     //构造函数
     BaseCard(int level, int position) : level(level), position(position) {
+        sovj = SECT_NONE;
+        realm = REALM_NONE;
         card_name = "基础牌";
         is_level_modifiable = true;
         is_attacking = false;
@@ -74,6 +76,7 @@ public:
         is_health_cost = false;
         health_cost = 0;
         is_before_task_queue_effect = false;
+
     }
 
     virtual BaseCard* Clone() const {
@@ -82,6 +85,8 @@ public:
 
     //拷贝构造函数
     BaseCard(const BaseCard& other) {
+        sovj = other.sovj;
+        realm = other.realm;
         card_name = other.card_name;
         level = other.level;
         is_level_modifiable = other.is_level_modifiable;
@@ -104,24 +109,67 @@ public:
     
     virtual ~BaseCard() = default;
 
-    static std::map<std::string, std::function<BaseCard*(int, int)>>& getRegistry() {
-        static std::map<std::string, std::function<BaseCard*(int, int)>> registry;
-        return registry;
+    // 参数：牌名，构造函数
+    static std::map<std::string, std::function<BaseCard*(int, int)>>& getRegisteredObjectByName() {
+        static std::map<std::string, std::function<BaseCard*(int, int)>> registered_object_by_name;
+        return registered_object_by_name;
     }
 
+    // 参数：门派或副职或机缘(SoVJ)、境界(Realm)、id(由GetCountForSoVJRealm计算)，构造函数
+    static std::map<std::tuple<std::string, int, int>, std::function<BaseCard*(int, int)>>& getRegisteredObjectBySoVJRealmId() {
+        static std::map<std::tuple<std::string, int, int>, std::function<BaseCard*(int, int)>> registered_object_by_sovj_realm_id;
+        return registered_object_by_sovj_realm_id;
+    }
+
+    // 可以通过门派或副职或机缘(SoVJ)、境界(Realm)获取已注册数量
+    static int GetCountForSoVJRealm(const std::string& sovj, int realm) {
+        auto& registered_objects = getRegisteredObjectBySoVJRealmId();
+        int count = 0;
+        for (const auto& obj : registered_objects) {
+            if (std::get<0>(obj.first) == sovj && std::get<1>(obj.first) == realm) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 注册牌名, 使得可以通过名字创建牌实例
     static bool registerCard(const std::string& name, std::function<BaseCard*(int, int)> constructor) {
-        getRegistry()[name] = constructor;
+        getRegisteredObjectByName()[name] = constructor;
         return true;
     }
 
+    // registerCard的重载
+    // 注册门派或副职或机缘(SoVJ)、境界(Realm)的牌, 并调用registerCard
+    static bool registerCard(const std::string& sovj, int realm, const std::string& name, std::function<BaseCard*(int, int)> constructor) {
+        int count = GetCountForSoVJRealm(sovj, realm);
+        getRegisteredObjectBySoVJRealmId()[std::make_tuple(sovj, realm, count)] = constructor;
+        getRegisteredObjectByName()[name] = constructor;
+        return true;
+    }
+
+    // 创建牌实例, 参数：牌名、等级、位置
     static BaseCard* createInstance(const std::string& name, int level, int position) {
-        auto it = getRegistry().find(name);
-        if (it != getRegistry().end()) {
+        auto it = getRegisteredObjectByName().find(name);
+        if (it != getRegisteredObjectByName().end()) {
             return it->second(level, position);
         }
         throw std::runtime_error("Card not found: " + name);
         return nullptr;
     }
+
+    // 创建牌实例, 参数：门派或副职或机缘(SoVJ)、境界(Realm)、id(由GetCountForSoVJRealm计算)、等级、位置
+    static BaseCard* createInstanceBySoVJRealmId(const std::string& sovj, int realm, int id, int level, int position) {
+        auto it = getRegisteredObjectBySoVJRealmId().find(std::make_tuple(sovj, realm, id));
+        if (it != getRegisteredObjectBySoVJRealmId().end()) {
+            return it->second(level, position);
+        }
+        throw std::runtime_error("Card not found: " + sovj + " " + std::to_string(realm) + " " + std::to_string(id));
+        return nullptr;
+    }
+
+    // 显示计数矩阵表格
+    static void DisplayCountMatrixGrid();
 
     //虚函数，执行牌的效果，并返回执行状态值
     virtual int Effect(Status* my_status, Status* enemy_status){
@@ -165,30 +213,11 @@ public:
         if (card_sp_attr[sp_attr] > 0)
             card_sp_attr[sp_attr] -= 1;
     }
-    // // 改变牌的等级，通过is_level_modifiable启用
-    // // 输入为增加或减少的等级，正数为增加，负数为减少
-    // // 最高3级，最低1级
-    // // 等级修改后使用构造函数重新初始化牌的属性
-    // // 返回值is_level_modifiable
-    // // 可以通过返回值判断是否修改成功
-    // bool LevelModify(int level_change){
-    //     if (is_level_modifiable){
-    //         this->level += level_change;
-    //         if (this->level > 3)
-    //             this->level = 3;
-    //         if (this->level < 1)
-    //             this->level = 1;
-    //         //重新初始化牌的属性，删除原牌，创建新牌
-    //         BaseCard* old_card = this;
-    //         BaseCard* new_card = createInstance(this->name, this->level, this->position);
-    //         delete old_card;
-    //         *this = *new_card;
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
     static const std::string name;
+    
+    std::string sovj; //门派或副职SoVJ
+    int realm; //境界
     std::string card_name; //牌名
     int level; //牌等级
     bool is_level_modifiable; // 等级是否可修改
@@ -204,6 +233,7 @@ public:
     bool is_health_cost_modifiable; //血量消耗是否可修改，可以则通过HealthCostModify函数决定血量消耗
 
     bool is_before_task_queue_effect; //是否有前置于任务队列效果（用于对任务队列进行操作）
+
 
 };
 #endif // !BASE_CARD_H

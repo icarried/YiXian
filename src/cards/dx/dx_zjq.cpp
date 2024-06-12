@@ -1,12 +1,17 @@
 #include "dx_zjq.h"
 
+// 定义文件内所有牌的变量
+#define FILE_CARDS_SOVJ "锻玄宗"
+#define FILE_CARDS_REALM REALM_ZJQ
 
 const std::string Card_dx_zjq_haoranzhengqi::name = "浩然正气";
-bool Card_dx_zjq_haoranzhengqi::registered = BaseCard::registerCard(Card_dx_zjq_haoranzhengqi::name, Card_dx_zjq_haoranzhengqi::create);
+bool Card_dx_zjq_haoranzhengqi::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_haoranzhengqi::name, Card_dx_zjq_haoranzhengqi::create);
 /*
 灵气+1，防+4/8/12，获得2/3/4层辟邪
 */
 Card_dx_zjq_haoranzhengqi::Card_dx_zjq_haoranzhengqi(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "浩然正气";
     is_attacking = false;
 }
@@ -47,11 +52,13 @@ BaseCard* Card_dx_zjq_haoranzhengqi::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_qichendantian::name = "气沉丹田";
-bool Card_dx_zjq_qichendantian::registered = BaseCard::registerCard(Card_dx_zjq_qichendantian::name, Card_dx_zjq_qichendantian::create);
+bool Card_dx_zjq_qichendantian::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_qichendantian::name, Card_dx_zjq_qichendantian::create);
 /*
 灵气+2，生命+2/6/10
 */
 Card_dx_zjq_qichendantian::Card_dx_zjq_qichendantian(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "气沉丹田";
     is_attacking = false;
 }
@@ -87,11 +94,13 @@ BaseCard* Card_dx_zjq_qichendantian::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_shidalichen::name = "势大力沉";
-bool Card_dx_zjq_shidalichen::registered = BaseCard::registerCard(Card_dx_zjq_shidalichen::name, Card_dx_zjq_shidalichen::create);
+bool Card_dx_zjq_shidalichen::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_shidalichen::name, Card_dx_zjq_shidalichen::create);
 /*
 耗2生命，9/12/15攻，耗1灵气：此牌获得碎防并多4/5/6攻
 */
 Card_dx_zjq_shidalichen::Card_dx_zjq_shidalichen(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "势大力沉";
     is_attacking = true;
     switch (level) {
@@ -149,11 +158,13 @@ BaseCard* Card_dx_zjq_shidalichen::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_kuiranbudong::name = "岿然不动";
-bool Card_dx_zjq_kuiranbudong::registered = BaseCard::registerCard(Card_dx_zjq_kuiranbudong::name, Card_dx_zjq_kuiranbudong::create);
+bool Card_dx_zjq_kuiranbudong::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_kuiranbudong::name, Card_dx_zjq_kuiranbudong::create);
 /*
 防+4/5/6，气势+2/3/4，耗1灵气：生命+5
 */
 Card_dx_zjq_kuiranbudong::Card_dx_zjq_kuiranbudong(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "岿然不动";
     is_attacking = false;
 }
@@ -196,11 +207,13 @@ BaseCard* Card_dx_zjq_kuiranbudong::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_yeguixiao::name = "夜鬼啸";
-bool Card_dx_zjq_yeguixiao::registered = BaseCard::registerCard(Card_dx_zjq_yeguixiao::name, Card_dx_zjq_yeguixiao::create);
+bool Card_dx_zjq_yeguixiao::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_yeguixiao::name, Card_dx_zjq_yeguixiao::create);
 /*
 耗1灵气，14/18/22攻，无视防御，自身加3层虚弱
 */
 Card_dx_zjq_yeguixiao::Card_dx_zjq_yeguixiao(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "夜鬼啸";
     ling_qi_cost = 1;
     is_attacking = true;
@@ -237,11 +250,13 @@ BaseCard* Card_dx_zjq_yeguixiao::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_fengmingzhua::name = "风冥爪";
-bool Card_dx_zjq_fengmingzhua::registered = BaseCard::registerCard(Card_dx_zjq_fengmingzhua::name, Card_dx_zjq_fengmingzhua::create);
+bool Card_dx_zjq_fengmingzhua::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_fengmingzhua::name, Card_dx_zjq_fengmingzhua::create);
 /*
 4/6/8攻×2，灵气+2，自身加3层破绽
 */
 Card_dx_zjq_fengmingzhua::Card_dx_zjq_fengmingzhua(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "风冥爪";
     is_attacking = true;
     switch (level) {
@@ -278,11 +293,13 @@ BaseCard* Card_dx_zjq_fengmingzhua::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_tanmazhang::name = "探马掌";
-bool Card_dx_zjq_tanmazhang::registered = BaseCard::registerCard(Card_dx_zjq_tanmazhang::name, Card_dx_zjq_tanmazhang::create);
+bool Card_dx_zjq_tanmazhang::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_tanmazhang::name, Card_dx_zjq_tanmazhang::create);
 /*
 7/9/11攻，每有2体魄加1防（上限8/11/14）
 */
 Card_dx_zjq_tanmazhang::Card_dx_zjq_tanmazhang(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "探马掌";
     is_attacking = true;
     switch (level) {
@@ -331,11 +348,13 @@ BaseCard* Card_dx_zjq_tanmazhang::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_duanjin::name = "锻筋";
-bool Card_dx_zjq_duanjin::registered = BaseCard::registerCard(Card_dx_zjq_duanjin::name, Card_dx_zjq_duanjin::create);
+bool Card_dx_zjq_duanjin::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_duanjin::name, Card_dx_zjq_duanjin::create);
 /*
 5/7/9攻，体魄+2，体魄≥15：防+4/6/8
 */
 Card_dx_zjq_duanjin::Card_dx_zjq_duanjin(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "锻筋";
     is_attacking = true;
     switch (level) {
@@ -386,11 +405,13 @@ BaseCard* Card_dx_zjq_duanjin::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_bengquan_han::name = "崩拳·撼";
-bool Card_dx_zjq_bengquan_han::registered = BaseCard::registerCard(Card_dx_zjq_bengquan_han::name, Card_dx_zjq_bengquan_han::create);
+bool Card_dx_zjq_bengquan_han::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_bengquan_han::name, Card_dx_zjq_bengquan_han::create);
 /*
 耗4生命，10/11/12攻，使用下一张崩拳时加2/3/4气势
 */
 Card_dx_zjq_bengquan_han::Card_dx_zjq_bengquan_han(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "崩拳·撼";
     is_attacking = true;
     switch (level) {
@@ -447,12 +468,14 @@ BaseCard* Card_dx_zjq_bengquan_han::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_bengquan_can::name = "崩拳·缠";
-bool Card_dx_zjq_bengquan_can::registered = BaseCard::registerCard(Card_dx_zjq_bengquan_can::name, Card_dx_zjq_bengquan_can::create);
+bool Card_dx_zjq_bengquan_can::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_bengquan_can::name, Card_dx_zjq_bengquan_can::create);
 
 /*
 耗4生命，10/11/12攻，使用下一张崩拳时施加1/2/3层外伤
 */
 Card_dx_zjq_bengquan_can::Card_dx_zjq_bengquan_can(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "崩拳·缠";
     is_attacking = true;
     switch (level) {
@@ -509,12 +532,14 @@ BaseCard* Card_dx_zjq_bengquan_can::create(int level, int position) {
 
 
 const std::string Card_dx_zjq_bengquan_tu::name = "崩拳·突";
-bool Card_dx_zjq_bengquan_tu::registered = BaseCard::registerCard(Card_dx_zjq_bengquan_tu::name, Card_dx_zjq_bengquan_tu::create);
+bool Card_dx_zjq_bengquan_tu::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_zjq_bengquan_tu::name, Card_dx_zjq_bengquan_tu::create);
 
 /*
 耗4生命，10/14/18攻，碎防（下一张崩拳也附加此效果）
 */
 Card_dx_zjq_bengquan_tu::Card_dx_zjq_bengquan_tu(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "崩拳·突";
     is_attacking = true;
     switch (level) {

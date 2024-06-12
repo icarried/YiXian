@@ -1,5 +1,10 @@
 #include "zsxm_zjq.h"
 
+// 定义文件内所有牌的变量
+#define FILE_CARDS_SOVJ "专属仙命"
+#define FILE_CARDS_REALM REALM_ZJQ
+// 该文件中的牌不注册门派副职和境界
+
 const std::string Card_zsxm_zjq_shengqilingren::name = "盛气凌人";
 bool Card_zsxm_zjq_shengqilingren::registered = BaseCard::registerCard(Card_zsxm_zjq_shengqilingren::name, Card_zsxm_zjq_shengqilingren::create);
 
@@ -8,6 +13,8 @@ bool Card_zsxm_zjq_shengqilingren::registered = BaseCard::registerCard(Card_zsxm
 消耗2生命，气势+2/3/4，持续：每减一点气势时向对方造成2伤害
 */
 Card_zsxm_zjq_shengqilingren::Card_zsxm_zjq_shengqilingren(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "盛气凌人";
     is_attacking = false;
     health_cost = 2;
@@ -58,6 +65,8 @@ bool Card_zsxm_zjq_duantibuxi::registered = BaseCard::registerCard(Card_zsxm_zjq
 4/6/8攻, 体魄加3/4/5, 生命加3/4/5
 */
 Card_zsxm_zjq_duantibuxi::Card_zsxm_zjq_duantibuxi(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "锻体不息";
     is_attacking = true;
     attack = 2 * level + 2;

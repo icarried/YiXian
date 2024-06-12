@@ -1,11 +1,17 @@
 #include "dx_hsq.h"
 
+// 定义文件内所有牌的变量
+#define FILE_CARDS_SOVJ "锻玄宗"
+#define FILE_CARDS_REALM REALM_HSQ
+
 const std::string Card_dx_hsq_tiandihaodang::name = "天地浩荡";
-bool Card_dx_hsq_tiandihaodang::registered = BaseCard::registerCard(Card_dx_hsq_tiandihaodang::name, Card_dx_hsq_tiandihaodang::create);
+bool Card_dx_hsq_tiandihaodang::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_hsq_tiandihaodang::name, Card_dx_hsq_tiandihaodang::create);
 /*
 10/12/14攻，生命+4/6/8，身法+4/5/6（每剩1气势多2）
 */
 Card_dx_hsq_tiandihaodang::Card_dx_hsq_tiandihaodang(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "天地浩荡";
     is_attacking = true;
     switch (level) {
@@ -57,12 +63,14 @@ BaseCard* Card_dx_hsq_tiandihaodang::create(int level, int position) {
 
 
 const std::string Card_dx_hsq_xiuluohou::name = "修罗吼";
-bool Card_dx_hsq_xiuluohou::registered = BaseCard::registerCard(Card_dx_hsq_xiuluohou::name, Card_dx_hsq_xiuluohou::create);
+bool Card_dx_hsq_xiuluohou::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_hsq_xiuluohou::name, Card_dx_hsq_xiuluohou::create);
 
 /*
 双方各加4/6/8层内伤，自身每有2层负面状态加1灵气和1生命
 */
 Card_dx_hsq_xiuluohou::Card_dx_hsq_xiuluohou(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "修罗吼";
     is_attacking = false;
 }
@@ -103,12 +111,14 @@ BaseCard* Card_dx_hsq_xiuluohou::create(int level, int position) {
 
 
 const std::string Card_dx_hsq_weizhensifang::name = "威震四方";
-bool Card_dx_hsq_weizhensifang::registered = BaseCard::registerCard(Card_dx_hsq_weizhensifang::name, Card_dx_hsq_weizhensifang::create);
+bool Card_dx_hsq_weizhensifang::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_hsq_weizhensifang::name, Card_dx_hsq_weizhensifang::create);
 
 /*
 防+8/10/12，气势上限+3/4/5，气势+3/4/5
 */
 Card_dx_hsq_weizhensifang::Card_dx_hsq_weizhensifang(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "威震四方";
     is_attacking = false;
 }
@@ -153,12 +163,14 @@ BaseCard* Card_dx_hsq_weizhensifang::create(int level, int position) {
 
 
 const std::string Card_dx_hsq_xuanxinzhanpo::name = "玄心斩魄";
-bool Card_dx_hsq_xuanxinzhanpo::registered = BaseCard::registerCard(Card_dx_hsq_xuanxinzhanpo::name, Card_dx_hsq_xuanxinzhanpo::create);
+bool Card_dx_hsq_xuanxinzhanpo::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_hsq_xuanxinzhanpo::name, Card_dx_hsq_xuanxinzhanpo::create);
 
 /*
 耗1灵气，向对方施加自身已有的负面状态各2层，10/15/20攻（攻击时自身负面状态的效果当作气势）
 */
 Card_dx_hsq_xuanxinzhanpo::Card_dx_hsq_xuanxinzhanpo(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "玄心斩魄";
     ling_qi_cost = 1;
     is_attacking = true;
@@ -217,12 +229,14 @@ BaseCard* Card_dx_hsq_xuanxinzhanpo::create(int level, int position) {
 
 
 const std::string Card_dx_hsq_baishapojingzhang::name = "百杀破境掌";
-bool Card_dx_hsq_baishapojingzhang::registered = BaseCard::registerCard(Card_dx_hsq_baishapojingzhang::name, Card_dx_hsq_baishapojingzhang::create);
+bool Card_dx_hsq_baishapojingzhang::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_hsq_baishapojingzhang::name, Card_dx_hsq_baishapojingzhang::create);
 
 /*
 2/4/6攻（本轮战斗每加过4/3/2体魄多1攻），每有25体魄追加1次攻击
 */
 Card_dx_hsq_baishapojingzhang::Card_dx_hsq_baishapojingzhang(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "百杀破境掌";
     is_attacking = true;
     switch (level) {
@@ -273,12 +287,14 @@ BaseCard* Card_dx_hsq_baishapojingzhang::create(int level, int position) {
 
 
 const std::string Card_dx_hsq_duanshenkaihai::name = "锻神开海";
-bool Card_dx_hsq_duanshenkaihai::registered = BaseCard::registerCard(Card_dx_hsq_duanshenkaihai::name, Card_dx_hsq_duanshenkaihai::create);
+bool Card_dx_hsq_duanshenkaihai::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_hsq_duanshenkaihai::name, Card_dx_hsq_duanshenkaihai::create);
 
 /*
 4/8/12攻，体魄+3/4/5，体魄≥50：获得1层加攻。体魄≥65：身法+4/5/6
 */
 Card_dx_hsq_duanshenkaihai::Card_dx_hsq_duanshenkaihai(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "锻神开海";
     is_attacking = true;
     switch (level) {
@@ -320,12 +336,14 @@ BaseCard* Card_dx_hsq_duanshenkaihai::create(int level, int position) {
 
 
 const std::string Card_dx_hsq_bengquan_jingchu::name = "崩拳·惊触";
-bool Card_dx_hsq_bengquan_jingchu::registered = BaseCard::registerCard(Card_dx_hsq_bengquan_jingchu::name, Card_dx_hsq_bengquan_jingchu::create);
+bool Card_dx_hsq_bengquan_jingchu::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_hsq_bengquan_jingchu::name, Card_dx_hsq_bengquan_jingchu::create);
 
 /*
 耗8/8/8生命，10/16/22攻，使用下一张崩拳后追加1攻（本场战斗中每失去过5生命多1攻）
 */
 Card_dx_hsq_bengquan_jingchu::Card_dx_hsq_bengquan_jingchu(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "崩拳·惊触";
     is_attacking = true;
     switch (level) {
@@ -377,12 +395,14 @@ BaseCard* Card_dx_hsq_bengquan_jingchu::create(int level, int position) {
 
 
 const std::string Card_dx_hsq_bengquan_shanji::name = "崩拳·闪击";
-bool Card_dx_hsq_bengquan_shanji::registered = BaseCard::registerCard(Card_dx_hsq_bengquan_shanji::name, Card_dx_hsq_bengquan_shanji::create);
+bool Card_dx_hsq_bengquan_shanji::registered = BaseCard::registerCard(FILE_CARDS_SOVJ, FILE_CARDS_REALM, Card_dx_hsq_bengquan_shanji::name, Card_dx_hsq_bengquan_shanji::create);
 
 /*
 耗7生命，5/7/9攻，身法+7/8/9（下一张崩拳也附加此效果）
 */
 Card_dx_hsq_bengquan_shanji::Card_dx_hsq_bengquan_shanji(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "崩拳·闪击";
     is_attacking = true;
     switch (level) {

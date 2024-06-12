@@ -93,7 +93,7 @@ public:
 
     RoleDxXiaobu(Status* my_status, Status* enemy_status) : BaseRole(my_status, enemy_status) {
         name = "小布";
-        sect = SECT_DX;
+        sect = "锻玄宗";
         exclusive_destinies[REALM_LQQ] = new ExclusiveDestinyLQQ(this);
         exclusive_destinies[REALM_ZJQ] = new ExclusiveDestinyZJQ(this);
         exclusive_destinies[REALM_JDQ] = new ExclusiveDestinyJDQ(this);

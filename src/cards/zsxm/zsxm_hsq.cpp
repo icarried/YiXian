@@ -1,5 +1,10 @@
 #include "zsxm_hsq.h"
 
+// 定义文件内所有牌的变量
+#define FILE_CARDS_SOVJ "专属仙命"
+#define FILE_CARDS_REALM REALM_HSQ
+// 该文件中的牌不注册门派副职和境界
+
 const std::string Card_zsxm_hsq_mingyuechanguang::name = "冥月蟾光";
 bool Card_zsxm_hsq_mingyuechanguang::registered = BaseCard::registerCard(Card_zsxm_hsq_mingyuechanguang::name, Card_zsxm_hsq_mingyuechanguang::create);
 
@@ -9,6 +14,8 @@ bool Card_zsxm_hsq_mingyuechanguang::registered = BaseCard::registerCard(Card_zs
 体魄+1/2/3，冥+2/3/4，身法+10/11/12
 */
 Card_zsxm_hsq_mingyuechanguang::Card_zsxm_hsq_mingyuechanguang(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "冥月蟾光";
     is_attacking = false;
     card_tag[TI_PO_CARD] = true;

@@ -9,7 +9,7 @@
 #include "head.h"
 
 
-#define BATTLE_END_ROUND 30 // 战斗最大回合数, 目前暂不确定
+#define BATTLE_END_ROUND 32 // 战斗最大回合数
 
 // 注意回合过多时将强制结束战斗
 

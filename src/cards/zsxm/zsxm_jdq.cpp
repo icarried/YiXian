@@ -1,5 +1,10 @@
 #include "zsxm_jdq.h"
 
+// 定义文件内所有牌的变量
+#define FILE_CARDS_SOVJ "专属仙命"
+#define FILE_CARDS_REALM REALM_JDQ
+// 该文件中的牌不注册门派副职和境界
+
 const std::string Card_zsxm_jdq_fengmo::name = "疯魔";
 bool Card_zsxm_jdq_fengmo::registered = BaseCard::registerCard(Card_zsxm_jdq_fengmo::name, Card_zsxm_jdq_fengmo::create);
 
@@ -9,6 +14,8 @@ bool Card_zsxm_jdq_fengmo::registered = BaseCard::registerCard(Card_zsxm_jdq_fen
 获得2/4/6层"冥"和2/1/0层随机负面状态，体魄+1（每有1层负面状态多加1）
 */
 Card_zsxm_jdq_fengmo::Card_zsxm_jdq_fengmo(int level, int position) : BaseCard(level, position) {
+    sovj = FILE_CARDS_SOVJ;
+    realm = FILE_CARDS_REALM;
     card_name = "疯魔";
     is_attacking = false;
     card_tag[TI_PO_CARD] = true;
