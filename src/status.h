@@ -51,7 +51,6 @@ public:
         // 使用卡牌的状态记录
         is_card_attacked = false;
         using_card_position = 0;
-        attack_damage_percent = 0.0f;
         for (int i = 0; i < CARD_TAG_END_INDEX; i++) {
             num_using_card_tag[i] = 0;
             num_using_card_tag_continuous[i] = 0;
@@ -106,7 +105,6 @@ public:
         // 使用卡牌的状态记录
         is_card_attacked = other.is_card_attacked;
         using_card_position = other.using_card_position;
-        attack_damage_percent = other.attack_damage_percent;
         for (int i = 0; i < CARD_TAG_END_INDEX; i++) {
             num_using_card_tag[i] = other.num_using_card_tag[i];
             num_using_card_tag_continuous[i] = other.num_using_card_tag_continuous[i];
@@ -285,11 +283,11 @@ public:
 
     
     // 任务队列
-    EffectTaskQueue* task_quene_before_action; // 行动前的任务队列，参数为使用的牌
+    EffectTaskQueue* task_quene_before_action; // 行动前的任务队列，参数为使用的牌，该任务队列触发时还未决定是否使用牌和是否使用该位置的牌
     EffectTaskQueue* task_quene_after_action; // 行动后的任务队列，参数为使用的牌
     EffectTaskQueue* task_quene_before_ling_qi_cost; // 灵气消耗前的任务队列，参数为使用的牌，执行队列参数为牌的灵气消耗
     EffectTaskQueue* task_quene_before_effect; // 卡牌效果执行前的任务队列，参数为使用的牌
-    EffectTaskQueue* task_quene_after_effect; // 卡牌效果执行后的任务队列，参数为使用的牌，给下一张牌的执行后任务队列的任务必须通过卡牌效果执行前的任务队列放入
+    EffectTaskQueue* task_quene_after_effect; // 卡牌效果执行后的任务队列，参数为使用的牌，给下一张牌的执行后任务队列的任务必须通过卡牌效果执行前的任务队列放入，避免未到下一张牌就触发
     AccountTaskQueue* task_quene_before_round; // 回合开始时触发的任务队列，参数为回合数
     AccountTaskQueue* task_quene_after_round; // 回合结束时触发的任务队列，参数为回合数
     AccountTaskQueue* task_quene_before_attack; // 攻击前触发的任务队列（计算变更攻击数值的buff之前），参数为攻击数值
@@ -314,11 +312,10 @@ public:
     Debuff* debuffs[DEBUFF_END_INDEX]; // debuff
     
     // 使用卡牌的状态记录
-    bool is_card_attacked;
+    bool is_card_attacked; // 该次牌是否已攻击
     int using_card_position; // 将使用卡牌的位置
     int num_using_card_tag[CARD_TAG_END_INDEX]; // 本次战斗中使用的某卡牌标签数
     int num_using_card_tag_continuous[CARD_TAG_END_INDEX]; // 本次战斗中连续使用的某卡牌标签数
-    float attack_damage_percent; // 临时记录伤害百分比
 
     // 使用文字样式
     std::string style = "";

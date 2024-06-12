@@ -157,19 +157,15 @@ int Attack(Status* attacker, Status* defender, int attack_value, int card_sp_att
     if (attacker->debuffs[DEBUFF_XU_RUO]->getValue()) {
         damage_percent -= 0.4;
     }
+    // 潜遁结算
+    if (defender->buffs[BUFF_QIAN_DUN]->getValue()) {
+        damage_percent -= 0.4;
+    }
     damage_value = int(float(damage_value) * damage_percent);
     // 最小为1
     if (damage_value < 1) {
         damage_value = 1;
     }
-    // *额外结算*
-    if (defender->buffs[BUFF_QIAN_DUN]->getValue()) {
-        // 潜遁
-        damage_value = int(float(damage_value) * 0.6);
-        damage_percent = damage_percent * 0.6;
-    }
-    // 临时记录伤害百分比, 用于结算锋锐
-    attacker->attack_damage_percent = damage_percent;
     if (defender->buffs[BUFF_TIE_GU]->getValue()) {
         // 铁骨
         damage_value = damage_value - 5;

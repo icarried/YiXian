@@ -18,8 +18,9 @@
 
 #define SKIP_CARD 12 //跳过下N张牌
 #define WU_FA_XING_DONG 13 //无法行动
+#define CARD_EFFECT_TIMES 14 //牌额外生效次数
 
-#define BUFF_END_INDEX 14 //buff结束索引
+#define BUFF_END_INDEX 15 //buff结束索引
 
 class BuffJiaGong : public Buff {
 public:
@@ -118,6 +119,13 @@ public:
     BuffWuFaXingDong(Status* linking_status, int val);
     BuffWuFaXingDong* Clone(Status* new_status) const override;
     BuffWuFaXingDong(const BuffWuFaXingDong& other, Status* new_status);
+};
+
+class BuffCardEffectTimes : public Buff {
+public:
+    BuffCardEffectTimes(Status* linking_status, int val);
+    BuffCardEffectTimes* Clone(Status* new_status) const override;
+    BuffCardEffectTimes(const BuffCardEffectTimes& other, Status* new_status);
 };
 
 Buff* buff_create(int id, Status* linking_status, int val);

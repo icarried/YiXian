@@ -154,6 +154,17 @@ BuffWuFaXingDong* BuffWuFaXingDong::Clone(Status* new_status) const {
 }
 BuffWuFaXingDong::BuffWuFaXingDong(const BuffWuFaXingDong& other, Status* new_status) : Buff(other, new_status) {}
 
+
+BuffCardEffectTimes::BuffCardEffectTimes(Status* linking_status, int val) : Buff(linking_status, val) {
+    name = "牌额外生效次数";
+    id = CARD_EFFECT_TIMES;
+}
+BuffCardEffectTimes* BuffCardEffectTimes::Clone(Status* new_status) const {
+    return new BuffCardEffectTimes(*this, new_status);
+}
+BuffCardEffectTimes::BuffCardEffectTimes(const BuffCardEffectTimes& other, Status* new_status) : Buff(other, new_status) {}
+
+
 Buff* buff_create(int id, Status* linking_status, int val) {
     switch (id) {
         case BUFF_JIA_GONG:
@@ -184,6 +195,8 @@ Buff* buff_create(int id, Status* linking_status, int val) {
             return new BuffSkipCard(linking_status, val);
         case WU_FA_XING_DONG:
             return new BuffWuFaXingDong(linking_status, val);
+        case CARD_EFFECT_TIMES:
+            return new BuffCardEffectTimes(linking_status, val);
         default:
             return nullptr;
     }

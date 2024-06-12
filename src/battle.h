@@ -135,7 +135,7 @@ public:
                 other_side = (side + 1) % 2;
                 std::cout << statuss[side]->style << side_string[side] << "回合" << DEFAULT_STYLE << std::endl;
                 statuss[side]->ShowStatus();
-                // 双方轮流行动
+                // ---双方轮流行动---
                 // 1. 检查回合任务队列和buff
                 statuss[side]->task_quene_before_round->executeTaskQueue(this->round);
                 if (statuss[side]->debuffs[DEBUFF_NEI_SHANG]->getValue() > 0) {
@@ -241,21 +241,26 @@ public:
                                 std::cout << statuss[side]->style << "消耗" << card_health_cost << "点血量，" << DEFAULT_STYLE;
                             }
                         }
-                        // 执行牌效果Effect开始
-                        std::cout << statuss[side]->style << "使用了第" << statuss[side]->using_card_position + 1 << "张牌" << decks[side]->cards[statuss[side]->using_card_position]->level << "级《" << decks[side]->cards[statuss[side]->using_card_position]->card_name << "》" << DEFAULT_STYLE;
-                        if (decks[side]->cards[statuss[side]->using_card_position]->is_before_task_queue_effect) {
-                            decks[side]->cards[statuss[side]->using_card_position]->BeforeTaskQueueEffect(statuss[side], statuss[other_side]);
+                        // ---牌效果生效循环---
+                        for (int effect_iter = 0; effect_iter < 1 + statuss[side]->buffs[CARD_EFFECT_TIMES]->getValue(); effect_iter++) {
+                            // 执行牌效果Effect开始
+                            std::cout << statuss[side]->style << "使用了第" << statuss[side]->using_card_position + 1 << "张牌" << decks[side]->cards[statuss[side]->using_card_position]->level << "级《" << decks[side]->cards[statuss[side]->using_card_position]->card_name << "》" << DEFAULT_STYLE;
+                            if (decks[side]->cards[statuss[side]->using_card_position]->is_before_task_queue_effect) {
+                                decks[side]->cards[statuss[side]->using_card_position]->BeforeTaskQueueEffect(statuss[side], statuss[other_side]);
+                            }
+                            statuss[side]->task_quene_before_effect->executeTaskQueue(decks[side]->cards[statuss[side]->using_card_position]);
+                            decks[side]->cards[statuss[side]->using_card_position]->Effect(statuss[side], statuss[other_side]);
+                            statuss[side]->task_quene_after_effect->executeTaskQueue(decks[side]->cards[statuss[side]->using_card_position]);
+                            // 若为消耗牌或持续牌，使用后将被消耗
+                            if (decks[side]->cards[statuss[side]->using_card_position]->card_tag[XIAO_HAO_CARD] || decks[side]->cards[statuss[side]->using_card_position]->card_tag[CHI_XU_CARD]) {
+                                statuss[side]->is_usable[statuss[side]->using_card_position] = false;
+                            }
+                            
+                            UsingCardTagRecord(statuss[side], decks[side]->cards[statuss[side]->using_card_position]);
+                            // 执行牌效果Effect结束
                         }
-                        statuss[side]->task_quene_before_effect->executeTaskQueue(decks[side]->cards[statuss[side]->using_card_position]);
-                        decks[side]->cards[statuss[side]->using_card_position]->Effect(statuss[side], statuss[other_side]);
-                        statuss[side]->task_quene_after_effect->executeTaskQueue(decks[side]->cards[statuss[side]->using_card_position]);
-                        // 若为消耗牌或持续牌，使用后将被消耗
-                        if (decks[side]->cards[statuss[side]->using_card_position]->card_tag[XIAO_HAO_CARD] || decks[side]->cards[statuss[side]->using_card_position]->card_tag[CHI_XU_CARD]) {
-                            statuss[side]->is_usable[statuss[side]->using_card_position] = false;
-                        }
-                        UsingCardTagRecord(statuss[side], decks[side]->cards[statuss[side]->using_card_position]);
-                        // 执行牌效果Effect结束
                         //切换到下一张牌
+                        statuss[side]->buffs[CARD_EFFECT_TIMES]->setValue(0);
                         statuss[side]->ToNextCardPosition();
                     }
 

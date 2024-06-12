@@ -13,6 +13,9 @@ BaseCard* Status::GetCard(int position) {
 void Status::attack_change() {
     if (this->buffs[BUFF_GONG_JI_WU_SHI_FANG_YU]->getValue() > 0)
         this->buffs[BUFF_GONG_JI_WU_SHI_FANG_YU]->sub(1);
+    if (this->buffs[BUFF_QI_SHI]->getValue() > 0)
+        this->buffs[BUFF_QI_SHI]->sub(1);
+    is_card_attacked = true;
 }
 
 // 一次卡牌结算后，结算BUFF变更
@@ -21,20 +24,16 @@ void Status::a_action_change() {
         if (this->buffs[BUFF_JIAN_YI]->getValue() > 0)
             this->buffs[BUFF_JIAN_YI]->sub(1);
     }
-    else {
-        is_card_attacked = false;
-    }
+    is_card_attacked = false;
 }
+
 
 // 一次伤害结算后，结算BUFF变更
 void Status::a_damage_change(bool attacking, bool hurting) {
     if (attacking) {
-        is_card_attacked = true;
-        if (this->buffs[BUFF_QI_SHI]->getValue() < 0)
-            this->buffs[BUFF_QI_SHI]->setValue(0);
         if (hurting) {
             if (this->buffs[BUFF_FENG_RUI]->getValue() > 0)
-                this->buffs[BUFF_FENG_RUI]->sub(1);
+                this->buffs[BUFF_FENG_RUI]->sub(this->buffs[BUFF_FENG_RUI]->getValue());
         }
     }
 }
